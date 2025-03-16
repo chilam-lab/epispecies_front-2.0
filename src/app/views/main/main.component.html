@@ -155,12 +155,12 @@
     <div class="row justify-content-md-center">
       <div class="col col-md-4">
         <div id="button_predecir">
-          <button class="borderedButton">Predecir</button>
+          <button class="borderedButton" (click)="showAndScrollToMap()">Predecir</button>
         </div>
       </div>
     </div>
   </div><br><br>
-  <div class="container-fluid p-0">
+  <div class="container-fluid p-0 map-container hidden" #mapContainer>
     <div class="row row-map">
       <div class="col-lg-4 p-0">
         <div class="jumbotron">
