@@ -43,3 +43,14 @@ color: white;
 label{
 margin-left: 5%;
 }
+.jumbotron {
+  background-color: #fff;
+  width: 95%;
+  height: 90%;
+  margin-left: 3%;
+  border-radius: 15px;
+}
+
+.jumbotron h6{
+margin-top: 7px;
+}

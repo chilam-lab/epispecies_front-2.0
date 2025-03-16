@@ -17,11 +17,14 @@ export class MapComponent {
 
   private initializeMap(): void {
     // Initialize the map
-    this.map = L.map('map', {
-      center: [51.505, -0.09], // Example: London coordinates
-      zoom: 13
-    });
 
+    this.map = L.map('map').setView([ 25, -102 ], 5);
+
+    this.map.touchZoom.disable();
+    this.map.doubleClickZoom.disable();
+    this.map.boxZoom.disable();
+    this.map.keyboard.disable();
+    this.map.scrollWheelZoom.disable();
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
