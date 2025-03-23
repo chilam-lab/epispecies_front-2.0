@@ -1,0 +1,83 @@
+body {
+    min-height: 100%;
+  }
+  
+  select {
+  border: 1px solid #223b96;
+  width: 90%;
+  height: 50px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: white;
+  font-size: large;
+  color: #223b96;
+  margin-bottom: 40px !important;
+  margin-left: 5%;
+  }
+  select:hover {
+  background-color: #223b96;
+  color: white;
+  }
+  
+  h1 {
+  text-align: center;
+  margin-bottom: 50px;
+  color: #223b96;
+  }
+  
+  .borderedButton {
+  border: 1px solid #7c61ff;
+  width: 100%;
+  height: 40px;
+  border-radius: 15px;
+  background-color: #f6f7ff;
+  font-size: large;
+  color: #7c61ff;
+  margin-top: 20px;
+  }
+  
+  .borderedButton:hover {
+  background-color: #7c61ff;
+  color: white;
+  }
+  label{
+  margin-left: 5%;
+  }
+  .jumbotron {
+    background-color: #fff;
+    width: 95%;
+    height: 90%;
+    margin-left: 3%;
+    border-radius: 15px;
+    padding: 5%;
+  }
+  
+  .jumbotron h6{
+  margin-top: 7px;
+  }
+  .row-map{
+    height: 100vh;
+  }
+  
+  .map-container {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.8s ease-in-out, max-height 1s ease-in-out;
+  }
+  
+  .map-container.visible {
+    opacity: 1;
+    max-height: 1000px; /* Adjust this value based on your map container height */
+  }
+  
+  .borderedButton {
+    /* Your existing button styles */
+    transition: all 1s ease;
+  }
+  
+  .borderedButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
