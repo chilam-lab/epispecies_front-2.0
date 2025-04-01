@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <h2>Grupo principal:</h2>
-      <div class="col-md-4">
+      <div class="col-lg-4">
         <label for="exampleColorInput" class="form-label">Seleccione una enfermedad</label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
           [(ngModel)]="selectedSickness" (ngModelChange)="onSicknessChange($event)">
@@ -13,10 +13,18 @@
           </ng-container>
         </select>
       </div>
-    </div>
-    <div class="row" *ngIf="selectedSickness != 'Selecciona una opción'">
-      <h2>Grupo:</h2>
-      <div class="col-md-4">
+      <div class="col-lg-4">
+        <label for="exampleColorInput" class="form-label">Seleccione<mat-icon class="help-icon">help_outline</mat-icon></label>
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+          <option disabled selected>Selecciona una opción</option>
+          <ng-container *ngFor="let group of groupList">
+            <option>{{group}}</option>
+          </ng-container>
+        </select>
+
+          
+      </div>
+      <div class="col-lg-4 ">
         <label for="exampleColorInput" class="form-label">Seleccione</label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
           <option disabled selected>Selecciona una opción</option>
@@ -29,19 +37,19 @@
     <div class="row">
       <h2>Segundo grupo:</h2>
       <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
+        <label for="exampleColorInput" class="form-label">Edad: </label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
           <option disabled selected>Selecciona una opción</option>
         </select>
       </div>
       <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
+        <label for="exampleColorInput" class="form-label">Sexo:</label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
           <option disabled selected>Selecciona una opción</option>
         </select>
       </div>
       <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
+        <label for="exampleColorInput" class="form-label">Año:</label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
           <option disabled selected>Selecciona una opción</option>
           <ng-container>

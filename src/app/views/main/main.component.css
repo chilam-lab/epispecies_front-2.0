@@ -68,16 +68,18 @@ body {
   
   .map-container.visible {
     opacity: 1;
-    max-height: 1000px; /* Adjust this value based on your map container height */
+    max-height: 1000px;
   }
   
   .borderedButton {
-    /* Your existing button styles */
     transition: all 1s ease;
   }
   
   .borderedButton:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .help-icon {  
+    transform: scale(0.8);
   }
   

@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SicknessGroupList, SicknessKey } from '../../models/sickness-group-list';
 import Swal from 'sweetalert2';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-main',
-  imports: [MapComponent, CommonModule, FormsModule],
+  imports: [MapComponent, CommonModule, FormsModule, MatIconModule],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
   standalone: true
