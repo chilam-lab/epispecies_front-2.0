@@ -5,6 +5,7 @@ import { DiseaseDbService } from '../../services/disease-db.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SicknessGroupList, SicknessKey } from '../../models/sickness-group-list';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-main',
@@ -22,14 +23,30 @@ export class MainComponent implements OnInit {
   groupList: any[] = [];
 
   ngOnInit() {
+    Swal.fire({
+      title: 'Cargando datos...',
+      allowOutsideClick: false,
+      showConfirmButton: true,
+    })
+    Swal.showLoading();
     this.dbService.getDisease('cve_enfermedad', 'enfermedad')
       .subscribe({
         next: (response) => {
           this.sicknessList = response;
           console.log(JSON.stringify(this.sicknessList));
+          Swal.fire({
+            timer: 1100,
+            title:  'Datos cargados correctamente.',
+              icon:  'success'
+          })
         },
         error: (error) => {
           console.error('Error fetching data:', error);
+          Swal.fire({
+            timer: 1000,
+            title:  'Ocurrio un error al cargar los datos.',
+              icon:  'error'
+          })
         }
       });
   }
