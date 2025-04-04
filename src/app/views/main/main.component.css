@@ -6,7 +6,6 @@ body {
   border: 1px solid #223b96;
   width: 90%;
   height: 50px;
-  padding: 10px;
   border-radius: 20px;
   background-color: white;
   font-size: large;
@@ -81,8 +80,12 @@ body {
   }
   .help-icon {  
     transform: scale(0.7);
+    color: lightgrey;
   }
   mat-icon{
     vertical-align: middle;
+  }
+  .question-icon{
+    color: lightgrey;
   }
   

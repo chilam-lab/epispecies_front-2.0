@@ -33,7 +33,9 @@ export class MainComponent implements OnInit {
     this.dbService.getDisease('cve_enfermedad', 'enfermedad')
       .subscribe({
         next: (response) => {
-          this.sicknessList = response;
+          this.sicknessList = response.sort((a: { Enfermedad: string; }, b: { Enfermedad: string; }) => {
+            return a.Enfermedad.localeCompare(b.Enfermedad);
+          });
           console.log(JSON.stringify(this.sicknessList));
           Swal.fire({
             timer: 1100,
