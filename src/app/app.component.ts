@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import * as bootstrap from 'bootstrap';
+
 
 @Component({
   selector: 'app-root',
@@ -7,5 +9,12 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
+  ngAfterViewInit() {
+    setTimeout(() => {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map((tooltipTriggerEl) => {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });},100)
+  }
 }

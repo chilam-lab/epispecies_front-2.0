@@ -22,6 +22,8 @@ export class MainComponent implements OnInit {
   sicknessList: any[] = [];
   selectedSickness: string = "Selecciona una opción";
   groupList: any[] = [];
+  group1SelectDisable = true;
+  group2SelectDisable = true;
 
   ngOnInit() {
     Swal.fire({
@@ -54,7 +56,8 @@ export class MainComponent implements OnInit {
       });
   }
   onSicknessChange(sicknessNumber: SicknessKey) {
-    this.groupList = SicknessGroupList[sicknessNumber]
+    this.groupList = SicknessGroupList[sicknessNumber].sort((a, b) => a.localeCompare(b, 'es'));
+    this.group1SelectDisable = false;
   }
   
   showAndScrollToMap() {

@@ -88,4 +88,31 @@ body {
   .question-icon{
     color: lightgrey;
   }
-  
+  .card-class{
+    padding: 23px;
+    background-color: #f6f6f6;
+  } 
+  .head{
+    color: #8976ff;
+  }
+
+  .arrowBox{
+    position: relative;
+    width:220px;
+    background: #0085D1;
+    height:40px;
+    line-height: 40px;
+    margin-bottom:30px; 
+    text-align:center;
+    color:#fff;
+  }
+
+  .arrow-right:after{
+    content: "";
+    position: absolute;
+    right: -20px;
+    top: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid #0085D1; 
+}
