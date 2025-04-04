@@ -80,6 +80,9 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
   .help-icon {  
-    transform: scale(0.8);
+    transform: scale(0.7);
+  }
+  mat-icon{
+    vertical-align: middle;
   }
   

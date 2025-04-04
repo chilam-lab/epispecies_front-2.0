@@ -4,7 +4,7 @@
     <div class="row">
       <h2>Grupo principal:</h2>
       <div class="col-lg-4">
-        <label for="exampleColorInput" class="form-label">Seleccione una enfermedad</label>
+        <label for="exampleColorInput" class="form-label"><mat-icon>looks_one</mat-icon> Seleccione una enfermedad</label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
           [(ngModel)]="selectedSickness" (ngModelChange)="onSicknessChange($event)">
           <option disabled selected>Selecciona una opción</option>
@@ -14,7 +14,7 @@
         </select>
       </div>
       <div class="col-lg-4">
-        <label for="exampleColorInput" class="form-label">Seleccione<mat-icon class="help-icon">help_outline</mat-icon></label>
+        <label for="exampleColorInput" class="form-label"><mat-icon>looks_two</mat-icon> Seleccione<mat-icon class="help-icon">help_outline</mat-icon></label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
           <option disabled selected>Selecciona una opción</option>
           <ng-container *ngFor="let group of groupList">
@@ -25,7 +25,7 @@
           
       </div>
       <div class="col-lg-4 ">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
+        <label for="exampleColorInput" class="form-label"><mat-icon>looks_3</mat-icon> Seleccione<mat-icon class="help-icon">help_outline</mat-icon></label>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
           <option disabled selected>Selecciona una opción</option>
           <ng-container *ngFor="let group of groupList">
