@@ -2,8 +2,9 @@
   <h1>Modo</h1>
   <div class="container py-4">
     <div class="row">
-      <div class="col-md-12"><h2>Grupo principal:</h2></div>
-      
+      <div class="col-md-12">
+        <h2>Grupo principal:</h2>
+      </div>
     </div>
     <div class="row arrow-container">
       <div class="col-lg-4 mb-4 mb-md-0">
@@ -25,7 +26,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 mb-4 mb-md-0">
+      <div class="col-lg-4 mb-4 mb-md-0 fade-in-card" [hidden]="group1SelectDisable">
         <div class="arrow-card">
           <div class="card-class">
             <h1 class="head">02</h1>
@@ -36,10 +37,11 @@
                     title="Selección opcional">help_outline</mat-icon></a>
               </label>
               <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                [(ngModel)]="selectedGroupClass" (ngModelChange)="onGroupClassChange($event)"
                 [disabled]="group1SelectDisable">
                 <option disabled selected>Selecciona una opción</option>
                 <ng-container *ngFor="let group of groupList">
-                  <option>{{group}}</option>
+                  <option [value]="group">{{group}}</option>
                 </ng-container>
               </select>
             </div>
@@ -47,7 +49,7 @@
         </div>
       </div>
 
-      <div class="col-lg-4">
+      <div class="col-lg-4 fade-in-card" [hidden]="group2SelectDisable">
         <div class="arrow-card">
           <div class="card-class">
             <h1 class="head">03</h1>
@@ -58,10 +60,11 @@
                     title="Selección opcional">help_outline</mat-icon></a>
               </label>
               <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                [(ngModel)]="selectedCauseDeathClass" (ngModelChange)="onCauseDeathChange($event)"
                 [disabled]="group2SelectDisable">
                 <option disabled selected>Selecciona una opción</option>
                 <ng-container *ngFor="let group of groupList">
-                  <option>{{group}}</option>
+                  <option [value]="group">{{group}}</option>
                 </ng-container>
               </select>
             </div>
@@ -71,8 +74,6 @@
     </div>
   </div>
   <div class="container">
-    
-    <br>
     <div class="row">
       <h2>Segundo grupo:</h2>
       <div class="col-md-4">
@@ -93,124 +94,6 @@
           <option disabled selected>Selecciona una opción</option>
           <ng-container>
           </ng-container>
-        </select>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona una opción</option>
-          <option value="HOMBRE">Masculino</option>
-          <option value="MUJER">Femenino</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona una opción</option>
-          <option value="SI">Si</option>
-          <option value="NO">No</option>
-          <option value="SE IGNORA">Se Ignora</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona una opción</option>
-          <option value="SI">Si</option>
-          <option value="NO">No</option>
-          <option value="SE IGNORA">Se Ignora</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona una opción</option>
-          <option value="SI">Si</option>
-          <option value="NO">No</option>
-          <option value="SE IGNORA">Se Ignora</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona una opción</option>
-          <option value="SI">Si</option>
-          <option value="NO">No</option>
-          <option value="SE IGNORA">Se Ignora</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona una opción</option>
-          <option value="SI">Si</option>
-          <option value="NO">No</option>
-          <option value="SE IGNORA">Se Ignora</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona una opción</option>
-          <option value="SI">Si</option>
-          <option value="NO">No</option>
-          <option value="SE IGNORA">Se Ignora</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona una opción</option>
-          <option value="SI">Si</option>
-          <option value="NO">No</option>
-          <option value="SE IGNORA">Se Ignora</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona una opción</option>
-          <option value="SI">Si</option>
-          <option value="NO">No</option>
-          <option value="SE IGNORA">Se Ignora</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona una opción</option>
-          <option value="SI">Si</option>
-          <option value="NO">No</option>
-          <option value="SE IGNORA">Se Ignora</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="exampleColorInput" class="form-label">Seleccione</label>
-
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-          <ng-container>
-            <option disabled selected>Selecciona una opción</option>
-            <option value="NO APLICA">No Aplica</option>
-          </ng-container>
-          <ng-template #womanSelected>
-            <option disabled selected>Selecciona una opción</option>
-            <option value="SI">Si</option>
-            <option value="NO">No</option>
-            <option value="NO APLICA">No Aplica</option>
-            <option value="NO ESPECIFICADO">No Especificado</option>
-          </ng-template>
         </select>
       </div>
     </div>

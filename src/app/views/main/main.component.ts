@@ -7,13 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { SicknessGroupList, SicknessKey } from '../../models/sickness-group-list';
 import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-main',
   imports: [MapComponent, CommonModule, FormsModule, MatIconModule],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
-  standalone: true
+  standalone: true,
+
 })
 export class MainComponent implements OnInit {
   @ViewChild('mapContainer') mapContainer!: ElementRef;
@@ -21,6 +23,8 @@ export class MainComponent implements OnInit {
   constructor(private dbService: DiseaseDbService) { }
   sicknessList: any[] = [];
   selectedSickness: string = "Selecciona una opción";
+  selectedGroupClass: string = "Selecciona una opción";
+  selectedCauseDeathClass: string = "Selecciona una opción";
   groupList: any[] = [];
   group1SelectDisable = true;
   group2SelectDisable = true;
@@ -58,7 +62,17 @@ export class MainComponent implements OnInit {
   onSicknessChange(sicknessNumber: SicknessKey) {
     this.groupList = SicknessGroupList[sicknessNumber].sort((a, b) => a.localeCompare(b, 'es'));
     this.group1SelectDisable = false;
+    this.resetClassSelects();
   }
+
+  onGroupClassChange(event: any){
+    this.group2SelectDisable = false;
+  }
+
+  onCauseDeathChange(event: any){
+    //we don't need
+  }
+
   clearSubgroupSelection(event: any) {
     console.log(event)
   }
@@ -71,5 +85,9 @@ export class MainComponent implements OnInit {
         block: 'center' 
       });
     }, 700);
-  } 
+  }
+  resetClassSelects(){
+    this.selectedGroupClass = "Selecciona una opción";
+    this.selectedCauseDeathClass = "Selecciona una opción";
+  }
 }

@@ -105,7 +105,6 @@ body {
   position: relative;
   background-color: #f6f6f6;
   padding: 1.5rem 2rem 1.5rem 1.5rem;
-  
   height: 100%;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   transition: all 0.3s ease;
@@ -156,3 +155,28 @@ body {
   }
 }
 /*end arrow cards*/
+/* card animation */
+.fade-in-card {
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.fade-in-card[hidden] {
+  display: block !important;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transform: translateX(-20px);
+  pointer-events: none;
+}
+
+.col-lg-4:has(+ .col-lg-4[hidden]) .arrow-card::after {
+  opacity: 0;
+}
+
+@media (max-width: 992px) {
+  .fade-in-card[hidden] {
+    transform: translateY(-20px);
+  }
+}
+/* end card animation */
+
