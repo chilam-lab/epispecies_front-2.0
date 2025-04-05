@@ -1,0 +1,12 @@
+footer p.copyright{
+  font-size: .9em;
+  margin: 0 auto;
+  width: 75%;
+} 
+footer{
+  background-color: #dcdcdc; 
+  text-align: center;
+  color: #fff;
+  font-size: small;
+  padding: 1rem;
+}

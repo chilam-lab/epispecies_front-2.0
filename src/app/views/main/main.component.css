@@ -1,12 +1,21 @@
+:root{
+  --header-blue: #223b96;
+  --header-purple:#7c61ff;
+}
+
 body {
     min-height: 100%;
   }
-  
+
+  .cards-back {
+    background-color: #f6f7ff;
+  }
+
   select {
   border: 1px solid #223b96;
   width: 95%;
   height: 50px;
-  border-radius: 15px;
+  border-radius: 20px;
   background-color: white;
   font-size: large;
   color: #223b96;
@@ -21,13 +30,17 @@ body {
   text-align: center;
   color: #223b96;
   }
+
+  h3{
+    color: #6a6a6a;
+  }
   
   .borderedButton {
   border: 1px solid #7c61ff;
   width: 100%;
   height: 45px;
-  border-radius: 10px;
-  background-color: #f6f7ff;
+  border-radius: 20px;
+  background-color: white;
   font-size: large;
   color: #7c61ff;
   margin-top: 20px;
@@ -44,6 +57,7 @@ body {
   .btn-text-end{
     text-align: end;
     margin-right: 5%;
+    color: #a0a6bd;
   }
 
   .jumbotron {
@@ -100,11 +114,8 @@ body {
   }
   .card-class{
     padding-top: 12px;
-    background-color: #f6f6f6;
+    background-color: white;
   } 
-  .head{
-    color: #8976ff;
-  }
 
 /* arrow cards*/
 .arrow-container {
@@ -113,7 +124,8 @@ body {
 
 .arrow-card {
   position: relative;
-  background-color: #f6f6f6;
+  border-radius: 15px;
+  background-color: white;
   padding: 1rem 1.5rem 0.75rem 1.7rem;
   height: 100%;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
@@ -130,17 +142,17 @@ body {
   transform: translateY(-50%) rotate(45deg);
   width: 20px;
   height: 20px;
-  background-color: #f6f6f6;
-  border-radius: 2px;
+  background-color: white;
+  border-radius: 15px;
   z-index: 1;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
 }
 
 .arrow-card .head {
-  font-size: 1.75rem;
+  font-size: 1.9rem;
   font-weight: bold;
   margin-bottom: 1rem;
-  color: #8976ff;
+  color: #223b96;
 }
 
 .arrow-card .help-icon {

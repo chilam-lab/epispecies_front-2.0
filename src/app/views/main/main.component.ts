@@ -95,7 +95,9 @@ export class MainComponent implements OnInit {
 
   resetClassSelectBy(numberLevel: number){
     if(numberLevel == 2) {
-
+      this.selectedGroupClass = "Selecciona una opción";
+      this.selectedCauseDeathClass = "Selecciona una opción";
+      this.causeDeathSelectDisable = true;
     }
     if(numberLevel == 3){
       this.selectedCauseDeathClass = "Selecciona una opción";
