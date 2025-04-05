@@ -61,8 +61,8 @@ export class MainComponent implements OnInit {
   }
   onSicknessChange(sicknessNumber: SicknessKey) {
     this.groupList = SicknessGroupList[sicknessNumber].sort((a, b) => a.localeCompare(b, 'es'));
-    this.group1SelectDisable = false;
     this.resetClassSelects();
+    this.group1SelectDisable = false;
   }
 
   onGroupClassChange(event: any){
@@ -89,5 +89,7 @@ export class MainComponent implements OnInit {
   resetClassSelects(){
     this.selectedGroupClass = "Selecciona una opción";
     this.selectedCauseDeathClass = "Selecciona una opción";
+    this.group1SelectDisable = true;
+    this.group2SelectDisable = true;
   }
 }
