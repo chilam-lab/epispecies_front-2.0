@@ -89,30 +89,70 @@ body {
     color: lightgrey;
   }
   .card-class{
-    padding: 23px;
+    padding-top: 20px;
     background-color: #f6f6f6;
   } 
   .head{
     color: #8976ff;
   }
 
-  .arrowBox{
-    position: relative;
-    width:220px;
-    background: #0085D1;
-    height:40px;
-    line-height: 40px;
-    margin-bottom:30px; 
-    text-align:center;
-    color:#fff;
-  }
-
-  .arrow-right:after{
-    content: "";
-    position: absolute;
-    right: -20px;
-    top: 0;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-left: 20px solid #0085D1; 
+/* arrow cards*/
+.arrow-container {
+  padding: 1.5rem;
 }
+
+.arrow-card {
+  position: relative;
+  background-color: #f6f6f6;
+  padding: 1.5rem 2rem 1.5rem 1.5rem;
+  
+  height: 100%;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: all 0.3s ease;
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 50%, calc(100% - 20px) 100%, 0 100%);
+}
+
+/* Soft arrow shape for connection between cards */
+.arrow-card:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  transform: translateY(-50%) rotate(45deg);
+  width: 20px;
+  height: 20px;
+  background-color: #f6f6f6;
+  border-radius: 2px;
+  z-index: 1;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+
+.arrow-card .head {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #8976ff;
+}
+
+.arrow-card .help-icon {
+  cursor: pointer;
+}
+
+@media (max-width: 992px) {
+  .arrow-card {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px));
+    padding-bottom: 2rem;
+  }
+  
+  .arrow-card:not(:last-child)::after {
+    top: auto;
+    right: 50%;
+    bottom: -10px;
+    transform: translateX(50%) rotate(45deg);
+  }
+  
+  .arrow-card:not(:last-child) {
+    margin-bottom: 1.5rem;
+  }
+}
+/*end arrow cards*/

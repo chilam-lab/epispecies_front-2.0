@@ -59,6 +59,9 @@ export class MainComponent implements OnInit {
     this.groupList = SicknessGroupList[sicknessNumber].sort((a, b) => a.localeCompare(b, 'es'));
     this.group1SelectDisable = false;
   }
+  clearSubgroupSelection(event: any) {
+    console.log(event)
+  }
   
   showAndScrollToMap() {
     this.mapContainer.nativeElement.classList.add('visible');
