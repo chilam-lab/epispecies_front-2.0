@@ -4,15 +4,14 @@ body {
   
   select {
   border: 1px solid #223b96;
-  width: 90%;
+  width: 95%;
   height: 50px;
-  border-radius: 20px;
+  border-radius: 15px;
   background-color: white;
   font-size: large;
   color: #223b96;
-  margin-bottom: 40px !important;
-  margin-left: 5%;
   }
+
   select:hover {
   background-color: #223b96;
   color: white;
@@ -20,28 +19,33 @@ body {
   
   h1 {
   text-align: center;
-  margin-bottom: 50px;
   color: #223b96;
   }
   
   .borderedButton {
   border: 1px solid #7c61ff;
   width: 100%;
-  height: 40px;
-  border-radius: 15px;
+  height: 45px;
+  border-radius: 10px;
   background-color: #f6f7ff;
   font-size: large;
   color: #7c61ff;
   margin-top: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+
   }
   
   .borderedButton:hover {
   background-color: #7c61ff;
   color: white;
   }
-  label{
-  margin-left: 5%;
+
+  .btn-text-end{
+    text-align: end;
+    margin-right: 5%;
   }
+
   .jumbotron {
     background-color: #fff;
     width: 95%;
@@ -84,12 +88,18 @@ body {
   }
   mat-icon{
     vertical-align: middle;
+    cursor: pointer;
   }
+  
+  .simulating_icon{
+    height: 26px;
+  }
+
   .question-icon{
     color: lightgrey;
   }
   .card-class{
-    padding-top: 20px;
+    padding-top: 12px;
     background-color: #f6f6f6;
   } 
   .head{
@@ -98,13 +108,13 @@ body {
 
 /* arrow cards*/
 .arrow-container {
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .arrow-card {
   position: relative;
   background-color: #f6f6f6;
-  padding: 1.5rem 2rem 1.5rem 1.5rem;
+  padding: 1rem 1.5rem 0.75rem 1.7rem;
   height: 100%;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   transition: all 0.3s ease;

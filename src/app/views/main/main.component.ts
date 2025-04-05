@@ -26,8 +26,8 @@ export class MainComponent implements OnInit {
   selectedGroupClass: string = "Selecciona una opción";
   selectedCauseDeathClass: string = "Selecciona una opción";
   groupList: any[] = [];
-  group1SelectDisable = true;
-  group2SelectDisable = true;
+  groupSelectDisable = true;
+  causeDeathSelectDisable = true;
 
   ngOnInit() {
     Swal.fire({
@@ -61,12 +61,12 @@ export class MainComponent implements OnInit {
   }
   onSicknessChange(sicknessNumber: SicknessKey) {
     this.groupList = SicknessGroupList[sicknessNumber].sort((a, b) => a.localeCompare(b, 'es'));
-    this.resetClassSelects();
-    this.group1SelectDisable = false;
+    this.resetAllClassSelects();
+    this.groupSelectDisable = false;
   }
 
   onGroupClassChange(event: any){
-    this.group2SelectDisable = false;
+    this.causeDeathSelectDisable = false;
   }
 
   onCauseDeathChange(event: any){
@@ -86,10 +86,19 @@ export class MainComponent implements OnInit {
       });
     }, 700);
   }
-  resetClassSelects(){
+  resetAllClassSelects(){
     this.selectedGroupClass = "Selecciona una opción";
     this.selectedCauseDeathClass = "Selecciona una opción";
-    this.group1SelectDisable = true;
-    this.group2SelectDisable = true;
+    this.groupSelectDisable = true;
+    this.causeDeathSelectDisable = true;
+  }
+
+  resetClassSelectBy(numberLevel: number){
+    if(numberLevel == 2) {
+
+    }
+    if(numberLevel == 3){
+      this.selectedCauseDeathClass = "Selecciona una opción";
+    } 
   }
 }
