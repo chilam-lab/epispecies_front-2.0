@@ -112,10 +112,6 @@
             <option disabled selected>Selecciona una opción</option>
           </select>
         </div>
-
-
-
-
       </div>
       <div class="col-md-4">
         <div class="second_selection">
@@ -142,13 +138,26 @@
       </div>
     </div>
   </div><br><br>
-  <!-- Updated HTML structure -->
 <div class="container-fluid p-0 map-container hidden" #mapContainer>
   <div class="row select-row">
-    <div class="col-12 d-flex justify-content-center my-3">
+    <div class="col-3 d-flex justify-content-center my-3">
       <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-        <option disabled selected>Selecciona una opción</option>
+        <option disabled selected>Selecciona Estado</option>
       </select>
+    </div>
+    <div class="col-3 d-flex justify-content-center my-3">
+      <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+        <option disabled selected>Selecciona Municipio</option>
+      </select>
+    </div>
+    <div class="col-3 d-flex justify-content-center my-3">
+      <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+        <option disabled selected>Selecciona Metropli</option>
+      </select>
+    </div>
+    <div class="col-3 d-flex justify-content-center my-3">
+      
+      <button class="updateButton">Actualizar</button>
     </div>
   </div>
   <div class="row row-map">
@@ -170,7 +179,6 @@
         <hr class="my-4">
         <div class="row">
           <div class="sideTable">
-            <!-- class="col-md-10 offset-md-1"> -->
             <table class="table table-sm table-hover">
               <thead>
                 <tr>
