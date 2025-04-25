@@ -176,22 +176,73 @@
               <h3>Nacional</h3>
               <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <a class="nav-link active" [ngClass]="{'active': activeTabInMap === 'tab1'}" (click)="setActiveTabInMap('tab1')" aria-current="page">Actualizar</a>
+                  <a class="nav-link active" [ngClass]="{'active': activeTabInMap === 'tab1'}"
+                    (click)="setActiveTabInMap('tab1')" aria-current="page">Actualizar</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" [ngClass]="{'active': activeTabInMap === 'tab2'}" (click)="setActiveTabInMap('tab2')">Datos</a>
+                  <a class="nav-link" [ngClass]="{'active': activeTabInMap === 'tab2'}"
+                    (click)="setActiveTabInMap('tab2')">Datos</a>
                 </li>
               </ul>
             </div>
           </div>
-          <hr class="my-4">
-          <ng-container>
+          <ng-container *ngIf="activeTabInMap === 'tab1'; else dataTab">
+            <div class="container-fluid">
+              <div class="row">
+                <h3>Segundo grupo</h3>
+                <div class="col-md-12">
+                  <div class="second_selection">
+                    <div class="second_selection_icon">
+                      <div class="icon_circle">
+                        <mat-icon>date_range</mat-icon>
+                      </div>
+                    </div>
+                    <label for="exampleColorInput" class="form-label">Edad </label>
+                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                      <option disabled selected>Selecciona una opción</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="second_selection">
+                    <div class="second_selection_icon">
+                      <div class="icon_circle">
+                        <mat-icon>person</mat-icon>
+                      </div>
+                    </div>
+                    <label for="exampleColorInput" class="form-label">Sexo</label>
+                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                      <option disabled selected>Selecciona una opción</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="second_selection">
+                    <div class="second_selection_icon">
+                      <div class="icon_circle">
+                        <mat-icon>event</mat-icon>
+                      </div>
+                    </div>
+                    <label for="exampleColorInput" class="form-label">Año</label>
+                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                      <option disabled selected>Selecciona una opción</option>
+                      <ng-container>
+                      </ng-container>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
 
           </ng-container>
-          <ng-template>
-
+          <ng-template #dataTab>
+            no
           </ng-template>
-          
+
           <div class="row">
             hola
           </div>
