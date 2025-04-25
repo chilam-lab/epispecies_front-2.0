@@ -187,9 +187,8 @@
             </div>
           </div>
           <ng-container *ngIf="activeTabInMap === 'tab1'; else dataTab">
-            <div class="container-fluid">
+            <div class="container-fluid updateTab">
               <div class="row">
-                <h3>Segundo grupo</h3>
                 <div class="col-md-12">
                   <div class="second_selection">
                     <div class="second_selection_icon">
@@ -240,15 +239,9 @@
 
           </ng-container>
           <ng-template #dataTab>
-            no
+            no data 
           </ng-template>
 
-          <div class="row">
-            hola
-          </div>
-          <div class="row">
-            hola
-          </div>
           <div class="row">
             <button id="boton_detalles" style="margin-bottom:15%" class="borderedButton" hidden>Ver información
               detallada</button>

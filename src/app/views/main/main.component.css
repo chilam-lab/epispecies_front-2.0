@@ -87,10 +87,11 @@ body {
   .jumbotron {
     background-color: #fff;
     width: 95%;
-    height: 90%;
+    height: 100%;
     margin-left: 3%;
     border-radius: 15px;
     padding: 5%;
+    overflow-y: scroll;
   }
   
   .jumbotron h6{
@@ -98,6 +99,11 @@ body {
   }
   .row-map{
     height: calc(100vh - 75px);
+  }
+  
+  .updateTab{
+    overflow-y: scroll !important;
+    height: 500px;
   }
   
   .row_prediction{
