@@ -28,6 +28,7 @@ export class MainComponent implements OnInit {
   groupList: any[] = [];
   groupSelectDisable = true;
   causeDeathSelectDisable = true;
+  activeTabInMap: string = 'tab1';
 
   ngOnInit() {
     Swal.fire({
@@ -110,5 +111,8 @@ export class MainComponent implements OnInit {
     if(level == 3){
       this.causeDeathSelectDisable = false;
     }
+  }
+  setActiveTabInMap(tab: string) {
+    this.activeTabInMap = tab;
   }
 }

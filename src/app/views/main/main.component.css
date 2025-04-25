@@ -332,3 +332,7 @@ app-map {
     height: 350px;
   }
 }
+
+.nav-item{
+  width: 50%;
+}
