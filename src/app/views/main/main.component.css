@@ -11,6 +11,7 @@ body {
 
   .cards-back {
     background-color: #f6f7ff;
+    height: calc(100vh - 240px);
   }
 
   select {
@@ -159,13 +160,11 @@ body {
   /* Styling for the card container */
   .second_selection {
     position: relative;
-    padding: 20px;
+    padding: 15px;
     padding-top: 10px; 
     background-color: #ffffff; 
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    margin-top: 30px; 
+    margin-top: 25px; 
     overflow: visible;
   }
   
@@ -175,6 +174,10 @@ body {
     margin-bottom: 15px;
     display: flex;
     justify-content: center; 
+  }
+  .color-icon{
+    color: #7c61ff;
+    font-size: 24px;
   }
   
   .icon_circle {
