@@ -71,6 +71,18 @@ body {
     margin-right: 5%;
     color: #a0a6bd;
   }
+  .circle-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #7c61ff;
+      color: white;
+      display: inline-flex; 
+      margin-left: 10px;
+    }
 
   .jumbotron {
     background-color: #fff;

@@ -25,7 +25,11 @@
                     <option [value]="sickness['CVE_Enfermedad']">{{sickness["Enfermedad"]}}</option>
                   </ng-container>
                 </select>
-                <div class="simulating_icon"></div>
+                <div class="btn-text-end">
+                  <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                  title="La siguiente seleción es opcional" (click)="showNextLevel(2)">arrow_forward</mat-icon>
+                </div>
+                
               </div>
             </div>
           </div>
@@ -50,6 +54,8 @@
                 </select>
                 <div class="btn-text-end">
                   <mat-icon (click)="resetClassSelectBy(2)">delete</mat-icon>
+                  <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                  title="La siguiente seleción es opcional" (click)="showNextLevel(3)">arrow_forward</mat-icon>
                 </div>
               </div>
             </div>
@@ -174,6 +180,12 @@
                 <td style="padding-left: 20%; width:100%">Top 10 de la Región</td>
               </tr>
             </table>
+            <nav class="nav nav-pills flex-column flex-sm-row">
+              <a class="flex-sm-fill text-sm-center nav-link active" aria-current="page" href="#">Active</a>
+              <a class="flex-sm-fill text-sm-center nav-link" href="#">Longer nav link</a>
+              <a class="flex-sm-fill text-sm-center nav-link" href="#">Link</a>
+              <a class="flex-sm-fill text-sm-center nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </nav>
           </div>
         </div>
         <hr class="my-4">

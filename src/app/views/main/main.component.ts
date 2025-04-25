@@ -62,11 +62,9 @@ export class MainComponent implements OnInit {
   onSicknessChange(sicknessNumber: SicknessKey) {
     this.groupList = SicknessGroupList[sicknessNumber].sort((a, b) => a.localeCompare(b, 'es'));
     this.resetAllClassSelects();
-    this.groupSelectDisable = false;
   }
 
   onGroupClassChange(event: any){
-    this.causeDeathSelectDisable = false;
   }
 
   onCauseDeathChange(event: any){
@@ -97,10 +95,20 @@ export class MainComponent implements OnInit {
     if(numberLevel == 2) {
       this.selectedGroupClass = "Selecciona una opción";
       this.selectedCauseDeathClass = "Selecciona una opción";
+      this.groupSelectDisable = true;
       this.causeDeathSelectDisable = true;
     }
     if(numberLevel == 3){
       this.selectedCauseDeathClass = "Selecciona una opción";
+      this.causeDeathSelectDisable = true;
     } 
+  }
+  showNextLevel(level: number){
+    if(level === 2){
+      this.groupSelectDisable = false;
+    }
+    if(level == 3){
+      this.causeDeathSelectDisable = false;
+    }
   }
 }
