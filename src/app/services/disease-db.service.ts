@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { ApiResponse } from '../models/cve_list';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class DiseaseDbService {
   constructor(private http: HttpClient) { }
 
   getDisease(column1: string, column2: string): Observable<any> {
-    let fullUrl = this.apiUrl + 'search/unique-pairs';
+    let fullUrl = this.apiUrl + 'unique_columns';
     const params = new HttpParams()
       .set('column1', column1)
       .set('column2', column2);
@@ -21,6 +23,16 @@ export class DiseaseDbService {
       .pipe(
         catchError(this.handleError)
       );
+  }
+
+  getUniqueColumns(requests: string[][]): Observable<ApiResponse[]> {
+    let listOfRequests:Observable<ApiResponse>[] = [];
+    let fullUrl = this.apiUrl + 'unique_columns';
+    requests.map(columns =>{
+      let request1: Observable<ApiResponse> = this.http.get<ApiResponse>(`${fullUrl}?column1=${columns[0]}&column2=${columns[1]}`);
+      listOfRequests.push(request1)
+    })
+    return forkJoin(listOfRequests);
   }
 
   private handleError(error: HttpErrorResponse) {

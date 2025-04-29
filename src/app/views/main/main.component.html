@@ -22,14 +22,13 @@
                   [(ngModel)]="selectedSickness" (ngModelChange)="onSicknessChange($event)">
                   <option disabled selected>Selecciona una opción</option>
                   <ng-container *ngFor="let sickness of sicknessList">
-                    <option [value]="sickness['CVE_Enfermedad']">{{sickness["Enfermedad"]}}</option>
+                    <option [value]="sickness[0]">{{sickness[1]}}</option>
                   </ng-container>
                 </select>
                 <div class="btn-text-end">
                   <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="La siguiente seleción es opcional" (click)="showNextLevel(2)">arrow_forward</mat-icon>
                 </div>
-
               </div>
             </div>
           </div>
@@ -143,7 +142,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="second_selection">
-                    <label for="exampleColorInput" class="form-label"> <mat-icon>date_range</mat-icon>Edad </label>
+                    <label for="exampleColorInput" class="form-label"> <mat-icon class="color-icon">date_range</mat-icon>Edad </label>
                     <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                       <option disabled selected>Selecciona una opción</option>
                     </select>
@@ -153,7 +152,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="second_selection">
-                    <label for="exampleColorInput" class="form-label"> <mat-icon>person</mat-icon>Sexo</label>
+                    <label for="exampleColorInput" class="form-label"> <mat-icon class="color-icon">person</mat-icon>Sexo</label>
                     <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                       <option disabled selected>Selecciona una opción</option>
                     </select>
