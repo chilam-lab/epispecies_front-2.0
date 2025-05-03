@@ -1,15 +1,16 @@
 <body><br>
   <div class="container-fluid">
-    <section class="position-relative d-flex flex-column align-items-center justify-content-center overflow-hidden bg-light">
+    <div class="border_radius">
+      <h1>Modo</h1>
+    </div>
+    <section class="position-relative d-flex flex-column align-items-center justify-content-center overflow-scroll bg-light">
       <div class="transition-container w-75"
       [ngStyle]="{
         'opacity': page1Opacity,
         'transform': page1Transform,
         'transition': 'all 0.3s ease-out'
       }">
-      <div class="border_radius">
-        <h1>Modo</h1>
-      </div>
+      
       <div class="container-fluid cards-back">
         <div class="container py-4">
           <div class="row">
@@ -246,7 +247,6 @@
                   </div>
                 </div>
               </div>
-              
             </div>
             <br>
             <div class="row">
@@ -256,7 +256,6 @@
                 </div>
               </div>
             </div>
-
           </ng-container>
           <ng-template #dataTab>
             no data 
