@@ -5,8 +5,8 @@
 }
 
 body {
-    min-height: 100%;
     background-color: #f6f7ff;
+    min-height: calc(100vh - 50px);
   }
 
   .cards-back {
