@@ -343,3 +343,90 @@ app-map {
 .nav-item{
   width: 50%;
 }
+
+.head {
+  font-weight: bold;
+  text-align: center;
+}
+
+.btn-text-end {
+  text-align: right;
+}
+
+.circle-icon {
+  cursor: pointer;
+}
+
+.select-container {
+  background-color: #FFFACD; /* Light yellow background */
+  border-radius: 15px;
+}
+.smaller-select {
+  height: calc(1.75rem + 2px);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Adjust padding for the container */
+.select-container {
+  padding: 1.5rem;
+}
+
+/* Make label more compact */
+.smaller-select {
+  
+  font-size: 0.9rem;
+}
+
+.color-icon{
+  color: #7c61ff;
+  font-size: 24px;
+}
+
+.icon_circle_select {
+  position: absolute;
+  width: 80px; 
+  height: 66px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.icon_circle mat-icon {
+  color: #7c61ff;
+  font-size: 24px;
+}
+.circle_icon_select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #7c61ff;
+  color: white;
+  display: inline-flex; 
+  margin-left: 10px;
+}
+
+.circle-icon1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #7c61ff;
+  color: white;
+  display: inline-flex; 
+  margin-left: 10px;
+  font-size: 17px;
+}
