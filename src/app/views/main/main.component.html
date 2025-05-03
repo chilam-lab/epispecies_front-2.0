@@ -181,7 +181,7 @@
                     </select>
                     <div class="btn-text-end">
                       <mat-icon (click)="resetClassSelectBy(2)">delete</mat-icon>
-                      <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                      <mat-icon class="circle-icon1" data-bs-toggle="tooltip" data-bs-placement="top"
                         title="La siguiente seleción es opcional" (click)="showNextLevel(3)">arrow_forward</mat-icon>
                     </div>
                   </div>
@@ -208,41 +208,55 @@
                     </select>
                     <div class="btn-text-end">
                       <mat-icon (click)="resetClassSelectBy(2)">delete</mat-icon>
-                      <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                      <mat-icon class="circle-icon1" data-bs-toggle="tooltip" data-bs-placement="top"
                         title="La siguiente seleción es opcional" (click)="showNextLevel(3)">arrow_forward</mat-icon>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="second_selection">
-                    <label for="exampleColorInput" class="form-label"> <mat-icon class="color-icon">date_range</mat-icon>Edad </label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                      <option disabled selected>Selecciona una opción</option>
-                    </select>
-                  </div>
+              <div class="row align-items-center">
+                <div class="col-2">
+                  <h1 class="head mb-0"><mat-icon class="color-icon">date_range</mat-icon></h1>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="second_selection">
-                    <label for="exampleColorInput" class="form-label"> <mat-icon class="color-icon">person</mat-icon>Sexo</label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                      <option disabled selected>Selecciona una opción</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="second_selection">
-                    <label for="exampleColorInput" class="form-label"><mat-icon class="color-icon">event</mat-icon> Año
+                <div class="col-10">
+                  <div class="mb-3 select-container p-3">
+                    <label for="exampleColorInput" class="form-label d-flex align-items-center">
+                      Edad
                     </label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example">
                       <option disabled selected>Selecciona una opción</option>
-                      <ng-container>
-                      </ng-container>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row align-items-center">
+                <div class="col-2">
+                  <h1 class="head mb-0"><mat-icon class="color-icon">person</mat-icon></h1>
+                </div>
+                <div class="col-10">
+                  <div class="mb-3 select-container p-3">
+                    <label for="exampleColorInput" class="form-label d-flex align-items-center">
+                      Sexo
+                    </label>
+                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example">
+                      <option disabled selected>Selecciona una opción</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row align-items-center">
+                <div class="col-2">
+                  <h1 class="head mb-0"><mat-icon class="color-icon">event</mat-icon></h1>
+                </div>
+                <div class="col-10">
+                  <div class="mb-3 select-container p-3">
+                    <label for="exampleColorInput" class="form-label d-flex align-items-center">
+                      Año
+                    </label>
+                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example">
+                      <option disabled selected>Selecciona una opción</option>
                     </select>
                   </div>
                 </div>
