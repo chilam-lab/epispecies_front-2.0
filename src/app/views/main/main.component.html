@@ -99,28 +99,7 @@
     </div>
   </div><br><br>
   <div class="container-fluid p-0 map-container hidden" #mapContainer>
-    <div class="row select-row">
-      <div class="col-3 d-flex justify-content-center my-3">
-        <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona Estado</option>
-        </select>
-      </div>
-      <div class="col-3 d-flex justify-content-center my-3">
-        <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona Municipio</option>
-        </select>
-      </div>
-      <div class="col-3 d-flex justify-content-center my-3">
-        <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-          <option disabled selected>Selecciona Metropli</option>
-        </select>
-      </div>
-      <div class="col-3 d-flex justify-content-center my-3">
-
-        <button class="updateButton">Actualizar</button>
-      </div>
-    </div>
-    <div class="row row-map">
+    <div class="row">
       <div class="col-lg-4 p-0 mb-3">
         <div class="jumbotron">
           <div class="row">
@@ -195,7 +174,33 @@
         </div>
       </div>
       <div class="col-lg-8 p-0 map-section">
-        <app-map></app-map>
+        <div class="row">
+          <div class="row select-row">
+            <div class="col-3 d-flex justify-content-center my-3">
+              <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+                <option disabled selected>Selecciona Estado</option>
+              </select>
+            </div>
+            <div class="col-3 d-flex justify-content-center my-3">
+              <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+                <option disabled selected>Selecciona Municipio</option>
+              </select>
+            </div>
+            <div class="col-3 d-flex justify-content-center my-3">
+              <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+                <option disabled selected>Selecciona Metropli</option>
+              </select>
+            </div>
+            <div class="col-3 d-flex justify-content-center my-3">
+      
+              <button class="updateButton">Actualizar</button>
+            </div>
+          </div>
+        </div>
+        <div class="row row-map">
+          <app-map></app-map>
+        </div>
+        
       </div>
     </div>
   </div>

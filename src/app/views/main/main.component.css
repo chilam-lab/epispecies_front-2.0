@@ -87,11 +87,9 @@ body {
 
   .jumbotron {
     background-color: #fff;
-    width: 95%;
+    width: 96%;
     height: 100%;
     margin-left: 3%;
-    border-radius: 15px;
-    padding: 5%;
     overflow-y: scroll;
   }
   
