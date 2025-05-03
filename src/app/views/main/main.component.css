@@ -104,7 +104,7 @@ body {
   
   .updateTab{
     overflow-y: scroll !important;
-    height: calc(100vh - 185px);
+    height: calc(100vh - 215px);
   }
   
   .row_prediction{
@@ -349,6 +349,8 @@ app-map {
 .head {
   font-weight: bold;
   text-align: center;
+  color: #223b96;
+
 }
 
 .btn-text-end {
@@ -360,7 +362,7 @@ app-map {
 }
 
 .select-container {
-  background-color: #FFFACD; /* Light yellow background */
+  background-color: #f6f7fe; /* Light yellow background */
   border-radius: 15px;
 }
 .smaller-select {
@@ -383,7 +385,7 @@ app-map {
 }
 
 .color-icon{
-  color: #7c61ff;
+  color: #223b96;
   font-size: 24px;
 }
 
@@ -431,4 +433,8 @@ app-map {
   display: inline-flex; 
   margin-left: 10px;
   font-size: 17px;
+}
+.nav-link{
+  font-size: xx-large;
+  cursor: pointer;
 }

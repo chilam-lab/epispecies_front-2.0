@@ -130,17 +130,13 @@
                 </li>
               </ul>
             </div>
-          </div>
+          </div><br><br>
           <ng-container *ngIf="activeTabInMap === 'tab1'; else dataTab">
-            <br>
             <div class="container-fluid updateTab">
               <div class="row align-items-center">
-                <!-- Header (30% width) -->
                 <div class="col-2">
-                  <h1 class="head mb-0">01</h1>
+                  <h3 class="head mb-0">01</h3>
                 </div>
-                
-                <!-- Select (70% width) -->
                 <div class="col-10">
                   <div class="mb-3 select-container p-3">
                     <label for="group1" class="form-label d-flex align-items-center">
@@ -160,23 +156,21 @@
                   </div>
                 </div>
               </div>
-              <div class="row align-items-center">
-                <!-- Header (30% width) -->
+              <div class="row align-items-center" [hidden]="groupSelectDisable">
                 <div class="col-2">
-                  <h1 class="head mb-0">01</h1>
+                  <h2 class="head mb-0">02</h2>
                 </div>
-                
-                <!-- Select (70% width) -->
                 <div class="col-10">
                   <div class="mb-3 select-container p-3">
                     <label for="group1" class="form-label d-flex align-items-center">
                       Seleccione una enfermedad
                     </label>
-                    <select class="form-select mb-2 smaller-select" aria-label="Select disease"
-                      [(ngModel)]="selectedSickness" (ngModelChange)="onSicknessChange($event)">
+                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example"
+                      [(ngModel)]="selectedGroupClass" (ngModelChange)="onGroupClassChange($event)"
+                      [disabled]="groupSelectDisable">
                       <option disabled selected>Selecciona una opción</option>
-                      <ng-container *ngFor="let sickness of sicknessList">
-                        <option [value]="sickness[0]">{{sickness[1]}}</option>
+                      <ng-container *ngFor="let group of groupList">
+                        <option [value]="group">{{group}}</option>
                       </ng-container>
                     </select>
                     <div class="btn-text-end">
@@ -187,23 +181,21 @@
                   </div>
                 </div>
               </div>
-              <div class="row align-items-center">
-                <!-- Header (30% width) -->
+              <div class="row align-items-center" [hidden]="causeDeathSelectDisable">
                 <div class="col-2">
-                  <h1 class="head mb-0">01</h1>
+                  <h3 class="head mb-0">03</h3>
                 </div>
-                
-                <!-- Select (70% width) -->
-                <div class="col-10">
+                                <div class="col-10">
                   <div class="mb-3 select-container p-3">
                     <label for="group1" class="form-label d-flex align-items-center">
                       Seleccione una enfermedad
                     </label>
-                    <select class="form-select mb-2 smaller-select" aria-label="Select disease"
-                      [(ngModel)]="selectedSickness" (ngModelChange)="onSicknessChange($event)">
+                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example"
+                      [(ngModel)]="selectedCauseDeathClass" (ngModelChange)="onCauseDeathChange($event)"
+                      [disabled]="causeDeathSelectDisable">
                       <option disabled selected>Selecciona una opción</option>
-                      <ng-container *ngFor="let sickness of sicknessList">
-                        <option [value]="sickness[0]">{{sickness[1]}}</option>
+                      <ng-container *ngFor="let group of groupList">
+                        <option [value]="group">{{group}}</option>
                       </ng-container>
                     </select>
                     <div class="btn-text-end">
