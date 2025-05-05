@@ -35,13 +35,34 @@ export class DiseaseDbService {
     return forkJoin(listOfRequests);
   }
 
+  getCauseDeathList(id_sickness: string, id_group: string): Observable<any> {
+    let fullUrl = this.apiUrl + 'get_third_class';
+    const params = new HttpParams()
+      .set('id_sick', id_sickness)
+      .set('id_second_class', id_group);
+
+    return this.http.get<any>(fullUrl, { params })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  getGroupList(id_sickness: string): Observable<any> {
+    let fullUrl = this.apiUrl + 'get_second_class';
+    const params = new HttpParams()
+      .set('id_sick', id_sickness);
+
+    return this.http.get<any>(fullUrl, { params })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred';
     if (error.error instanceof ErrorEvent) {
-      // Client-side error
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      // Server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(() => new Error(errorMessage));

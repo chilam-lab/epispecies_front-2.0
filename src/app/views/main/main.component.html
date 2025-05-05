@@ -3,115 +3,115 @@
     <div class="border_radius">
       <h1>Modo</h1>
     </div>
-    <section class="position-relative d-flex flex-column align-items-center justify-content-center overflow-scroll bg-light">
-      <div class="transition-container w-75"
-      [ngStyle]="{
+    <section
+      class="position-relative d-flex flex-column align-items-center justify-content-center overflow-scroll bg-light">
+      <div class="transition-container w-75" [ngStyle]="{
         'opacity': page1Opacity,
         'transform': page1Transform,
         'transition': 'all 0.3s ease-out'
       }">
-      
-      <div class="container-fluid cards-back">
-        <div class="container py-4">
-          <div class="row">
-            <div class="col-md-12">
-              <h3>Grupo principal</h3>
+
+        <div class="container-fluid cards-back">
+          <div class="container py-4">
+            <div class="row">
+              <div class="col-md-12">
+                <h3>Grupo principal</h3>
+              </div>
+            </div>
+            <div class="row arrow-container">
+              <div class="col-lg-4 mb-4 mb-md-0">
+                <div class="arrow-card">
+                  <div class="card-class">
+                    <h1 class="head">01</h1><br>
+                    <div class="mb-3">
+                      <label for="group1" class="form-label d-flex align-items-center">
+                        Seleccione una enfermedad
+                      </label>
+                      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        [(ngModel)]="selectedSickness" (ngModelChange)="onSicknessChange($event)">
+                        <option disabled selected>Selecciona una opción</option>
+                        <ng-container *ngFor="let sickness of sicknessList">
+                          <option [value]="sickness[0]">{{sickness[1]}}</option>
+                        </ng-container>
+                      </select>
+                      <div class="btn-text-end">
+                        <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                          title="La siguiente seleción es opcional" (click)="showNextLevel(2)">arrow_forward</mat-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 mb-4 mb-md-0 fade-in-card" [hidden]="groupSelectDisable">
+                <div class="arrow-card">
+                  <div class="card-class">
+                    <h1 class="head">02</h1><br>
+                    <div class="mb-3">
+                      <label for="group2" class="form-label d-flex align-items-center">
+                        Seleccione grupo
+                        <a><mat-icon class="help-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Selección opcional">help_outline</mat-icon></a>
+                      </label>
+                      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        [(ngModel)]="selectedGroupClass" (ngModelChange)="onGroupClassChange($event)"
+                        [disabled]="groupSelectDisable">
+                        <option disabled selected>Selecciona una opción</option>
+                        <ng-container *ngFor="let group of groupList">
+                          <option [value]="group[0]">{{group[1]}}</option>
+                        </ng-container>
+                      </select>
+                      <div class="btn-text-end">
+                        <mat-icon (click)="resetClassSelectBy(2)">delete</mat-icon>
+                        <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                          title="La siguiente seleción es opcional" (click)="showNextLevel(3)">arrow_forward</mat-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 fade-in-card" [hidden]="causeDeathSelectDisable">
+                <div class="arrow-card">
+                  <div class="card-class">
+                    <h1 class="head">03</h1><br>
+                    <div class="mb-3">
+                      <label for="group3" class="form-label d-flex align-items-center">
+                        Seleccione subgrupo
+                        <a><mat-icon class="help-icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Selección opcional">help_outline</mat-icon></a>
+                      </label>
+                      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        [(ngModel)]="selectedCauseDeathClass" (ngModelChange)="onCauseDeathChange($event)"
+                        [disabled]="causeDeathSelectDisable">
+                        <option disabled selected>Selecciona una opción</option>
+                        <ng-container *ngFor="let cause of listOfThirdClass">
+                          <option [value]="cause[0]">{{cause[1]}}</option>
+                        </ng-container>
+                      </select>
+                      <div class="btn-text-end">
+                        <mat-icon (click)="resetClassSelectBy(3)">delete</mat-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="row arrow-container">
-            <div class="col-lg-4 mb-4 mb-md-0">
-              <div class="arrow-card">
-                <div class="card-class">
-                  <h1 class="head">01</h1><br>
-                  <div class="mb-3">
-                    <label for="group1" class="form-label d-flex align-items-center">
-                      Seleccione una enfermedad
-                    </label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                      [(ngModel)]="selectedSickness" (ngModelChange)="onSicknessChange($event)">
-                      <option disabled selected>Selecciona una opción</option>
-                      <ng-container *ngFor="let sickness of sicknessList">
-                        <option [value]="sickness[0]">{{sickness[1]}}</option>
-                      </ng-container>
-                    </select>
-                    <div class="btn-text-end">
-                      <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
-                        title="La siguiente seleción es opcional" (click)="showNextLevel(2)">arrow_forward</mat-icon>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 mb-4 mb-md-0 fade-in-card" [hidden]="groupSelectDisable">
-              <div class="arrow-card">
-                <div class="card-class">
-                  <h1 class="head">02</h1><br>
-                  <div class="mb-3">
-                    <label for="group2" class="form-label d-flex align-items-center">
-                      Seleccione grupo
-                      <a><mat-icon class="help-icon" data-bs-toggle="tooltip" data-bs-placement="top"
-                          title="Selección opcional">help_outline</mat-icon></a>
-                    </label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                      [(ngModel)]="selectedGroupClass" (ngModelChange)="onGroupClassChange($event)"
-                      [disabled]="groupSelectDisable">
-                      <option disabled selected>Selecciona una opción</option>
-                      <ng-container *ngFor="let group of groupList">
-                        <option [value]="group">{{group}}</option>
-                      </ng-container>
-                    </select>
-                    <div class="btn-text-end">
-                      <mat-icon (click)="resetClassSelectBy(2)">delete</mat-icon>
-                      <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
-                        title="La siguiente seleción es opcional" (click)="showNextLevel(3)">arrow_forward</mat-icon>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 fade-in-card" [hidden]="causeDeathSelectDisable">
-              <div class="arrow-card">
-                <div class="card-class">
-                  <h1 class="head">03</h1><br>
-                  <div class="mb-3">
-                    <label for="group3" class="form-label d-flex align-items-center">
-                      Seleccione subgrupo
-                      <a><mat-icon class="help-icon" data-bs-toggle="tooltip" data-bs-placement="top"
-                          title="Selección opcional">help_outline</mat-icon></a>
-                    </label>
-                    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                      [(ngModel)]="selectedCauseDeathClass" (ngModelChange)="onCauseDeathChange($event)"
-                      [disabled]="causeDeathSelectDisable">
-                      <option disabled selected>Selecciona una opción</option>
-                      <ng-container *ngFor="let group of groupList">
-                        <option [value]="group">{{group}}</option>
-                      </ng-container>
-                    </select>
-                    <div class="btn-text-end">
-                      <mat-icon (click)="resetClassSelectBy(3)">delete</mat-icon>
-                    </div>
-                  </div>
-                </div>
+          <div class="row justify-content-md-center">
+            <div class="col col-md-12">
+              <div id="button_predecir">
+                <button class="borderedButton" (click)="showAndScrollToMap()">Predecir</button>
               </div>
             </div>
           </div>
         </div>
-        <div class="row justify-content-md-center">
-          <div class="col col-md-12">
-            <div id="button_predecir">
-              <button class="borderedButton" (click)="showAndScrollToMap()">Predecir</button>
-            </div>
-          </div>
-        </div>
+
       </div>
-      
-    </div> 
     </section>
   </div>
-  
+
 
   <div class="container">
-    
+
   </div><br><br>
   <div class="container-fluid p-0 map-container hidden" #mapContainer>
     <div class="row">
@@ -163,14 +163,14 @@
                 <div class="col-10">
                   <div class="mb-3 select-container p-3">
                     <label for="group1" class="form-label d-flex align-items-center">
-                      Seleccione una enfermedad
+                      Seleccione grupo
                     </label>
                     <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example"
                       [(ngModel)]="selectedGroupClass" (ngModelChange)="onGroupClassChange($event)"
                       [disabled]="groupSelectDisable">
                       <option disabled selected>Selecciona una opción</option>
                       <ng-container *ngFor="let group of groupList">
-                        <option [value]="group">{{group}}</option>
+                        <option [value]="group[0]">{{group[1]}}</option>
                       </ng-container>
                     </select>
                     <div class="btn-text-end">
@@ -185,7 +185,7 @@
                 <div class="col-2">
                   <h3 class="head mb-0">03</h3>
                 </div>
-                                <div class="col-10">
+                <div class="col-10">
                   <div class="mb-3 select-container p-3">
                     <label for="group1" class="form-label d-flex align-items-center">
                       Seleccione una enfermedad
@@ -194,8 +194,8 @@
                       [(ngModel)]="selectedCauseDeathClass" (ngModelChange)="onCauseDeathChange($event)"
                       [disabled]="causeDeathSelectDisable">
                       <option disabled selected>Selecciona una opción</option>
-                      <ng-container *ngFor="let group of groupList">
-                        <option [value]="group">{{group}}</option>
+                      <ng-container *ngFor="let cause of listOfThirdClass">
+                        <option [value]="cause[0]">{{cause[1]}}</option>
                       </ng-container>
                     </select>
                     <div class="btn-text-end">
@@ -221,7 +221,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="row align-items-center">
                 <div class="col-2">
                   <h1 class="head mb-0"><mat-icon class="color-icon">person</mat-icon></h1>
@@ -237,7 +236,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="row align-items-center">
                 <div class="col-2">
                   <h1 class="head mb-0"><mat-icon class="color-icon">event</mat-icon></h1>
@@ -264,7 +262,7 @@
             </div>
           </ng-container>
           <ng-template #dataTab>
-            no data 
+            no data
           </ng-template>
 
           <div class="row">
@@ -292,7 +290,7 @@
               </select>
             </div>
             <div class="col-3 d-flex justify-content-center my-3">
-      
+
               <button class="updateButton">Actualizar</button>
             </div>
           </div>
@@ -300,7 +298,6 @@
         <div class="row row-map">
           <app-map></app-map>
         </div>
-        
       </div>
     </div>
   </div>
