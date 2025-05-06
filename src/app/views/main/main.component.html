@@ -215,8 +215,12 @@
                     <label for="exampleColorInput" class="form-label d-flex align-items-center">
                       Edad
                     </label>
-                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example">
+                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example"
+                      [(ngModel)]="selectedAge">
                       <option disabled selected>Selecciona una opción</option>
+                      <ng-container *ngFor="let age of selectedAgeList">
+                        <option [value]="age">{{age}}</option>
+                      </ng-container>
                     </select>
                   </div>
                 </div>
@@ -230,8 +234,12 @@
                     <label for="exampleColorInput" class="form-label d-flex align-items-center">
                       Sexo
                     </label>
-                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example">
+                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example"
+                      [(ngModel)]="selectedGender">
                       <option disabled selected>Selecciona una opción</option>
+                      <ng-container *ngFor="let gender of selectedGenderList">
+                        <option [value]="gender">{{gender}}</option>
+                      </ng-container>
                     </select>
                   </div>
                 </div>
@@ -245,8 +253,12 @@
                     <label for="exampleColorInput" class="form-label d-flex align-items-center">
                       Año
                     </label>
-                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example">
+                    <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example"
+                      [(ngModel)]="selectedYear">
                       <option disabled selected>Selecciona una opción</option>
+                      <ng-container *ngFor="let year of selectedYearList">
+                        <option [value]="year">{{year}}</option>
+                      </ng-container>
                     </select>
                   </div>
                 </div>

@@ -35,6 +35,12 @@ export class MainComponent implements OnInit {
   activeTabInMap: string = 'tab1';
   listOfThirdClass = [];
   selectedSicknessID = 0;
+  selectedAge = "Selecciona una opción";
+  selectedGender = "Selecciona una opción";
+  selectedYear= "Selecciona una opción";
+  selectedAgeList = [];
+  selectedGenderList = [];
+  selectedYearList = [];
 
   ngOnInit() {
     Swal.fire({
@@ -61,6 +67,36 @@ export class MainComponent implements OnInit {
             title: 'Ocurrio un error al cargar los datos.',
             icon: 'error'
           })
+        }
+      });
+      this.dbService.getUniqueValues('Edad_gpo')
+      .subscribe({
+        next: (response) => {
+          this.selectedAgeList = response;
+          console.log(JSON.stringify(this.selectedAgeList));
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+        }
+      });
+      this.dbService.getUniqueValues('Sexo')
+      .subscribe({
+        next: (response) => {
+          this.selectedGenderList = response;
+          console.log(JSON.stringify(this.selectedGenderList));
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+        }
+      });
+      this.dbService.getUniqueValues('Anio')
+      .subscribe({
+        next: (response) => {
+          this.selectedYearList = response;
+          console.log(JSON.stringify(this.selectedYearList));
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
         }
       });
   }

@@ -57,6 +57,17 @@ export class DiseaseDbService {
         catchError(this.handleError)
       );
   }
+ 
+  getUniqueValues(column_name: string): Observable<any> {
+    let fullUrl = this.apiUrl + 'get_unique';
+    const params = new HttpParams()
+      .set('column_name', column_name);
+
+    return this.http.get<any>(fullUrl, { params })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred';
