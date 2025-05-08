@@ -69,31 +69,13 @@ export class MainComponent implements OnInit {
           })
         }
       });
-      this.dbService.getUniqueValues('Edad_gpo')
+      this.dbService.getUniqueValues(['Edad_gpo','Sexo','Anio'])
       .subscribe({
         next: (response) => {
-          this.selectedAgeList = response;
-          console.log(JSON.stringify(this.selectedAgeList));
-        },
-        error: (error) => {
-          console.error('Error fetching data:', error);
-        }
-      });
-      this.dbService.getUniqueValues('Sexo')
-      .subscribe({
-        next: (response) => {
-          this.selectedGenderList = response;
+          this.selectedAgeList = response[0];
+          this.selectedGenderList = response[1];
+          this.selectedYearList = response[2];
           console.log(JSON.stringify(this.selectedGenderList));
-        },
-        error: (error) => {
-          console.error('Error fetching data:', error);
-        }
-      });
-      this.dbService.getUniqueValues('Anio')
-      .subscribe({
-        next: (response) => {
-          this.selectedYearList = response;
-          console.log(JSON.stringify(this.selectedYearList));
         },
         error: (error) => {
           console.error('Error fetching data:', error);

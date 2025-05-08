@@ -58,15 +58,14 @@ export class DiseaseDbService {
       );
   }
  
-  getUniqueValues(column_name: string): Observable<any> {
-    let fullUrl = this.apiUrl + 'get_unique';
-    const params = new HttpParams()
-      .set('column_name', column_name);
-
-    return this.http.get<any>(fullUrl, { params })
-      .pipe(
-        catchError(this.handleError)
-      );
+  getUniqueValues(columns_name: string[]): Observable<any[]> {
+    let listOfRequests:Observable<any>[] = [];
+    let fullUrl = this.apiUrl + 'unique_columns';
+    columns_name.map(column =>{
+      let request: Observable<ApiResponse> = this.http.get<ApiResponse>(`${fullUrl}?column_name=${column[0]}`);
+      listOfRequests.push(request)
+    })
+    return forkJoin(listOfRequests);
   }
 
   private handleError(error: HttpErrorResponse) {
