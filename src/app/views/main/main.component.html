@@ -275,6 +275,14 @@
           </ng-container>
           <ng-template #dataTab>
             no data
+            <ng-container *ngFor="let item of countValuesInEdo| keyvalue">
+              <table>
+                <tr>
+                  <td>{{ item.key }} - </td>
+                  <td>{{ item.value }}</td>
+                </tr>
+              </table>
+            </ng-container>
           </ng-template>
 
           <div class="row">

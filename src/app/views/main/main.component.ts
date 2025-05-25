@@ -42,6 +42,9 @@ export class MainComponent implements OnInit {
   selectedGenderList = [];
   selectedYearList = [];
   TEST = [];
+  statesMun = []
+  countValuesInEdo:Record<number, number>  = {}
+  displayData:any=[];
 
   ngOnInit() {
     Swal.fire({
@@ -77,6 +80,27 @@ export class MainComponent implements OnInit {
           this.selectedGenderList = response[1];
           this.selectedYearList = response[2];
           console.log(JSON.stringify(this.selectedGenderList));
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+        }
+      });
+    this.dbService.getAllFrom('ESTADO_MUN')
+      .subscribe({
+        next: (response) => {
+          this.statesMun = response;
+          console.log(JSON.stringify(this.selectedGenderList));
+          const stateMap = new Map<number, string>();
+          this.statesMun.forEach(row => {
+            stateMap.set(row[0], row[1]);
+          });
+
+          // Convert counts to array for display
+          this.displayData = Object.entries(this.countValuesInEdo).map(([id, count]) => ({
+            id: Number(id),
+            name: stateMap.get(Number(id)) || `State ${id}`,
+            count
+          }));
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -174,10 +198,10 @@ export class MainComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.TEST = response
-          const resultado = this.countValuesInEighthPosition(response);
+          this.countValuesInEdo = this.countValuesInEighthPosition(response);
           console.log("Counts of values in the 8th position (1 to 32):");
           for (let i = 1; i <= 32; i++) {
-            console.log(`Value ${i}: ${resultado[i]}`);
+            console.log(`Value ${i}: ${this.countValuesInEdo[i]}`);
           }
           Swal.fire({
             timer: 1100,

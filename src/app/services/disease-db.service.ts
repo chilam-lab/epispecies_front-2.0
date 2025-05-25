@@ -70,6 +70,16 @@ export class DiseaseDbService {
         catchError(this.handleError)
       );
   }
+  getAllFrom(table: string): Observable<any> {
+    let fullUrl = this.apiUrl + 'get_all_by_table';
+    const params = new HttpParams()
+      .set('table', table)
+
+    return this.http.get<any>(fullUrl, { params })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred';
