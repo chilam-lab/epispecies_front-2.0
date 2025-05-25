@@ -59,6 +59,18 @@ export class DiseaseDbService {
     return forkJoin(listOfRequests);
   }
 
+  getDataByYear(year: string, search_id_first_class: string): Observable<any> {
+    let fullUrl = this.apiUrl + 'records_by_year_by_column';
+    const params = new HttpParams()
+      .set('year', year)
+      .set('search_id_first_class', search_id_first_class);
+
+    return this.http.get<any>(fullUrl, { params })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred';
     if (error.error instanceof ErrorEvent) {

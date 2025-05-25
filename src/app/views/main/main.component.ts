@@ -37,10 +37,11 @@ export class MainComponent implements OnInit {
   selectedSicknessID = 0;
   selectedAge = "Selecciona una opción";
   selectedGender = "Selecciona una opción";
-  selectedYear= "Selecciona una opción";
+  selectedYear = "Selecciona una opción";
   selectedAgeList = [];
   selectedGenderList = [];
   selectedYearList = [];
+  TEST = [];
 
   ngOnInit() {
     Swal.fire({
@@ -49,7 +50,7 @@ export class MainComponent implements OnInit {
       showConfirmButton: true,
     })
     Swal.showLoading();
-    this.dbService.getDisease('CVE_Enfermedad', 'Enfermedad','RAWDATA')//TODO
+    this.dbService.getDisease('CVE_Enfermedad', 'Enfermedad', 'RAWDATA')//TODO
       .subscribe({
         next: (response) => {
           this.sicknessList = response.sort((a: string[], b: string[]) => a[1].localeCompare(b[1]));
@@ -69,7 +70,7 @@ export class MainComponent implements OnInit {
           })
         }
       });
-      this.dbService.getUniqueValues(['Edad_gpo','Sexo','Anio'])
+    this.dbService.getUniqueValues(['Edad_gpo', 'Sexo', 'Anio'])
       .subscribe({
         next: (response) => {
           this.selectedAgeList = response[0];
@@ -162,6 +163,40 @@ export class MainComponent implements OnInit {
   onCauseDeathChange(event: any) {
     //we don't need
   }
+  onRunModel() {
+    Swal.fire({
+      title: 'Cargando datos...',
+      allowOutsideClick: false,
+      showConfirmButton: true,
+    })
+    Swal.showLoading();
+    this.dbService.getDataByYear("2019", this.selectedSicknessID.toString())
+      .subscribe({
+        next: (response) => {
+          this.TEST = response
+          const resultado = this.countValuesInEighthPosition(response);
+          console.log("Counts of values in the 8th position (1 to 32):");
+          for (let i = 1; i <= 32; i++) {
+            console.log(`Value ${i}: ${resultado[i]}`);
+          }
+          Swal.fire({
+            timer: 1100,
+            title: 'Datos cargados correctamente.',
+            icon: 'success'
+          })
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          Swal.fire({
+            timer: 1000,
+            title: 'Ocurrio un error al cargar los datos.',
+            icon: 'error'
+          })
+        }
+      });
+    
+    
+  }
 
   clearSubgroupSelection(event: any) {
     console.log(event)
@@ -206,4 +241,21 @@ export class MainComponent implements OnInit {
   setActiveTabInMap(tab: string) {
     this.activeTabInMap = tab;
   }
+  countValuesInEighthPosition(data: any[]): Record<number, number> {
+    // Initialize an object to store counts for values 1 to 32
+    const counts: Record<number, number> = {};
+    for (let i = 1; i <= 32; i++) {
+        counts[i] = 0;
+    }
+    console.log(counts)
+
+    data.map(row => {
+        const value = Number(row[3]); // Use index 7 for 8th position
+        if (value >= 1 && value <= 32) {
+            counts[value]++;
+        }
+    });
+
+    return counts;
+}
 }
