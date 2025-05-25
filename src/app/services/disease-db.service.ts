@@ -13,11 +13,12 @@ export class DiseaseDbService {
 
   constructor(private http: HttpClient) { }
 
-  getDisease(column1: string, column2: string): Observable<any> {
-    let fullUrl = this.apiUrl + 'unique_columns';
+  getDisease(column1: string, column2: string, table: string): Observable<any> {
+    let fullUrl = this.apiUrl + 'unique_pair_columns';
     const params = new HttpParams()
       .set('column1', column1)
-      .set('column2', column2);
+      .set('column2', column2)
+      .set('table', table);
 
     return this.http.get<any>(fullUrl, { params })
       .pipe(
@@ -25,21 +26,11 @@ export class DiseaseDbService {
       );
   }
 
-  getUniqueColumns(requests: string[][]): Observable<ApiResponse[]> {
-    let listOfRequests:Observable<ApiResponse>[] = [];
-    let fullUrl = this.apiUrl + 'unique_columns';
-    requests.map(columns =>{
-      let request1: Observable<ApiResponse> = this.http.get<ApiResponse>(`${fullUrl}?column1=${columns[0]}&column2=${columns[1]}`);
-      listOfRequests.push(request1)
-    })
-    return forkJoin(listOfRequests);
-  }
-
-  getCauseDeathList(id_sickness: string, id_group: string): Observable<any> {
-    let fullUrl = this.apiUrl + 'get_third_class';
+  getCauseDeathList(search_id_first_class: string, search_id_second_class: string): Observable<any> {
+    let fullUrl = this.apiUrl + 'get_third_level_class';
     const params = new HttpParams()
-      .set('id_sick', id_sickness)
-      .set('id_second_class', id_group);
+      .set('search_id_first_class', search_id_first_class)
+      .set('search_id_second_class', search_id_second_class);
 
     return this.http.get<any>(fullUrl, { params })
       .pipe(
@@ -47,10 +38,10 @@ export class DiseaseDbService {
       );
   }
 
-  getGroupList(id_sickness: string): Observable<any> {
-    let fullUrl = this.apiUrl + 'get_second_class';
+  getGroupList(search_id_first_class: string): Observable<any> {
+    let fullUrl = this.apiUrl + 'get_second_level_class';
     const params = new HttpParams()
-      .set('id_sick', id_sickness);
+      .set('search_id_first_class', search_id_first_class);
 
     return this.http.get<any>(fullUrl, { params })
       .pipe(
@@ -60,9 +51,9 @@ export class DiseaseDbService {
  
   getUniqueValues(columns_name: string[]): Observable<any[]> {
     let listOfRequests:Observable<any>[] = [];
-    let fullUrl = this.apiUrl + 'unique_columns';
+    let fullUrl = this.apiUrl + 'unique_values_by_column';
     columns_name.map(column =>{
-      let request: Observable<ApiResponse> = this.http.get<ApiResponse>(`${fullUrl}?column_name=${column[0]}`);
+      let request: Observable<ApiResponse> = this.http.get<ApiResponse>(`${fullUrl}?column_name=${column}&table=RAWDATA`);
       listOfRequests.push(request)
     })
     return forkJoin(listOfRequests);

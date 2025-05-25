@@ -49,7 +49,7 @@ export class MainComponent implements OnInit {
       showConfirmButton: true,
     })
     Swal.showLoading();
-    this.dbService.getDisease('CVE_Enfermedad', 'Enfermedad')
+    this.dbService.getDisease('CVE_Enfermedad', 'Enfermedad','RAWDATA')//TODO
       .subscribe({
         next: (response) => {
           this.sicknessList = response.sort((a: string[], b: string[]) => a[1].localeCompare(b[1]));
