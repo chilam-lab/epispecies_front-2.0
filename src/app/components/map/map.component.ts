@@ -88,7 +88,7 @@ export class MapComponent implements OnInit {
     //       })
     //     }
     //   });
-    const response = await firstValueFrom(this.mapService.getStates(18));
+    const response = await firstValueFrom(this.mapService.getStates(17));
     this.geoJson = response.json;
     console.log(this.geoJson);
     this.map = L.map('map').setView([11.87, -81.58], 5);
