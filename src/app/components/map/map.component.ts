@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
+import { MapService } from './mapService';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-map',
@@ -8,8 +10,9 @@ import * as L from 'leaflet';
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
-export class MapComponent {
+export class MapComponent implements OnInit {
   private map: L.Map | undefined;
+  constructor(private mapService:MapService){}
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -30,5 +33,29 @@ export class MapComponent {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
+  }
+  ngOnInit(){
+    this.mapService.getStates(18)//TODO
+      .subscribe({
+        next: (response) => {
+          console.log(JSON.stringify(response));
+          Swal.fire({
+            timer: 1100,
+            title: 'Datos cargados correctamente.',
+            icon: 'success'
+          })
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          Swal.fire({
+            timer: 1000,
+            title: 'Ocurrio un error al cargar los datos.',
+            icon: 'error'
+          })
+        }
+      });
+  }
+  onclick(){
+    
   }
 }
