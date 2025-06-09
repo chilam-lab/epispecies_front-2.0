@@ -43,9 +43,10 @@ export class MainComponent implements OnInit {
   selectedYearList = [];
   TEST = [];
   statesMun = []
-  countValuesInEdo:Record<number, number>  = {}
-  displayData:any=[];
-  stateList:any = [];
+  countValuesInEdo: Record<number, number> = {}
+  displayData: any = [];
+  stateList: any = [];
+  stateObject: any = {};
 
   ngOnInit() {
     Swal.fire({
@@ -95,39 +96,17 @@ export class MainComponent implements OnInit {
           console.log(JSON.stringify(this.selectedGenderList));
           this.stateList = [...new Set(response.map((item: any[]) => item[1]))].sort();
           console.log(this.stateList);
+          const stateMapping: { [key: number]: string } = {};
+          response.forEach((item: any) => {
+            stateMapping[item[0]] = item[1];
+          });
+
           console.log("😀")
-          const stateMap = new Map<number, string>();
-          this.statesMun.forEach(row => {
-            stateMap.set(row[0], row[1]);
-          });
-
-          // Convert counts to array for display
-          this.displayData = Object.entries(this.countValuesInEdo).map(([id, count]) => ({
-            id: Number(id),
-            name: stateMap.get(Number(id)) || `State ${id}`,
-            count
-          }));
-        },
-        error: (error) => {
-          console.error('Error fetching data:', error);
-        }
-      });
-    this.dbService.getAllFrom('ESTADO_MUN')
-      .subscribe({
-        next: (response) => {
-          this.statesMun = response;
-          console.log(JSON.stringify(this.selectedGenderList));
-          const stateMap = new Map<number, string>();
-          this.statesMun.forEach(row => {
-            stateMap.set(row[0], row[1]);
-          });
-
-          // Convert counts to array for display
-          this.displayData = Object.entries(this.countValuesInEdo).map(([id, count]) => ({
-            id: Number(id),
-            name: stateMap.get(Number(id)) || `State ${id}`,
-            count
-          }));
+          // Output the result
+          this.stateObject = stateMapping;
+          console.log(this.stateObject)
+          console.log(stateMapping);
+          console.log("😀")
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -248,8 +227,8 @@ export class MainComponent implements OnInit {
           })
         }
       });
-    
-    
+
+
   }
 
   clearSubgroupSelection(event: any) {
@@ -299,17 +278,23 @@ export class MainComponent implements OnInit {
     // Initialize an object to store counts for values 1 to 32
     const counts: Record<number, number> = {};
     for (let i = 1; i <= 32; i++) {
-        counts[i] = 0;
+      counts[i] = 0;
     }
     console.log(counts)
 
     data.map(row => {
-        const value = Number(row[3]); // Use index 7 for 8th position
-        if (value >= 1 && value <= 32) {
-            counts[value]++;
-        }
+      const value = Number(row[3]); // Use index 7 for 8th position
+      if (value >= 1 && value <= 32) {
+        counts[value]++;
+      }
     });
 
     return counts;
-}
+  }
+  getStatePairs(): Object[] {
+    return Object.entries(this.stateObject).map(([key, value]) => ({
+      key: Number(key),
+      value
+    }));
+  }
 }

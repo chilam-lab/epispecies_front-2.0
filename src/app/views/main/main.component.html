@@ -275,16 +275,15 @@
           </ng-container>
           <ng-template #dataTab>
             no data
-            <ng-container *ngFor="let item of countValuesInEdo| keyvalue">
+            <ng-container *ngFor="let state of stateList;index as i">
               <table>
                 <tr>
-                  <td>{{ item.key }} - </td>
-                  <td>{{ item.value }}</td>
+                  <td>{{ state }} - </td>
+                  <td>{{ countValuesInEdo[i+1] }}</td>
                 </tr>
               </table>
             </ng-container>
           </ng-template>
-
           <div class="row">
             <button id="boton_detalles" style="margin-bottom:15%" class="borderedButton" hidden>Ver información
               detallada</button>
