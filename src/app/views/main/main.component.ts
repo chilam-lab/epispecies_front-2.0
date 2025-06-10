@@ -1,5 +1,5 @@
 // src/app/views/main/main.component.ts
-import { Component, ViewChild, ElementRef, OnInit, HostListener } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, HostListener, Input } from '@angular/core';
 import { MapComponent } from '../../components/map/map.component';
 import { DiseaseDbService } from '../../services/disease-db.service';
 import { CommonModule } from '@angular/common';
@@ -21,6 +21,8 @@ import { ApiResponse, CVEGrupoAndCausa, CausaDescription } from '../../models/cv
 
 export class MainComponent implements OnInit {
   @ViewChild('mapContainer') mapContainer!: ElementRef;
+  @Input() countValuesInEdo: Record<number, number> = {}
+  @Input() stateObject: any = {};
 
   constructor(private dbService: DiseaseDbService) { }
   scrollPosition = 0;
@@ -43,10 +45,8 @@ export class MainComponent implements OnInit {
   selectedYearList = [];
   TEST = [];
   statesMun = []
-  countValuesInEdo: Record<number, number> = {}
   displayData: any = [];
   stateList: any = [];
-  stateObject: any = {};
 
   ngOnInit() {
     Swal.fire({
@@ -296,5 +296,8 @@ export class MainComponent implements OnInit {
       key: Number(key),
       value
     }));
+  }
+  updateMap(){
+
   }
 }
