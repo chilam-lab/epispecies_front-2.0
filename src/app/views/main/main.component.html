@@ -274,15 +274,22 @@
             </div>
           </ng-container>
           <ng-template #dataTab>
-            no data
-            <ng-container *ngFor="let state of stateList;index as i">
-              <table>
+            <table class="table table-hover">
+              <thead>
                 <tr>
-                  <td>{{ state }} - </td>
-                  <td>{{ countValuesInEdo[i+1] }}</td>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Número</th>
                 </tr>
-              </table>
-            </ng-container>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let state of stateList;index as i">
+                  <tr>
+                    <td>{{ state }}</td>
+                    <td>{{ countValuesInEdo[i+1] }}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
           </ng-template>
           <div class="row">
             <button id="boton_detalles" style="margin-bottom:15%" class="borderedButton" hidden>Ver información

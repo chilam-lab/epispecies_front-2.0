@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import * as L from 'leaflet';
 import { MapService } from './mapService';
 import Swal from 'sweetalert2';
@@ -259,5 +259,8 @@ export class MapComponent implements OnInit {
         }
       });
     });
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+
   }
 }
