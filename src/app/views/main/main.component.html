@@ -268,7 +268,7 @@
             <div class="row">
               <div class="col col-md-12">
                 <div id="button_predecir">
-                  <button class="borderedButton">Actualizar mapa</button>
+                  <button class="borderedButton" (click)="updateResolution()">Actualizar mapa</button>
                 </div>
               </div>
             </div>
@@ -316,7 +316,7 @@
           </div>
         </div>
         <div class="row row-map">
-          <app-map></app-map>
+          <app-map [resolution]="resolution"></app-map>
         </div>
       </div>
     </div>

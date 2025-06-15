@@ -43,8 +43,9 @@ export class MainComponent implements OnInit {
   selectedYearList = [];
   TEST = [];
   statesMun = []
-  countValuesInEdo:Record<number, number>  = {}
-  displayData:any=[];
+  countValuesInEdo: Record<number, number> = {}
+  displayData: any = [];
+  resolution:string ="";
 
   ngOnInit() {
     Swal.fire({
@@ -218,8 +219,8 @@ export class MainComponent implements OnInit {
           })
         }
       });
-    
-    
+
+
   }
 
   clearSubgroupSelection(event: any) {
@@ -269,17 +270,20 @@ export class MainComponent implements OnInit {
     // Initialize an object to store counts for values 1 to 32
     const counts: Record<number, number> = {};
     for (let i = 1; i <= 32; i++) {
-        counts[i] = 0;
+      counts[i] = 0;
     }
     console.log(counts)
 
     data.map(row => {
-        const value = Number(row[3]); // Use index 7 for 8th position
-        if (value >= 1 && value <= 32) {
-            counts[value]++;
-        }
+      const value = Number(row[3]); // Use index 7 for 8th position
+      if (value >= 1 && value <= 32) {
+        counts[value]++;
+      }
     });
 
     return counts;
-}
+  }
+  updateResolution() {
+    this.resolution = "nunicipal"
+  }
 }
