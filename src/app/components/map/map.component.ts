@@ -13,7 +13,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class MapComponent implements OnInit{
   private map: L.Map | undefined;
-  @Input() resolution = "";
+  @Input() updatedResolution = "";
   constructor(private mapService: MapService) { }
   geoJsonLayerMunicipal: any; // Replace 'any' with your GeoJSON type
   geoJsonLayerStates: any; // Replace 'any' with your GeoJSON type
@@ -33,7 +33,6 @@ export class MapComponent implements OnInit{
     this.geoJsonLayerMunicipal = municiapalGeoJson.json;
     this.map = L.map('map').setView([11.87, -81.58], 5);
 
-    // Disable map interactions
     this.map.touchZoom.disable();
     this.map.doubleClickZoom.disable();
     this.map.boxZoom.disable();
@@ -58,7 +57,7 @@ export class MapComponent implements OnInit{
     }
 
     let geoJson;
-    if (isStateOrMunicipality === 'municipal') {
+    if (isStateOrMunicipality === 'Municipal') {
       geoJson = this.geoJsonLayerMunicipal;
     } else {
       geoJson = this.geoJsonLayerStates;
@@ -102,8 +101,14 @@ export class MapComponent implements OnInit{
   }
   ngOnChanges(changes: SimpleChanges): void {
     console.log("hubo un cambio")
+    let layer = changes['updatedResolution']['currentValue']
     console.log(changes)
+    console.log(changes['updatedResolution']['currentValue'])
     console.log("hubo un cambio")
-    this.updateMapLayerView("municipal")
+    console.log(this.updatedResolution)
+    console.log("😱")
+    console.log(layer)
+    console.log("😱")
+    this.updateMapLayerView(layer)
   }
 }

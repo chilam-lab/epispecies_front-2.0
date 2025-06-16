@@ -295,31 +295,33 @@
         <div class="row">
           <div class="row select-row">
             <div class="col-3 d-flex justify-content-center my-3">
-              <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-                <option selected>País</option>
-                <option>Estado</option>
-                <option>Municipio</option>
+              <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedRegion">
+                <option value='País' selected>País</option>
+                <option value='Estado'>Estado</option>
+                <option value='Municipio'>Municipio</option>
+                <option value='Metropli'>Metropli</option>
               </select>
             </div>
             <div class="col-3 d-flex justify-content-center my-3">
-              <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+              <select class="form-select form-select-lg" aria-label=".form-select-lg example"[(ngModel)]="selectedResolution">
                 <option selected>Estatal</option>
                 <option>Municipal</option>
               </select>
             </div>
+            <ng-container *ngIf="selectedRegion == 'Metropli'">
+              <div class="col-3 d-flex justify-content-center my-3">
+                <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+                  <option disabled selected>Selecciona Metropli</option>
+                </select>
+              </div>
+            </ng-container>
             <div class="col-3 d-flex justify-content-center my-3">
-              <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-                <option disabled selected>Selecciona Metropli</option>
-              </select>
-            </div>
-            <div class="col-3 d-flex justify-content-center my-3">
-
-              <button class="updateButton">Actualizar</button>
+              <button class="updateButton" (click)="updateResolution()">Actualizar</button>
             </div>
           </div>
         </div>
         <div class="row row-map">
-          <app-map [resolution]="resolution"></app-map>
+          <app-map [updatedResolution]="updatedResolution"></app-map>
         </div>
       </div>
     </div>

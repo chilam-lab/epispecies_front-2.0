@@ -45,7 +45,10 @@ export class MainComponent implements OnInit {
   statesMun = []
   countValuesInEdo: Record<number, number> = {}
   displayData: any = [];
-  resolution:string ="";
+  selectedRegion:string ="País";
+  selectedResolution:string ="Estatal";
+  updatedRegion:string ="País";
+  updatedResolution:string ="Estatal";
 
   ngOnInit() {
     Swal.fire({
@@ -284,6 +287,8 @@ export class MainComponent implements OnInit {
     return counts;
   }
   updateResolution() {
-    this.resolution = "nunicipal"
+    //this.resolution = "nunicipal"
+    this.selectedRegion
+    this.updatedResolution = this.selectedResolution
   }
 }
