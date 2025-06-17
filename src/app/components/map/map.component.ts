@@ -100,15 +100,7 @@ export class MapComponent implements OnInit{
   
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("hubo un cambio")
     let layer = changes['updatedResolution']['currentValue']
-    console.log(changes)
-    console.log(changes['updatedResolution']['currentValue'])
-    console.log("hubo un cambio")
-    console.log(this.updatedResolution)
-    console.log("😱")
-    console.log(layer)
-    console.log("😱")
     this.updateMapLayerView(layer)
   }
 }
