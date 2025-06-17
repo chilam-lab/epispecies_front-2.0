@@ -115,13 +115,6 @@ body {
     height: 13%;
   }
 
-  .map-container {
-    opacity: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: opacity 0.8s ease-in-out, max-height 1s ease-in-out;
-  }
-  
   .map-container.visible {
     opacity: 1;
     max-height: 1000px;
@@ -437,4 +430,59 @@ app-map {
 .nav-link{
   font-size: xx-large;
   cursor: pointer;
+}
+
+.nav-tabs {
+    border-bottom: none;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+.nav-tabs .nav-item {
+    flex: 0 0 50%;
+    text-align: center;
+}
+.nav-tabs .nav-link {
+    color: #efedef;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1em;
+    padding: 2rem 0;
+    border: none;
+    border-bottom: 1px solid rgba(239, 237, 239, 0.5);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus {
+    border-bottom: 1px solid #fd264f;
+}
+.nav-tabs .nav-link.active {
+    border-bottom: 2px solid #fd264f;
+    background: transparent;
+}
+.tab-content {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.tab-pane {
+    padding: 2rem 0;
+    width: 200%;
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+.tab-pane.active {
+    opacity: 1;
+}
+.tab-pane#tab1 {
+    left: 0;
+}
+.tab-pane#tab2 {
+    left: 200%;
+}
+.tab-pane#tab2.active {
+    left: -100%;
 }

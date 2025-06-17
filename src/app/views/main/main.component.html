@@ -3,124 +3,18 @@
     <div class="border_radius">
       <h1>Modo</h1>
     </div>
-    <section
-      class="position-relative d-flex flex-column align-items-center justify-content-center overflow-scroll bg-light">
-      <div class="transition-container w-75" [ngStyle]="{
-        'opacity': page1Opacity,
-        'transform': page1Transform,
-        'transition': 'all 0.3s ease-out'
-      }">
 
-        <div class="container-fluid cards-back">
-          <div class="container py-4">
-            <div class="row">
-              <div class="col-md-12">
-                <h3>Grupo principal</h3>
-              </div>
-            </div>
-            <div class="row arrow-container">
-              <div class="col-lg-4 mb-4 mb-md-0">
-                <div class="arrow-card">
-                  <div class="card-class">
-                    <h1 class="head">01</h1><br>
-                    <div class="mb-3">
-                      <label for="group1" class="form-label d-flex align-items-center">
-                        Seleccione una enfermedad
-                      </label>
-                      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                        [(ngModel)]="selectedSickness" (ngModelChange)="onSicknessChange($event)">
-                        <option disabled selected>Selecciona una opción</option>
-                        <ng-container *ngFor="let sickness of sicknessList">
-                          <option [value]="sickness[0]">{{sickness[1]}}</option>
-                        </ng-container>
-                      </select>
-                      <div class="btn-text-end">
-                        <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
-                          title="La siguiente seleción es opcional" (click)="showNextLevel(2)">arrow_forward</mat-icon>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 mb-4 mb-md-0 fade-in-card" [hidden]="groupSelectDisable">
-                <div class="arrow-card">
-                  <div class="card-class">
-                    <h1 class="head">02</h1><br>
-                    <div class="mb-3">
-                      <label for="group2" class="form-label d-flex align-items-center">
-                        Seleccione grupo
-                        <a><mat-icon class="help-icon" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Selección opcional">help_outline</mat-icon></a>
-                      </label>
-                      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                        [(ngModel)]="selectedGroupClass" (ngModelChange)="onGroupClassChange($event)"
-                        [disabled]="groupSelectDisable">
-                        <option disabled selected>Selecciona una opción</option>
-                        <ng-container *ngFor="let group of groupList">
-                          <option [value]="group[0]">{{group[1]}}</option>
-                        </ng-container>
-                      </select>
-                      <div class="btn-text-end">
-                        <mat-icon (click)="resetClassSelectBy(2)">delete</mat-icon>
-                        <mat-icon class="circle-icon" data-bs-toggle="tooltip" data-bs-placement="top"
-                          title="La siguiente seleción es opcional" (click)="showNextLevel(3)">arrow_forward</mat-icon>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 fade-in-card" [hidden]="causeDeathSelectDisable">
-                <div class="arrow-card">
-                  <div class="card-class">
-                    <h1 class="head">03</h1><br>
-                    <div class="mb-3">
-                      <label for="group3" class="form-label d-flex align-items-center">
-                        Seleccione subgrupo
-                        <a><mat-icon class="help-icon" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Selección opcional">help_outline</mat-icon></a>
-                      </label>
-                      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                        [(ngModel)]="selectedCauseDeathClass" (ngModelChange)="onCauseDeathChange($event)"
-                        [disabled]="causeDeathSelectDisable">
-                        <option disabled selected>Selecciona una opción</option>
-                        <ng-container *ngFor="let cause of listOfThirdClass">
-                          <option [value]="cause[0]">{{cause[1]}}</option>
-                        </ng-container>
-                      </select>
-                      <div class="btn-text-end">
-                        <mat-icon (click)="resetClassSelectBy(3)">delete</mat-icon>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row justify-content-md-center">
-            <div class="col col-md-12">
-              <div id="button_predecir">
-                <button class="borderedButton" (click)="showAndScrollToMap()" (click)="onRunModel()">Predecir</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
   </div>
 
-
-  <div class="container">
-
-  </div><br><br>
-  <div class="container-fluid p-0 map-container hidden" #mapContainer>
+  <br><br>
+  <div class="container-fluid p-0 map-container">
     <div class="row">
       <div class="col-lg-4 p-0 mb-3">
         <div class="jumbotron">
           <div class="row">
             <div class="margin">
-              <ul class="nav nav-tabs">
-                <li class="nav-item">
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
                   <a class="nav-link active" [ngClass]="{'active': activeTabInMap === 'tab1'}"
                     (click)="setActiveTabInMap('tab1')" aria-current="page">Actualizar</a>
                 </li>
@@ -268,7 +162,7 @@
             <div class="row">
               <div class="col col-md-12">
                 <div id="button_predecir">
-                  <button class="borderedButton">Actualizar mapa</button>
+                  <button class="borderedButton" (click)="onRunModel()">Actualizar mapa</button>
                 </div>
               </div>
             </div>
@@ -295,7 +189,8 @@
         <div class="row">
           <div class="row select-row">
             <div class="col-3 d-flex justify-content-center my-3">
-              <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedRegion">
+              <select class="form-select form-select-lg" aria-label=".form-select-lg example"
+                [(ngModel)]="selectedRegion">
                 <option value='País' selected>País</option>
                 <option value='Estado'>Estado</option>
                 <option value='Municipio'>Municipio</option>
@@ -303,7 +198,8 @@
               </select>
             </div>
             <div class="col-3 d-flex justify-content-center my-3">
-              <select class="form-select form-select-lg" aria-label=".form-select-lg example"[(ngModel)]="selectedResolution">
+              <select class="form-select form-select-lg" aria-label=".form-select-lg example"
+                [(ngModel)]="selectedResolution">
                 <option selected>Estatal</option>
                 <option>Municipal</option>
               </select>

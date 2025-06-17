@@ -20,7 +20,6 @@ import { ApiResponse, CVEGrupoAndCausa, CausaDescription } from '../../models/cv
 })
 
 export class MainComponent implements OnInit {
-  @ViewChild('mapContainer') mapContainer!: ElementRef;
 
   constructor(private dbService: DiseaseDbService) { }
   scrollPosition = 0;
@@ -230,15 +229,6 @@ export class MainComponent implements OnInit {
     console.log(event)
   }
 
-  showAndScrollToMap() {
-    this.mapContainer.nativeElement.classList.add('visible');
-    setTimeout(() => {
-      this.mapContainer.nativeElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
-    }, 700);
-  }
   resetAllClassSelects() {
     this.selectedGroupClass = "Selecciona una opción";
     this.selectedCauseDeathClass = "Selecciona una opción";
