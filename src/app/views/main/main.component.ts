@@ -23,19 +23,18 @@ import { environment } from '../../../environments/environment';
 export class MainComponent implements OnInit {
 
   constructor(private dbService: DiseaseDbService) { }
-  selectedSicknessId: string = environment.placeholderFirstClass;
-  selectedGroupClassId: string = environment.placeholderSecondClass;
-  selectedSubgroupId: string = environment.placeholderThirdClass;
-  scrollPosition = 0;
-  windowHeight = window.innerHeight;
+  env = environment;
+  selectedFirstClassId: string = environment.placeholderFirstClass;
+  selectedSecondClassId: string = environment.placeholderSecondClass;
+  selectedThirdClassId: string = environment.placeholderThirdClass;
+  selectedAge: string = environment.placeholderAge;
+  selectedGender:string  = environment.placeholderGender;
+  selectedYear: string = environment.placeholderYear;
   sicknessList: any[] = [];
   groupList: any[] = [];
   groupSelectDisable = true;
   causeDeathSelectDisable = true;
   listOfThirdClass = [];
-  selectedAge = "Selecciona una opción";
-  selectedGender = "Selecciona una opción";
-  selectedYear = "Selecciona una opción";
   selectedAgeList = [];
   selectedGenderList = [];
   selectedYearList = [];
@@ -110,19 +109,6 @@ export class MainComponent implements OnInit {
       });
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onWindowScroll() {
-    this.scrollPosition = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
-  }
-
-  get page1Opacity(): number {
-    return Math.max(0, 1 - this.scrollPosition / (this.windowHeight * 0.7));
-  }
-
-  get page1Transform(): string {
-    return `translateY(${-this.scrollPosition * 0.3}px)`;
-  }
-
   onSicknessChange(sicknessNumber: SicknessKey) {
     console.log("weel")
     console.log(this.sicknessList)
@@ -130,8 +116,8 @@ export class MainComponent implements OnInit {
     console.log(this.groupList)
     console.log(this.listOfThirdClass)
     let sickNumber = sicknessNumber.toString()
-    this.selectedGroupClassId = "Selecciona una opción";
-    this.selectedSubgroupId = "Selecciona una opción";
+    this.selectedSecondClassId = environment.placeholderSecondClass;
+    this.selectedThirdClassId = environment.placeholderThirdClass;
     Swal.fire({
       title: 'Cargando datos...',
       allowOutsideClick: false,
@@ -164,8 +150,8 @@ export class MainComponent implements OnInit {
   }
 
   onGroupClassChange(groupID: SicknessKey) {
-    this.selectedSubgroupId = "Selecciona una opción";
-    let sickId = this.selectedSicknessId.toString()
+    this.selectedThirdClassId = environment.placeholderThirdClass;
+    let sickId = this.selectedFirstClassId.toString()
     let groupNumber = groupID.toString()
     Swal.fire({
       title: 'Cargando datos...',
@@ -204,7 +190,7 @@ export class MainComponent implements OnInit {
       showConfirmButton: true,
     })
     Swal.showLoading();
-    this.dbService.getDataByYear("2019", this.selectedSicknessId.toString())
+    this.dbService.getDataByYear("2019", this.selectedFirstClassId.toString())
       .subscribe({
         next: (response) => {
           this.TEST = response
@@ -237,21 +223,21 @@ export class MainComponent implements OnInit {
   }
 
   resetAllClassSelects() {
-    this.selectedGroupClassId = "Selecciona una opción";
-    this.selectedSubgroupId = "Selecciona una opción";
+    this.selectedSecondClassId = environment.placeholderSecondClass;
+    this.selectedThirdClassId = environment.placeholderThirdClass;
     this.groupSelectDisable = true;
     this.causeDeathSelectDisable = true;
   }
 
   resetClassSelectBy(numberLevel: number) {
     if (numberLevel == 2) {
-      this.selectedGroupClassId = "Selecciona una opción";
-      this.selectedSubgroupId = "Selecciona una opción";
+      this.selectedSecondClassId = environment.placeholderSecondClass;
+      this.selectedThirdClassId = environment.placeholderThirdClass;
       this.groupSelectDisable = true;
       this.causeDeathSelectDisable = true;
     }
     if (numberLevel == 3) {
-      this.selectedSubgroupId = "Selecciona una opción";
+      this.selectedThirdClassId = environment.placeholderThirdClass;
       this.causeDeathSelectDisable = true;
     }
   }
