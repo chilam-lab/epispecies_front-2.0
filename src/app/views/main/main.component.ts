@@ -25,9 +25,9 @@ export class MainComponent implements OnInit {
   scrollPosition = 0;
   windowHeight = window.innerHeight;
   sicknessList: any[] = [];
-  selectedSickness: string = "Selecciona una opción";
-  selectedGroupClass: string = "Selecciona una opción";
-  selectedCauseDeathClass: string = "Selecciona una opción";
+  selectedSickness: string = "Selecciona una enfermedad";
+  selectedGroupClass: string = "Sin grupo";
+  selectedCauseDeathClass: string = "Sin subgrupo";
   groupList: any[] = [];
   groupSelectDisable = true;
   causeDeathSelectDisable = true;
