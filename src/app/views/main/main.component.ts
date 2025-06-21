@@ -30,14 +30,14 @@ export class MainComponent implements OnInit {
   selectedAge: string = environment.placeholderAge;
   selectedGender:string  = environment.placeholderGender;
   selectedYear: string = environment.placeholderYear;
-  sicknessList: any[] = [];
-  groupList: any[] = [];
-  groupSelectDisable = true;
-  causeDeathSelectDisable = true;
-  listOfThirdClass = [];
-  selectedAgeList = [];
-  selectedGenderList = [];
-  selectedYearList = [];
+  firstClassList: any[] = [];
+  secondClassList: any[] = [];
+  thirdClassList = [];
+  secondClassSelectDisable = true;
+  thirdClassSelectDisable = true;
+  agesList = [];
+  gendersList = [];
+  yearsList = [];
   TEST = [];
   statesMun = []
   countValuesInEdo: Record<number, number> = {}
@@ -46,6 +46,7 @@ export class MainComponent implements OnInit {
   selectedResolution:string ="Estatal";
   updatedRegion:string ="País";
   updatedResolution:string ="Estatal";
+  gendersDict = {1:"Hombres",2:"Mujeres",9:"Otro"}
 
   ngOnInit() {
     Swal.fire({
@@ -57,8 +58,8 @@ export class MainComponent implements OnInit {
     this.dbService.getDisease('CVE_Enfermedad', 'Enfermedad', 'RAWDATA')//TODO
       .subscribe({
         next: (response) => {
-          this.sicknessList = response.sort((a: string[], b: string[]) => a[1].localeCompare(b[1]));
-          console.log(JSON.stringify(this.sicknessList));
+          this.firstClassList = response.sort((a: string[], b: string[]) => a[1].localeCompare(b[1]));
+          console.log(JSON.stringify(this.firstClassList));
           Swal.fire({
             timer: 1100,
             title: 'Datos cargados correctamente.',
@@ -77,10 +78,10 @@ export class MainComponent implements OnInit {
     this.dbService.getUniqueValues(['Edad_gpo', 'Sexo', 'Anio'])
       .subscribe({
         next: (response) => {
-          this.selectedAgeList = response[0];
-          this.selectedGenderList = response[1];
-          this.selectedYearList = response[2];
-          console.log(JSON.stringify(this.selectedGenderList));
+          this.agesList = response[0];
+          this.gendersList = response[1];
+          this.yearsList = response[2].reverse();
+          console.log(JSON.stringify(this.gendersList));
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -90,7 +91,7 @@ export class MainComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.statesMun = response;
-          console.log(JSON.stringify(this.selectedGenderList));
+          console.log(JSON.stringify(this.gendersList));
           const stateMap = new Map<number, string>();
           this.statesMun.forEach(row => {
             stateMap.set(row[0], row[1]);
@@ -111,10 +112,10 @@ export class MainComponent implements OnInit {
 
   onSicknessChange(sicknessNumber: SicknessKey) {
     console.log("weel")
-    console.log(this.sicknessList)
+    console.log(this.firstClassList)
     console.log("weel")
-    console.log(this.groupList)
-    console.log(this.listOfThirdClass)
+    console.log(this.secondClassList)
+    console.log(this.thirdClassList)
     let sickNumber = sicknessNumber.toString()
     this.selectedSecondClassId = environment.placeholderSecondClass;
     this.selectedThirdClassId = environment.placeholderThirdClass;
@@ -127,7 +128,7 @@ export class MainComponent implements OnInit {
     this.dbService.getGroupList(sickNumber)
       .subscribe({
         next: (response) => {
-          this.groupList = response
+          this.secondClassList = response
           Swal.fire({
             timer: 1100,
             title: 'Datos cargados correctamente.',
@@ -162,7 +163,7 @@ export class MainComponent implements OnInit {
     this.dbService.getCauseDeathList(sickId, groupNumber)
       .subscribe({
         next: (response) => {
-          this.listOfThirdClass = response
+          this.thirdClassList = response
           Swal.fire({
             timer: 1100,
             title: 'Datos cargados correctamente.',
@@ -225,28 +226,28 @@ export class MainComponent implements OnInit {
   resetAllClassSelects() {
     this.selectedSecondClassId = environment.placeholderSecondClass;
     this.selectedThirdClassId = environment.placeholderThirdClass;
-    this.groupSelectDisable = true;
-    this.causeDeathSelectDisable = true;
+    this.secondClassSelectDisable = true;
+    this.thirdClassSelectDisable = true;
   }
 
   resetClassSelectBy(numberLevel: number) {
     if (numberLevel == 2) {
       this.selectedSecondClassId = environment.placeholderSecondClass;
       this.selectedThirdClassId = environment.placeholderThirdClass;
-      this.groupSelectDisable = true;
-      this.causeDeathSelectDisable = true;
+      this.secondClassSelectDisable = true;
+      this.thirdClassSelectDisable = true;
     }
     if (numberLevel == 3) {
       this.selectedThirdClassId = environment.placeholderThirdClass;
-      this.causeDeathSelectDisable = true;
+      this.thirdClassSelectDisable = true;
     }
   }
   showNextLevel(level: number) {
     if (level === 2) {
-      this.groupSelectDisable = false;
+      this.secondClassSelectDisable = false;
     }
     if (level == 3) {
-      this.causeDeathSelectDisable = false;
+      this.thirdClassSelectDisable = false;
     }
   }
   
