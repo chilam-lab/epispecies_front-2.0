@@ -98,15 +98,29 @@
         <div class="jumbotron">
           <div class="row">
           </div><br><br>
-            no data
-            <ng-container *ngFor="let item of countValuesInEdo| keyvalue">
-              <table>
+          Modelo actual:
+          <h3>
+            {{getDescriptionByIdInAList(selectedSickness,sicknessList)}}
+          </h3>
+          <h4>{{selectedGroupClass}}</h4>
+          <h4>{{selectedCauseDeathClass}}</h4>
+
+          <table class="table table-hover">
+              <thead>
                 <tr>
-                  <td>{{ item.key }} - </td>
-                  <td>{{ item.value }}</td>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Número</th>
                 </tr>
-              </table>
-            </ng-container>
+              </thead>
+              <tbody>
+                <!-- <ng-container *ngFor="let state of stateList;index as i"> -->
+                  <tr>
+                    <td>running</td>
+                    <td>again</td>
+                  </tr>
+                <!-- </ng-container> -->
+              </tbody>
+            </table>
 
           <div class="row">
             <button id="boton_detalles" style="margin-bottom:15%" class="borderedButton" hidden>Ver información

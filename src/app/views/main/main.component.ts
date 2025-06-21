@@ -31,7 +31,6 @@ export class MainComponent implements OnInit {
   groupList: any[] = [];
   groupSelectDisable = true;
   causeDeathSelectDisable = true;
-  activeTabInMap: string = 'tab1';
   listOfThirdClass = [];
   selectedSicknessID = 0;
   selectedAge = "Selecciona una opción";
@@ -125,6 +124,11 @@ export class MainComponent implements OnInit {
   }
 
   onSicknessChange(sicknessNumber: SicknessKey) {
+    console.log("weel")
+    console.log(this.sicknessList)
+    console.log("weel")
+    console.log(this.groupList)
+    console.log(this.listOfThirdClass)
     let sickNumber = sicknessNumber.toString()
     this.selectedGroupClass = "Selecciona una opción";
     this.selectedCauseDeathClass = "Selecciona una opción";
@@ -154,6 +158,10 @@ export class MainComponent implements OnInit {
           })
         }
       });
+  }
+  getDescriptionByIdInAList(id: string, dataList: [string, string][]): string | null {
+    const item = dataList.find((listId) => listId[0] == id);
+    return item ? item[1] : null;
   }
 
   onGroupClassChange(groupID: SicknessKey) {
@@ -256,9 +264,7 @@ export class MainComponent implements OnInit {
       this.causeDeathSelectDisable = false;
     }
   }
-  setActiveTabInMap(tab: string) {
-    this.activeTabInMap = tab;
-  }
+  
   countValuesInEighthPosition(data: any[]): Record<number, number> {
     // Initialize an object to store counts for values 1 to 32
     const counts: Record<number, number> = {};
