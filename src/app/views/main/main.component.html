@@ -8,22 +8,57 @@
    <br><br>
   <div class="container-fluid">
     <div class="row">
-      <div class="row select-row">
-        <div class="col-1 d-flex justify-content-center my-3">
-          Filtrar por: 
+      <div class="row">
+
+        <div class="col-1 d-flex justify-content-center my-3">Modelo:</div>
+        <div class="col-md-3 justify-content-center my-3">
+          <select class="form-select form-select-lg" aria-label="Select disease"
+                      [(ngModel)]="selectedSickness" (ngModelChange)="onSicknessChange($event)">
+                      <option disabled selected>Selecciona una opción</option>
+                      <ng-container *ngFor="let sickness of sicknessList">
+                        <option [value]="sickness[0]">{{sickness[1]}}</option>
+                      </ng-container>
+                    </select>
+        </div>
+        <div class="col-md-3 justify-content-center my-3">
+          <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example"
+                      [(ngModel)]="selectedGroupClass" (ngModelChange)="onGroupClassChange($event)"
+                      [disabled]="groupSelectDisable">
+                      <option disabled selected>Selecciona una opción</option>
+                      <ng-container *ngFor="let group of groupList">
+                        <option [value]="group[0]">{{group[1]}}</option>
+                      </ng-container>
+                    </select>
+        </div>
+        <div class="col-md-3 my-3">
+          <select class="form-select form-select-lg mb-3 smaller-select" aria-label=".form-select-lg example"
+                      [(ngModel)]="selectedCauseDeathClass" (ngModelChange)="onCauseDeathChange($event)"
+                      [disabled]="causeDeathSelectDisable">
+                      <option disabled selected>Selecciona una opción</option>
+                      <ng-container *ngFor="let cause of listOfThirdClass">
+                        <option [value]="cause[0]">{{cause[1]}}</option>
+                      </ng-container>
+                    </select>
         </div>
         
-        <div class="col-2 d-flex justify-content-center my-3">
+        
+      </div>
+      <div class="row">
+        <div class="col-1 d-flex justify-content-center my-3">
+          Filtrar por:
+        </div>
+        
+        <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example">
             <option selected>Todas las edades</option>
           </select>
         </div>
-        <div class="col-2 d-flex justify-content-center my-3">
+        <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example">
             <option selected>Todos los géneros</option>
           </select>
         </div>
-        <div class="col-2 d-flex justify-content-center my-3">
+        <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedRegion">
             <option value='País' selected>Todo el país</option>
             <option value='Estado'>Estado</option>
@@ -31,7 +66,7 @@
             <option value='Metropli'>Metropli</option>
           </select>
         </div>
-        <div class="col-2 d-flex justify-content-center my-3">
+        <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example"
             [(ngModel)]="selectedResolution">
             <option selected>Estatal</option>
@@ -45,12 +80,12 @@
             </select>
           </div>
         </ng-container>
-        <div class="col-1 d-flex justify-content-center my-3">
+        <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example">
             <option selected>Año</option>
           </select>
         </div>
-        <div class="col-2 d-flex justify-content-center my-3">
+        <div class="col-md-1 justify-content-center my-3">
           <button class="updateButton" (click)="updateResolution()">Actualizar</button>
         </div>
       </div>
