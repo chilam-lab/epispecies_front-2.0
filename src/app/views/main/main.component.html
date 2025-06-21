@@ -48,13 +48,13 @@
         <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example" 
             [(ngModel)]="selectedAge">
-            <option selected>Todas las edades</option>
+            <option selected>{{env.placeholderAge}}</option>
             <option disabled selected>Sin grupo</option>
           </select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-            <option selected>Todos los géneros</option>
+            <option selected>{{env.placeholderGender}}</option>
           </select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
@@ -72,16 +72,9 @@
             <option>Municipal</option>
           </select>
         </div>
-        <ng-container *ngIf="selectedRegion == 'Metropli'">
-          <div class="col-3 d-flex justify-content-center my-3">
-            <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-              <option disabled selected>Selecciona Metropli</option>
-            </select>
-          </div>
-        </ng-container>
         <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-            <option selected>Año</option>
+            <option selected>{{env.placeholderYear}}</option>
           </select>
         </div>
         <div class="col-md-1 justify-content-center my-3">
