@@ -12,7 +12,7 @@
 
         <div class="col-1 d-flex justify-content-center my-3">Modelo:</div>
         <div class="col-md-3 justify-content-center my-3">
-          <select class="form-select form-select-lg" aria-label="Select disease" [(ngModel)]="selectedSickness"
+          <select class="form-select form-select-lg" aria-label="Select disease" [(ngModel)]="selectedSicknessId"
             (ngModelChange)="onSicknessChange($event)">
             <option disabled selected>Selecciona una enfermedad</option>
             <ng-container *ngFor="let sickness of sicknessList">
@@ -22,7 +22,7 @@
         </div>
         <div class="col-md-3 justify-content-center my-3">
           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" data-bs-toggle="tooltip"
-            [(ngModel)]="selectedGroupClass" (ngModelChange)="onGroupClassChange($event)"
+            [(ngModel)]="selectedGroupClassId" (ngModelChange)="onGroupClassChange($event)"
             [disabled]="groupSelectDisable" title="Esta selección es opcional">
             <option disabled selected>Sin grupo</option>
             <ng-container *ngFor="let group of groupList">
@@ -32,7 +32,7 @@
         </div>
         <div class="col-md-3 my-3">
           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" data-bs-toggle="tooltip"
-            [(ngModel)]="selectedCauseDeathClass" (ngModelChange)="onCauseDeathChange($event)"
+            [(ngModel)]="selectedSubgroupId" (ngModelChange)="onCauseDeathChange($event)"
             [disabled]="causeDeathSelectDisable" title="Esta selección es opcional">
             <option disabled selected>Sin subgrupo</option>
             <ng-container *ngFor="let cause of listOfThirdClass">
@@ -97,13 +97,13 @@
       <div class="col-lg-4 p-0 mb-3">
         <div class="jumbotron">
           <div class="row">
-          </div><br><br>
-          Modelo actual:
-          <h3>
-            {{getDescriptionByIdInAList(selectedSickness,sicknessList)}}
-          </h3>
-          <h4>{{selectedGroupClass}}</h4>
-          <h4>{{selectedCauseDeathClass}}</h4>
+          </div>
+          <h6>Modelo actual</h6>
+          <h4>
+            {{getDescriptionByIdInAList(selectedSicknessId,sicknessList)}}
+          </h4>
+          <h4>{{selectedGroupClassId}}</h4>
+          <h4>{{selectedSubgroupId}}</h4>
 
           <table class="table table-hover">
             <thead>

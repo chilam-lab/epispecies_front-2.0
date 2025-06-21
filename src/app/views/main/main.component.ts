@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ApiResponse, CVEGrupoAndCausa, CausaDescription } from '../../models/cve_list';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-main',
@@ -22,17 +23,16 @@ import { ApiResponse, CVEGrupoAndCausa, CausaDescription } from '../../models/cv
 export class MainComponent implements OnInit {
 
   constructor(private dbService: DiseaseDbService) { }
+  selectedSicknessId: string = environment.placeholderFirstClass;
+  selectedGroupClassId: string = environment.placeholderSecondClass;
+  selectedSubgroupId: string = environment.placeholderThirdClass;
   scrollPosition = 0;
   windowHeight = window.innerHeight;
   sicknessList: any[] = [];
-  selectedSickness: string = "Selecciona una enfermedad";
-  selectedGroupClass: string = "Sin grupo";
-  selectedCauseDeathClass: string = "Sin subgrupo";
   groupList: any[] = [];
   groupSelectDisable = true;
   causeDeathSelectDisable = true;
   listOfThirdClass = [];
-  selectedSicknessID = 0;
   selectedAge = "Selecciona una opción";
   selectedGender = "Selecciona una opción";
   selectedYear = "Selecciona una opción";
@@ -130,9 +130,8 @@ export class MainComponent implements OnInit {
     console.log(this.groupList)
     console.log(this.listOfThirdClass)
     let sickNumber = sicknessNumber.toString()
-    this.selectedGroupClass = "Selecciona una opción";
-    this.selectedCauseDeathClass = "Selecciona una opción";
-    this.selectedSicknessID = sicknessNumber;
+    this.selectedGroupClassId = "Selecciona una opción";
+    this.selectedSubgroupId = "Selecciona una opción";
     Swal.fire({
       title: 'Cargando datos...',
       allowOutsideClick: false,
@@ -165,8 +164,8 @@ export class MainComponent implements OnInit {
   }
 
   onGroupClassChange(groupID: SicknessKey) {
-    this.selectedCauseDeathClass = "Selecciona una opción";
-    let sickId = this.selectedSicknessID.toString()
+    this.selectedSubgroupId = "Selecciona una opción";
+    let sickId = this.selectedSicknessId.toString()
     let groupNumber = groupID.toString()
     Swal.fire({
       title: 'Cargando datos...',
@@ -205,7 +204,7 @@ export class MainComponent implements OnInit {
       showConfirmButton: true,
     })
     Swal.showLoading();
-    this.dbService.getDataByYear("2019", this.selectedSicknessID.toString())
+    this.dbService.getDataByYear("2019", this.selectedSicknessId.toString())
       .subscribe({
         next: (response) => {
           this.TEST = response
@@ -238,21 +237,21 @@ export class MainComponent implements OnInit {
   }
 
   resetAllClassSelects() {
-    this.selectedGroupClass = "Selecciona una opción";
-    this.selectedCauseDeathClass = "Selecciona una opción";
+    this.selectedGroupClassId = "Selecciona una opción";
+    this.selectedSubgroupId = "Selecciona una opción";
     this.groupSelectDisable = true;
     this.causeDeathSelectDisable = true;
   }
 
   resetClassSelectBy(numberLevel: number) {
     if (numberLevel == 2) {
-      this.selectedGroupClass = "Selecciona una opción";
-      this.selectedCauseDeathClass = "Selecciona una opción";
+      this.selectedGroupClassId = "Selecciona una opción";
+      this.selectedSubgroupId = "Selecciona una opción";
       this.groupSelectDisable = true;
       this.causeDeathSelectDisable = true;
     }
     if (numberLevel == 3) {
-      this.selectedCauseDeathClass = "Selecciona una opción";
+      this.selectedSubgroupId = "Selecciona una opción";
       this.causeDeathSelectDisable = true;
     }
   }
