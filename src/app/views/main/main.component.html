@@ -5,8 +5,58 @@
     </div>
 
   </div>
-
-  <br><br>
+   <br><br>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="row select-row">
+        <div class="col-1 d-flex justify-content-center my-3">
+          Filtrar por: 
+        </div>
+        
+        <div class="col-2 d-flex justify-content-center my-3">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+            <option selected>Todas las edades</option>
+          </select>
+        </div>
+        <div class="col-2 d-flex justify-content-center my-3">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+            <option selected>Todos los géneros</option>
+          </select>
+        </div>
+        <div class="col-2 d-flex justify-content-center my-3">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedRegion">
+            <option value='País' selected>Todo el país</option>
+            <option value='Estado'>Estado</option>
+            <option value='Municipio'>Municipio</option>
+            <option value='Metropli'>Metropli</option>
+          </select>
+        </div>
+        <div class="col-2 d-flex justify-content-center my-3">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example"
+            [(ngModel)]="selectedResolution">
+            <option selected>Estatal</option>
+            <option>Municipal</option>
+          </select>
+        </div>
+        <ng-container *ngIf="selectedRegion == 'Metropli'">
+          <div class="col-3 d-flex justify-content-center my-3">
+            <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+              <option disabled selected>Selecciona Metropli</option>
+            </select>
+          </div>
+        </ng-container>
+        <div class="col-1 d-flex justify-content-center my-3">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+            <option selected>Año</option>
+          </select>
+        </div>
+        <div class="col-2 d-flex justify-content-center my-3">
+          <button class="updateButton" (click)="updateResolution()">Actualizar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
   <div class="container-fluid p-0 map-container">
     <div class="row">
       <div class="col-lg-4 p-0 mb-3">
@@ -186,36 +236,7 @@
         </div>
       </div>
       <div class="col-lg-8 p-0 map-section">
-        <div class="row">
-          <div class="row select-row">
-            <div class="col-3 d-flex justify-content-center my-3">
-              <select class="form-select form-select-lg" aria-label=".form-select-lg example"
-                [(ngModel)]="selectedRegion">
-                <option value='País' selected>País</option>
-                <option value='Estado'>Estado</option>
-                <option value='Municipio'>Municipio</option>
-                <option value='Metropli'>Metropli</option>
-              </select>
-            </div>
-            <div class="col-3 d-flex justify-content-center my-3">
-              <select class="form-select form-select-lg" aria-label=".form-select-lg example"
-                [(ngModel)]="selectedResolution">
-                <option selected>Estatal</option>
-                <option>Municipal</option>
-              </select>
-            </div>
-            <ng-container *ngIf="selectedRegion == 'Metropli'">
-              <div class="col-3 d-flex justify-content-center my-3">
-                <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-                  <option disabled selected>Selecciona Metropli</option>
-                </select>
-              </div>
-            </ng-container>
-            <div class="col-3 d-flex justify-content-center my-3">
-              <button class="updateButton" (click)="updateResolution()">Actualizar</button>
-            </div>
-          </div>
-        </div>
+
         <div class="row row-map">
           <app-map [updatedResolution]="updatedResolution"></app-map>
         </div>
