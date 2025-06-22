@@ -106,7 +106,10 @@ export class MapComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes)
-    let layer = changes['munDataToDisplayInMap']['currentValue']
+    let layer = changes['updatedResolution']['currentValue']
+    let l = changes['munDataToDisplayInMap']['currentValue']
+    console.log(l)
+    console.log(this.munDataToDisplayInMap)
     this.updateMapLayerView(layer);
     // munDataToDisplayInMap
     // statesData = [];
