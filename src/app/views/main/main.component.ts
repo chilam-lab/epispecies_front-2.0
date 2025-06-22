@@ -28,7 +28,7 @@ export class MainComponent implements OnInit {
   selectedSecondClassId: string = environment.placeholderSecondClass;
   selectedThirdClassId: string = environment.placeholderThirdClass;
   selectedAge: string = environment.placeholderAge;
-  selectedGender:string  = environment.placeholderGender;
+  selectedGender: string = environment.placeholderGender;
   selectedYear: string = environment.placeholderYear;
   firstClassList: any[] = [];
   secondClassList: any[] = [];
@@ -38,15 +38,25 @@ export class MainComponent implements OnInit {
   agesList = [];
   gendersList = [];
   yearsList = [];
-  TEST = [];
   statesMun = []
   countValuesInEdo: Record<number, number> = {}
   displayData: any = [];
-  selectedRegion:string ="País";
-  selectedResolution:string ="Estatal";
-  updatedRegion:string ="País";
-  updatedResolution:string ="Estatal";
-  gendersDict = {1:"Hombres",2:"Mujeres",9:"Otro"}
+  selectedRegion: string = "País";
+  selectedResolution: string = "Estatal";
+  updatedRegion: string = "País";
+  updatedResolution: string = "Estatal";
+  gendersDict = { 1: "Hombres", 2: "Mujeres", 9: "Otro" }
+  notification = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    }
+  });
 
   ngOnInit() {
     Swal.fire({
@@ -55,16 +65,10 @@ export class MainComponent implements OnInit {
       showConfirmButton: true,
     })
     Swal.showLoading();
-    this.dbService.getDisease('CVE_Enfermedad', 'Enfermedad', 'RAWDATA')//TODO
+    this.dbService.uniquePairColumns('CVE_Enfermedad', 'Enfermedad', 'ENFERMEDADES')
       .subscribe({
         next: (response) => {
-          this.firstClassList = response.sort((a: string[], b: string[]) => a[1].localeCompare(b[1]));
-          console.log(JSON.stringify(this.firstClassList));
-          Swal.fire({
-            timer: 1100,
-            title: 'Datos cargados correctamente.',
-            icon: 'success'
-          })
+          this.firstClassList = response;
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -80,8 +84,9 @@ export class MainComponent implements OnInit {
         next: (response) => {
           this.agesList = response[0];
           this.gendersList = response[1];
+          const lastyear = response[2].pop();
           this.yearsList = response[2].reverse();
-          console.log(JSON.stringify(this.gendersList));
+          this.selectedYear = lastyear;
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -103,6 +108,11 @@ export class MainComponent implements OnInit {
             name: stateMap.get(Number(id)) || `State ${id}`,
             count
           }));
+          Swal.fire({
+            timer: 1100,
+            title: 'Datos cargados correctamente.',
+            icon: 'success'
+          })
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -110,101 +120,70 @@ export class MainComponent implements OnInit {
       });
   }
 
-  onSicknessChange(sicknessNumber: SicknessKey) {
-    console.log("weel")
-    console.log(this.firstClassList)
-    console.log("weel")
-    console.log(this.secondClassList)
-    console.log(this.thirdClassList)
-    let sickNumber = sicknessNumber.toString()
+
+
+
+  onFirstClassChange(firstClassId: string) {
     this.selectedSecondClassId = environment.placeholderSecondClass;
     this.selectedThirdClassId = environment.placeholderThirdClass;
-    Swal.fire({
-      title: 'Cargando datos...',
-      allowOutsideClick: false,
-      showConfirmButton: true,
-    })
-    Swal.showLoading();
-    this.dbService.getGroupList(sickNumber)
+    this.secondClassSelectDisable = false;
+
+    this.dbService.getSecondClassList(firstClassId)
       .subscribe({
         next: (response) => {
           this.secondClassList = response
-          Swal.fire({
-            timer: 1100,
-            title: 'Datos cargados correctamente.',
-            icon: 'success'
-          })
+          this.updateNotificationSuccess("Datos actualizados correctamente")
         },
         error: (error) => {
           console.error('Error fetching data:', error);
-          Swal.fire({
-            timer: 1000,
-            title: 'Ocurrio un error al cargar los datos.',
-            icon: 'error'
-          })
+          this.updateNotificationError("Error al actualizar los datos")
         }
       });
   }
-  getDescriptionByIdInAList(id: string, dataList: [string, string][]): string | null {
-    const item = dataList.find((listId) => listId[0] == id);
-    return item ? item[1] : null;
-  }
 
-  onGroupClassChange(groupID: SicknessKey) {
+  onSecondClassChange(secondClassId: string) {
     this.selectedThirdClassId = environment.placeholderThirdClass;
-    let sickId = this.selectedFirstClassId.toString()
-    let groupNumber = groupID.toString()
-    Swal.fire({
-      title: 'Cargando datos...',
-      allowOutsideClick: false,
-      showConfirmButton: true,
-    })
-    Swal.showLoading();
-    this.dbService.getCauseDeathList(sickId, groupNumber)
-      .subscribe({
-        next: (response) => {
-          this.thirdClassList = response
-          Swal.fire({
-            timer: 1100,
-            title: 'Datos cargados correctamente.',
-            icon: 'success'
-          })
-        },
-        error: (error) => {
-          console.error('Error fetching data:', error);
-          Swal.fire({
-            timer: 1000,
-            title: 'Ocurrio un error al cargar los datos.',
-            icon: 'error'
-          })
-        }
-      });
+    if (this.selectedSecondClassId == environment.placeholderSecondClass) {
+      this.thirdClassSelectDisable = true;
+    } else {
+      this.thirdClassSelectDisable = false;
+      this.dbService.getThirdClassList(this.selectedFirstClassId, secondClassId)
+        .subscribe({
+          next: (response) => {
+            this.thirdClassList = response
+            this.updateNotificationSuccess("Datos actualizados correctamente")
+          },
+          error: (error) => {
+            console.error('Error fetching data:', error);
+            this.updateNotificationError("Error al actualizar los datos")
+          }
+        });
+    }
+
   }
 
-  onCauseDeathChange(event: any) {
-    //we don't need
-  }
-  onRunModel() {
+
+
+  async getAllTheDataByYearAndFirstClassId() {
     Swal.fire({
       title: 'Cargando datos...',
       allowOutsideClick: false,
       showConfirmButton: true,
     })
     Swal.showLoading();
-    this.dbService.getDataByYear("2019", this.selectedFirstClassId.toString())
+    this.dbService.getDataByYear(this.selectedYear, this.selectedFirstClassId)
       .subscribe({
         next: (response) => {
-          this.TEST = response
+          console.log("😀");
+          console.log(response);
+          console.log("😀");
           this.countValuesInEdo = this.countValuesInEighthPosition(response);
           console.log("Counts of values in the 8th position (1 to 32):");
+          console.log()
           for (let i = 1; i <= 32; i++) {
             console.log(`Value ${i}: ${this.countValuesInEdo[i]}`);
           }
-          Swal.fire({
-            timer: 1100,
-            title: 'Datos cargados correctamente.',
-            icon: 'success'
-          })
+          
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -215,7 +194,69 @@ export class MainComponent implements OnInit {
           })
         }
       });
+  }
 
+  async updateTheDataForTheMap() {
+    Swal.fire({
+      title: 'Cargando datos...',
+      allowOutsideClick: false,
+      showConfirmButton: true,
+    })
+    
+    await this.getAllTheDataByYearAndFirstClassId()
+    Swal.fire({
+            timer: 1100,
+            title: 'Datos cargados correctamente.',
+            icon: 'success'
+          })
+  }
+  // do() {
+  //   let allthedata;
+  //   let showingData;
+  //   if(verifyifselectedTheSecondClass()){
+  //     showingData = filterBySecondClass(allthedata)
+  //     if(verifyifselectedTheThirdClass()){
+  //       showingData = filsterByThirdClass(showingData)
+  //     }
+  //   }
+  //   showingData = applyFilters(showingData)
+  //   statesMun //todos los municipios
+  //   let listNew = {}
+
+  //   this.statesMun.map((item) => {
+  //     let hola = showingData.map((item2) => item2[4] == item[2]).length
+  //     listNew[item[2]] = hola
+  //   })
+  //   console.log(listNew)
+  // }
+
+  // applyFilters(showingData){
+  //   let filteredList = showingData;
+  //   if(verifyGender()){
+  //     filteredList = filterBy(5, 1,filteredList)//position in the list, value, list
+  //   }
+  //   if(verifyAge){
+  //     filteredList = filterBy(5, 1,filteredList)
+  //   }
+  // }
+
+  countingLists(list: []) {
+    return list.length
+  }
+
+  filterBySecondClass(allTheData: []) {
+
+  }
+  filsterByThirdClass() {
+
+  }
+  filterByYearGenderAge() {
+
+  }
+  getStateList() {
+
+  }
+  getMunicipalityList() {
 
   }
 
@@ -223,36 +264,7 @@ export class MainComponent implements OnInit {
     console.log(event)
   }
 
-  resetAllClassSelects() {
-    this.selectedSecondClassId = environment.placeholderSecondClass;
-    this.selectedThirdClassId = environment.placeholderThirdClass;
-    this.secondClassSelectDisable = true;
-    this.thirdClassSelectDisable = true;
-  }
-
-  resetClassSelectBy(numberLevel: number) {
-    if (numberLevel == 2) {
-      this.selectedSecondClassId = environment.placeholderSecondClass;
-      this.selectedThirdClassId = environment.placeholderThirdClass;
-      this.secondClassSelectDisable = true;
-      this.thirdClassSelectDisable = true;
-    }
-    if (numberLevel == 3) {
-      this.selectedThirdClassId = environment.placeholderThirdClass;
-      this.thirdClassSelectDisable = true;
-    }
-  }
-  showNextLevel(level: number) {
-    if (level === 2) {
-      this.secondClassSelectDisable = false;
-    }
-    if (level == 3) {
-      this.thirdClassSelectDisable = false;
-    }
-  }
-  
   countValuesInEighthPosition(data: any[]): Record<number, number> {
-    // Initialize an object to store counts for values 1 to 32
     const counts: Record<number, number> = {};
     for (let i = 1; i <= 32; i++) {
       counts[i] = 0;
@@ -260,7 +272,7 @@ export class MainComponent implements OnInit {
     console.log(counts)
 
     data.map(row => {
-      const value = Number(row[3]); // Use index 7 for 8th position
+      const value = Number(row[3]);
       if (value >= 1 && value <= 32) {
         counts[value]++;
       }
@@ -268,9 +280,29 @@ export class MainComponent implements OnInit {
 
     return counts;
   }
+
+  getDescriptionByIdInAList(id: string, dataList: [string, string][]): string | null {
+    const item = dataList.find((listId) => listId[0] == id);
+    return item ? item[1] : null;
+  }
+
   updateResolution() {
     //this.resolution = "nunicipal"
     this.selectedRegion
     this.updatedResolution = this.selectedResolution
+  }
+
+  updateNotificationSuccess(title: string) {
+    this.notification.fire({
+      icon: "success",
+      title: title
+    });
+  }
+
+  updateNotificationError(title: string) {
+    this.notification.fire({
+      icon: "error",
+      title: title
+    });
   }
 }

@@ -13,7 +13,7 @@ export class DiseaseDbService {
 
   constructor(private http: HttpClient) { }
 
-  getDisease(column1: string, column2: string, table: string): Observable<any> {
+  uniquePairColumns(column1: string, column2: string, table: string): Observable<any> {
     let fullUrl = this.apiUrl + 'unique_pair_columns';
     const params = new HttpParams()
       .set('column1', column1)
@@ -26,7 +26,7 @@ export class DiseaseDbService {
       );
   }
 
-  getCauseDeathList(search_id_first_class: string, search_id_second_class: string): Observable<any> {
+  getThirdClassList(search_id_first_class: string, search_id_second_class: string): Observable<any> {
     let fullUrl = this.apiUrl + 'get_third_level_class';
     const params = new HttpParams()
       .set('search_id_first_class', search_id_first_class)
@@ -38,7 +38,7 @@ export class DiseaseDbService {
       );
   }
 
-  getGroupList(search_id_first_class: string): Observable<any> {
+  getSecondClassList(search_id_first_class: string): Observable<any> {
     let fullUrl = this.apiUrl + 'get_second_level_class';
     const params = new HttpParams()
       .set('search_id_first_class', search_id_first_class);

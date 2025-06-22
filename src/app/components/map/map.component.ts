@@ -39,12 +39,10 @@ export class MapComponent implements OnInit{
     this.map.keyboard.disable();
     this.map.scrollWheelZoom.disable();
 
-    // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.map);
 
-    // Initial layer load (optional, e.g., municipal by default)
     this.updateMapLayerView("states");
   }
   onclick() {
@@ -52,7 +50,7 @@ export class MapComponent implements OnInit{
   }
   updateMapLayerView(isStateOrMunicipality: string){
     if (!this.map) {
-      console.error('Map is not initialized');
+      console.warn('Map is not initialized');
       return;
     }
 

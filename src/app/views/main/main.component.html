@@ -12,8 +12,8 @@
         <div class="col-md-1 d-flex justify-content-left my-3">Modelo:</div>
         <div class="col-md-3 justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label="Select disease" [(ngModel)]="selectedFirstClassId"
-            (ngModelChange)="onSicknessChange($event)">
-            <option selected>{{env.placeholderFirstClass}}</option>
+            (ngModelChange)="onFirstClassChange($event)">
+            <option disabled selected>{{env.placeholderFirstClass}}</option>
             <ng-container *ngFor="let sickness of firstClassList">
               <option [value]="sickness[0]">{{sickness[1]}}</option>
             </ng-container>
@@ -21,7 +21,7 @@
         </div>
         <div class="col-md-3 justify-content-center my-3">
           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" data-bs-toggle="tooltip"
-            [(ngModel)]="selectedSecondClassId" (ngModelChange)="onGroupClassChange($event)"
+            [(ngModel)]="selectedSecondClassId" (ngModelChange)="onSecondClassChange($event)"
             [disabled]="secondClassSelectDisable" title="Esta selección es opcional">
             <option selected>{{env.placeholderSecondClass}}</option>
             <ng-container *ngFor="let group of secondClassList">
@@ -31,9 +31,9 @@
         </div>
         <div class="col-md-3 my-3">
           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" data-bs-toggle="tooltip"
-            [(ngModel)]="selectedThirdClassId" (ngModelChange)="onCauseDeathChange($event)"
+            [(ngModel)]="selectedThirdClassId"
             [disabled]="thirdClassSelectDisable" title="Esta selección es opcional">
-            <option disabled selected>{{env.placeholderThirdClass}}</option>
+            <option selected>{{env.placeholderThirdClass}}</option>
             <ng-container *ngFor="let cause of thirdClassList">
               <option [value]="cause[0]">{{cause[1]}}</option>
             </ng-container>
@@ -79,14 +79,14 @@
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example">
-            <option selected>{{env.placeholderYear}}</option>
-            <ng-container *ngFor="let age of yearsList">
-              <option [value]="age">{{age}}</option>
+            <option selected>{{selectedYear}}</option>
+            <ng-container *ngFor="let year of yearsList">
+              <option [value]="year">{{year}}</option>
             </ng-container>
           </select>
         </div>
         <div class="col-md-1 justify-content-center my-3">
-          <button class="updateButton" (click)="updateResolution()">Actualizar</button>
+          <button class="updateButton" (click)="getAllTheDataByYearAndFirstClassId()">Actualizar</button>
         </div>
       </div>
     </div>
