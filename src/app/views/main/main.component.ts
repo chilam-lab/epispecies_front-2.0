@@ -1,4 +1,3 @@
-// src/app/views/main/main.component.ts
 import { Component, ViewChild, ElementRef, OnInit, HostListener } from '@angular/core';
 import { MapComponent } from '../../components/map/map.component';
 import { DiseaseDbService } from '../../services/disease-db.service';
@@ -39,7 +38,7 @@ export class MainComponent implements OnInit {
   agesList = [];
   gendersList = [];
   yearsList = [];
-  statesMun = []
+  statesAndMunList = []
   allDataByFirstClass = [];
   filteredAllDataByClasses: any[] = [];
   test = [];
@@ -99,10 +98,10 @@ export class MainComponent implements OnInit {
     this.dbService.getAllFrom('ESTADO_MUN')
       .subscribe({
         next: (response) => {
-          this.statesMun = response;
+          this.statesAndMunList = response;
           console.log(JSON.stringify(this.gendersList));
           const stateMap = new Map<number, string>();
-          this.statesMun.forEach(row => {
+          this.statesAndMunList.forEach(row => {
             stateMap.set(row[0], row[1]);
           });
 
@@ -189,21 +188,12 @@ export class MainComponent implements OnInit {
     try {
       const allDatabyFirstClass = await this.getAllTheDataByYearAndFirstClassId();
       this.filteredAllDataByClasses = allDatabyFirstClass;
-      console.log("😱");
-      console.log(allDatabyFirstClass);
-      console.log("😱");
       let filterDataBySubClasses;
       if (this.selectedSecondClassId != environment.placeholderSecondClass) {
         filterDataBySubClasses = this.filterby(1, this.selectedSecondClassId, this.allDataByFirstClass);
-        console.log("fileteredbyGroup")
-        console.log(filterDataBySubClasses)
-        console.log("fileteredbyGroup")
         this.filteredAllDataByClasses = filterDataBySubClasses;
         if (this.selectedThirdClassId != environment.placeholderThirdClass) {
           filterDataBySubClasses = this.filterby(2, this.selectedThirdClassId, filterDataBySubClasses);
-          console.log("fileteredbySUBGroup")
-          console.log(filterDataBySubClasses)
-          console.log("fileteredbySUBGroup")
           this.filteredAllDataByClasses = filterDataBySubClasses;
         }
       }
@@ -211,8 +201,17 @@ export class MainComponent implements OnInit {
     } catch (error) {
       console.error('Error updating map data:', error);
     }
-    
-
+    //count by municipalities
+    let municipalityDataList: any[] = [];
+    this.statesAndMunList.map((region) => {
+      let casesNumber = this.filteredAllDataByClasses.filter((record) => record[4] == region[2]).length
+        municipalityDataList.push([region[0], region[2], casesNumber])
+    })
+    // console.log(municipalityDataList)
+    // const result = municipalityDataList.filter((word) => word[0] == 9);
+    // const result1 = municipalityDataList.filter((word) => word[0] == 9);
+    // console.log(result)
+    // console.log(municipalityDataList)
     Swal.fire({
       timer: 1100,
       title: 'Datos cargados correctamente.',
@@ -241,76 +240,6 @@ export class MainComponent implements OnInit {
 
   filterby(position: number, value: string, dataList: any[]) {
     return dataList.filter((array) => array[position] == value );
-  }
-  // do() {
-  //   let allthedata;
-  //   let showingData;
-  //   if(verifyifselectedTheSecondClass()){
-  //     showingData = filterBySecondClass(allthedata)
-  //     if(verifyifselectedTheThirdClass()){
-  //       showingData = filsterByThirdClass(showingData)
-  //     }
-  //   }
-  //   showingData = applyFilters(showingData)
-  //   statesMun //todos los municipios
-  //   let listNew = {}
-
-  //   this.statesMun.map((item) => {
-  //     let hola = showingData.map((item2) => item2[4] == item[2]).length
-  //     listNew[item[2]] = hola
-  //   })
-  //   console.log(listNew)
-  // }
-
-  // applyFilters(showingData){
-  //   let filteredList = showingData;
-  //   if(verifyGender()){
-  //     filteredList = filterBy(5, 1,filteredList)//position in the list, value, list
-  //   }
-  //   if(verifyAge){
-  //     filteredList = filterBy(5, 1,filteredList)
-  //   }
-  // }
-
-  countingLists(list: []) {
-    return list.length
-  }
-
-  filterBySecondClass(allTheData: []) {
-
-  }
-  filsterByThirdClass() {
-
-  }
-  filterByYearGenderAge() {
-
-  }
-  getStateList() {
-
-  }
-  getMunicipalityList() {
-
-  }
-
-  clearSubgroupSelection(event: any) {
-    console.log(event)
-  }
-
-  countValuesInEighthPosition(data: any[]): Record<number, number> {
-    const counts: Record<number, number> = {};
-    for (let i = 1; i <= 32; i++) {
-      counts[i] = 0;
-    }
-    console.log(counts)
-
-    data.map(row => {
-      const value = Number(row[3]);
-      if (value >= 1 && value <= 32) {
-        counts[value]++;
-      }
-    });
-
-    return counts;
   }
 
   getDescriptionByIdInAList(id: string, dataList: [string, string][]): string | null {
