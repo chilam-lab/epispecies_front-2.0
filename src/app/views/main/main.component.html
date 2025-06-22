@@ -79,7 +79,8 @@
           </select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
-          <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example"
+          [(ngModel)]="selectedYear">
             <option selected>{{selectedYear}}</option>
             <ng-container *ngFor="let year of yearsList">
               <option [value]="year">{{year}}</option>

@@ -207,7 +207,7 @@ export class MainComponent implements OnInit {
           this.filteredAllDataByClasses = filterDataBySubClasses;
         }
       }
-      this.filteredAllDataByClasses = this.applyFilters(allDatabyFirstClass)
+      this.filteredAllDataByClasses = this.applyFilters(this.filteredAllDataByClasses)
     } catch (error) {
       console.error('Error updating map data:', error);
     }
