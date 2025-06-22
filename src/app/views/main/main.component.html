@@ -55,7 +55,8 @@
           </select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
-          <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example"
+            [(ngModel)]="selectedGender">
             <option selected>{{env.placeholderGender}}</option>
             <ng-container *ngFor="let genderId of gendersList">
               <option [value]="genderId">{{gendersDict[genderId]}}</option>
@@ -86,7 +87,7 @@
           </select>
         </div>
         <div class="col-md-1 justify-content-center my-3">
-          <button class="updateButton" (click)="getAllTheDataByYearAndFirstClassId()">Actualizar</button>
+          <button class="updateButton" (click)="updateTheDataForTheMap()">Actualizar</button>
         </div>
       </div>
     </div>

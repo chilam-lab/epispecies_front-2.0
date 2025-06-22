@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ApiResponse, CVEGrupoAndCausa, CausaDescription } from '../../models/cve_list';
 import { environment } from '../../../environments/environment';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -39,6 +40,9 @@ export class MainComponent implements OnInit {
   gendersList = [];
   yearsList = [];
   statesMun = []
+  allDataByFirstClass = [];
+  filteredAllDataByClasses: any[] = [];
+  test = [];
   countValuesInEdo: Record<number, number> = {}
   displayData: any = [];
   selectedRegion: string = "País";
@@ -120,9 +124,6 @@ export class MainComponent implements OnInit {
       });
   }
 
-
-
-
   onFirstClassChange(firstClassId: string) {
     this.selectedSecondClassId = environment.placeholderSecondClass;
     this.selectedThirdClassId = environment.placeholderThirdClass;
@@ -159,41 +160,22 @@ export class MainComponent implements OnInit {
           }
         });
     }
-
   }
 
-
-
-  async getAllTheDataByYearAndFirstClassId() {
-    Swal.fire({
-      title: 'Cargando datos...',
-      allowOutsideClick: false,
-      showConfirmButton: true,
-    })
-    Swal.showLoading();
-    this.dbService.getDataByYear(this.selectedYear, this.selectedFirstClassId)
-      .subscribe({
-        next: (response) => {
-          console.log("😀");
-          console.log(response);
-          console.log("😀");
-          this.countValuesInEdo = this.countValuesInEighthPosition(response);
-          console.log("Counts of values in the 8th position (1 to 32):");
-          console.log()
-          for (let i = 1; i <= 32; i++) {
-            console.log(`Value ${i}: ${this.countValuesInEdo[i]}`);
-          }
-          
-        },
-        error: (error) => {
-          console.error('Error fetching data:', error);
-          Swal.fire({
-            timer: 1000,
-            title: 'Ocurrio un error al cargar los datos.',
-            icon: 'error'
-          })
-        }
-      });
+  async getAllTheDataByYearAndFirstClassId(): Promise<any> {
+    try {
+      const response = await firstValueFrom(
+        this.dbService.getDataByYear(this.selectedYear, this.selectedFirstClassId)
+      );
+      console.log("😀");
+      console.log(response);
+      this.allDataByFirstClass = response;
+      console.log("😀");
+      return response;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw error;
+    }
   }
 
   async updateTheDataForTheMap() {
@@ -202,13 +184,63 @@ export class MainComponent implements OnInit {
       allowOutsideClick: false,
       showConfirmButton: true,
     })
+    Swal.showLoading();
+    //add verification for the models
+    try {
+      const allDatabyFirstClass = await this.getAllTheDataByYearAndFirstClassId();
+      this.filteredAllDataByClasses = allDatabyFirstClass;
+      console.log("😱");
+      console.log(allDatabyFirstClass);
+      console.log("😱");
+      let filterDataBySubClasses;
+      if (this.selectedSecondClassId != environment.placeholderSecondClass) {
+        filterDataBySubClasses = this.filterby(1, this.selectedSecondClassId, this.allDataByFirstClass);
+        console.log("fileteredbyGroup")
+        console.log(filterDataBySubClasses)
+        console.log("fileteredbyGroup")
+        this.filteredAllDataByClasses = filterDataBySubClasses;
+        if (this.selectedThirdClassId != environment.placeholderThirdClass) {
+          filterDataBySubClasses = this.filterby(2, this.selectedThirdClassId, filterDataBySubClasses);
+          console.log("fileteredbySUBGroup")
+          console.log(filterDataBySubClasses)
+          console.log("fileteredbySUBGroup")
+          this.filteredAllDataByClasses = filterDataBySubClasses;
+        }
+      }
+      this.filteredAllDataByClasses = this.applyFilters(allDatabyFirstClass)
+    } catch (error) {
+      console.error('Error updating map data:', error);
+    }
     
-    await this.getAllTheDataByYearAndFirstClassId()
+
     Swal.fire({
-            timer: 1100,
-            title: 'Datos cargados correctamente.',
-            icon: 'success'
-          })
+      timer: 1100,
+      title: 'Datos cargados correctamente.',
+      icon: 'success'
+    })
+  }
+
+  applyFilters(dataList: any[]){
+    let filteredList = dataList;
+    console.log("🌈")
+    console.log(filteredList)
+    console.log(this.selectedAge)
+    console.log(this.selectedGender)
+    if(this.selectedAge != environment.placeholderAge){
+      filteredList = this.filterby(8, this.selectedAge, filteredList)//position in the list, value, list
+    console.log("🌈a")
+      console.log(filteredList)
+    }
+    if(this.selectedGender != environment.placeholderGender){
+      filteredList = this.filterby(7, this.selectedGender,filteredList)
+      console.log("🌈b")
+      console.log(filteredList)
+    }
+    return filteredList;
+  }
+
+  filterby(position: number, value: string, dataList: any[]) {
+    return dataList.filter((array) => array[position] == value );
   }
   // do() {
   //   let allthedata;
