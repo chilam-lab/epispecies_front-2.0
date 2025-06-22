@@ -11,14 +11,16 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
-export class MapComponent implements OnInit{
+export class MapComponent implements OnInit {
   private map: L.Map | undefined;
-  @Input() updatedResolution = "";
+  @Input() updatedResolution:string = "";
+  @Input() munDataToDisplayInMap: [number, number, string][] = [];
   constructor(private mapService: MapService) { }
-  geoJsonLayerMunicipal: any; // Replace 'any' with your GeoJSON type
-  geoJsonLayerStates: any; // Replace 'any' with your GeoJSON type
+  geoJsonLayerMunicipal: any;
+  geoJsonLayerStates: any;
   currentGeoJsonLayer: L.GeoJSON | undefined;
-  
+  statesData = [];
+  municipalityData = [];
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -48,28 +50,26 @@ export class MapComponent implements OnInit{
   onclick() {
 
   }
-  updateMapLayerView(isStateOrMunicipality: string){
+
+  updateMapLayerView(isStateOrMunicipality: string) {
     if (!this.map) {
       console.warn('Map is not initialized');
       return;
     }
-
     let geoJson;
     if (isStateOrMunicipality === 'Municipal') {
       geoJson = this.geoJsonLayerMunicipal;
     } else {
       geoJson = this.geoJsonLayerStates;
     }
-
     console.log('GeoJSON:', geoJson);
-
     if (this.currentGeoJsonLayer) {
       this.map.removeLayer(this.currentGeoJsonLayer);
       this.currentGeoJsonLayer = undefined;
     }
 
     this.currentGeoJsonLayer = L.geoJSON(geoJson, {
-      style: function (feature) {
+      style: (feature) => {  // Changed to arrow function
         return {
           fillColor: '#3388ff',
           weight: 2,
@@ -78,13 +78,14 @@ export class MapComponent implements OnInit{
           fillOpacity: 0.7,
         };
       },
-      onEachFeature: function (feature, layer) {
+
+      onEachFeature: (feature, layer) => {  // Changed to arrow function
         if (feature.properties) {
           layer.bindPopup(
             `<b>Cell ID:</b> ${feature.properties.cellid}<br>` +
             `<b>Clave:</b> ${feature.properties.clave}`
           );
-          layer.bindTooltip(`Clave: ${feature.properties.clave}`, { sticky: true });
+          layer.bindTooltip(`Clave: ${feature.properties.clave} heelo: ${this.updateData(Number(feature.properties.clave))}`, { sticky: true });
         }
       },
     }).addTo(this.map);
@@ -95,10 +96,20 @@ export class MapComponent implements OnInit{
     } else {
       this.map.setView([11.87, -81.58], 5);
     }
-  
   }
+
+  updateData(id: number) {
+    return this.munDataToDisplayInMap.filter((record) => record[1] === id);
+  }
+
+
+
   ngOnChanges(changes: SimpleChanges): void {
-    let layer = changes['updatedResolution']['currentValue']
-    this.updateMapLayerView(layer)
+    console.log(changes)
+    let layer = changes['munDataToDisplayInMap']['currentValue']
+    this.updateMapLayerView(layer);
+    // munDataToDisplayInMap
+    // statesData = [];
+    // municipalityData = [];
   }
 }

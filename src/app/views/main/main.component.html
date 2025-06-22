@@ -31,8 +31,7 @@
         </div>
         <div class="col-md-3 my-3">
           <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" data-bs-toggle="tooltip"
-            [(ngModel)]="selectedThirdClassId"
-            [disabled]="thirdClassSelectDisable" title="Esta selección es opcional">
+            [(ngModel)]="selectedThirdClassId" [disabled]="thirdClassSelectDisable" title="Esta selección es opcional">
             <option selected>{{env.placeholderThirdClass}}</option>
             <ng-container *ngFor="let cause of thirdClassList">
               <option [value]="cause[0]">{{cause[1]}}</option>
@@ -46,8 +45,7 @@
         </div>
 
         <div class="col-md-2 d-flex justify-content-center my-3">
-          <select class="form-select form-select-lg" aria-label=".form-select-lg example" 
-            [(ngModel)]="selectedAge">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedAge">
             <option selected>{{env.placeholderAge}}</option>
             <ng-container *ngFor="let age of agesList">
               <option [value]="age">{{age}}</option>
@@ -55,8 +53,7 @@
           </select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
-          <select class="form-select form-select-lg" aria-label=".form-select-lg example"
-            [(ngModel)]="selectedGender">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedGender">
             <option selected>{{env.placeholderGender}}</option>
             <ng-container *ngFor="let genderId of gendersList">
               <option [value]="genderId">{{gendersDict[genderId]}}</option>
@@ -79,8 +76,7 @@
           </select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
-          <select class="form-select form-select-lg" aria-label=".form-select-lg example"
-          [(ngModel)]="selectedYear">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedYear">
             <option selected>{{selectedYear}}</option>
             <ng-container *ngFor="let year of yearsList">
               <option [value]="year">{{year}}</option>
@@ -133,7 +129,8 @@
       <div class="col-lg-8 p-0 map-section">
 
         <div class="row row-map">
-          <app-map [updatedResolution]="updatedResolution"></app-map>
+          <app-map [updatedResolution]="updatedResolution" [munDataToDisplayInMap]="munDataToDisplayInMap">
+          </app-map>
         </div>
       </div>
     </div>

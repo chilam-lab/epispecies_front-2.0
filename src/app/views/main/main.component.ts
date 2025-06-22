@@ -41,9 +41,9 @@ export class MainComponent implements OnInit {
   statesAndMunList = []
   allDataByFirstClass = [];
   filteredAllDataByClasses: any[] = [];
-  test = [];
   countValuesInEdo: Record<number, number> = {}
   displayData: any = [];
+  munDataToDisplayInMap: any[] = [];
   selectedRegion: string = "País";
   selectedResolution: string = "Estatal";
   updatedRegion: string = "País";
@@ -184,6 +184,10 @@ export class MainComponent implements OnInit {
       showConfirmButton: true,
     })
     Swal.showLoading();
+      console.log("ccccccc")
+     console.log(this.updatedResolution)
+    console.log(this.selectedResolution)
+    console.log("ccccccc")
     //add verification for the models
     try {
       const allDatabyFirstClass = await this.getAllTheDataByYearAndFirstClassId();
@@ -207,11 +211,16 @@ export class MainComponent implements OnInit {
       let casesNumber = this.filteredAllDataByClasses.filter((record) => record[4] == region[2]).length
         municipalityDataList.push([region[0], region[2], casesNumber])
     })
+
+    this.munDataToDisplayInMap = municipalityDataList
+
+   
+    this.updatedResolution = this.selectedResolution
     // console.log(municipalityDataList)
     // const result = municipalityDataList.filter((word) => word[0] == 9);
     // const result1 = municipalityDataList.filter((word) => word[0] == 9);
     // console.log(result)
-    // console.log(municipalityDataList)
+    // console.log(municipalityDataList)//estado municipio cuenta
     Swal.fire({
       timer: 1100,
       title: 'Datos cargados correctamente.',
