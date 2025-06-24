@@ -62,17 +62,17 @@
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedRegion">
-            <option value='País' selected>Todo el país</option>
-            <option value='Estado'>Estado</option>
-            <option value='Municipio'>Municipio</option>
-            <option value='Metropli'>Metropli</option>
+            <option value={{env.placeholderCountry}} selected>Todo el país</option>
+            <option value={{env.placeholderState}}>Estado</option>
+            <option value={{env.placeholderMunicipal}}>Municipio</option>
+            <option value={{env.placeholderMetropoli}}>Metropli</option>
           </select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example"
             [(ngModel)]="selectedResolution">
-            <option selected>Estatal</option>
-            <option>Municipal</option>
+            <option value={{env.placeholderStateResolution}} selected>Estatal</option>
+            <option value={{env.placeholderMunResolution}} >Municipal</option>
           </select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
@@ -90,7 +90,7 @@
     </div>
   </div>
 
-  <div class="container-fluid p-0 map-container">
+  <div class="container-fluid map-container">
     <div class="row">
       <div class="col-lg-4 p-0 mb-3">
         <div class="jumbotron">
@@ -126,7 +126,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-8 p-0 map-section">
+      <div class="col-lg-8 map-section">
 
         <div class="row row-map">
           <app-map [updatedResolution]="updatedResolution" [munDataToDisplayInMap]="munDataToDisplayInMap">

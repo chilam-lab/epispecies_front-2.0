@@ -3,11 +3,9 @@ import { MapComponent } from '../../components/map/map.component';
 import { DiseaseDbService } from '../../services/disease-db.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SicknessGroupList, SicknessKey } from '../../models/sickness-group-list';
 import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ApiResponse, CVEGrupoAndCausa, CausaDescription } from '../../models/cve_list';
 import { environment } from '../../../environments/environment';
 import { firstValueFrom } from 'rxjs';
 
@@ -41,13 +39,12 @@ export class MainComponent implements OnInit {
   statesAndMunList = []
   allDataByFirstClass = [];
   filteredAllDataByClasses: any[] = [];
-  countValuesInEdo: Record<number, number> = {}
   displayData: any = [];
   munDataToDisplayInMap: any[] = [];
-  selectedRegion: string = "País";
-  selectedResolution: string = "Estatal";
-  updatedRegion: string = "País";
-  updatedResolution: string = "Estatal";
+  selectedRegion: string = environment.placeholderCountry;
+  selectedResolution: string = environment.placeholderStateResolution;
+  updatedRegion: string = environment.placeholderCountry;
+  updatedResolution: string = environment.placeholderStateResolution;
   gendersDict = { 1: "Hombres", 2: "Mujeres", 9: "Otro" }
   notification = Swal.mixin({
     toast: true,
@@ -68,7 +65,7 @@ export class MainComponent implements OnInit {
       showConfirmButton: true,
     })
     Swal.showLoading();
-    this.dbService.uniquePairColumns('CVE_Enfermedad', 'Enfermedad', 'ENFERMEDADES')
+    this.dbService.uniquePairColumns(environment.firstClassIdColumn, environment.firstClassDescripColumn, environment.modelsDictionaryTable)
       .subscribe({
         next: (response) => {
           this.firstClassList = response;
@@ -82,7 +79,7 @@ export class MainComponent implements OnInit {
           })
         }
       });
-    this.dbService.getUniqueValues(['Edad_gpo', 'Sexo', 'Anio'])
+    this.dbService.getUniqueValues([environment.ageGrupoColumn, environment.genderColumn, environment.yearColumn])
       .subscribe({
         next: (response) => {
           this.agesList = response[0];
@@ -95,22 +92,10 @@ export class MainComponent implements OnInit {
           console.error('Error fetching data:', error);
         }
       });
-    this.dbService.getAllFrom('ESTADO_MUN')
+    this.dbService.getAllFrom(environment.statesMunDictionaryTable)
       .subscribe({
         next: (response) => {
           this.statesAndMunList = response;
-          console.log(JSON.stringify(this.gendersList));
-          const stateMap = new Map<number, string>();
-          this.statesAndMunList.forEach(row => {
-            stateMap.set(row[0], row[1]);
-          });
-
-          // Convert counts to array for display
-          this.displayData = Object.entries(this.countValuesInEdo).map(([id, count]) => ({
-            id: Number(id),
-            name: stateMap.get(Number(id)) || `State ${id}`,
-            count
-          }));
           Swal.fire({
             timer: 1100,
             title: 'Datos cargados correctamente.',
@@ -184,10 +169,6 @@ export class MainComponent implements OnInit {
       showConfirmButton: true,
     })
     Swal.showLoading();
-      console.log("ccccccc")
-     console.log(this.updatedResolution)
-    console.log(this.selectedResolution)
-    console.log("ccccccc")
     //add verification for the models
     try {
       const allDatabyFirstClass = await this.getAllTheDataByYearAndFirstClassId();
@@ -230,18 +211,18 @@ export class MainComponent implements OnInit {
 
   applyFilters(dataList: any[]){
     let filteredList = dataList;
-    console.log("🌈")
+    console.log("🌈Before filters: ")
     console.log(filteredList)
     console.log(this.selectedAge)
     console.log(this.selectedGender)
     if(this.selectedAge != environment.placeholderAge){
       filteredList = this.filterby(8, this.selectedAge, filteredList)//position in the list, value, list
-    console.log("🌈a")
+    console.log("🌈After filter one:")
       console.log(filteredList)
     }
     if(this.selectedGender != environment.placeholderGender){
       filteredList = this.filterby(7, this.selectedGender,filteredList)
-      console.log("🌈b")
+      console.log("🌈After all filters:")
       console.log(filteredList)
     }
     return filteredList;
