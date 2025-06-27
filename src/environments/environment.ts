@@ -4,7 +4,7 @@ export const environment = {
   placeholderMunicipal: 'Municipio',
   placeholderMetropoli: 'Metropli',
   placeholderStateResolution: 'Estatal',
-  placeholderMunResolution: 'Estatal',
+  placeholderMunResolution: 'Municipal',
   placeholderFirstClass: 'Selecciona una enfermedad',
   placeholderSecondClass: 'Sin grupo',
   placeholderThirdClass: 'Sin subgrupo',
