@@ -45,7 +45,7 @@ export class MainComponent implements OnInit {
   selectedResolution: string = environment.placeholderStateResolution;
   updatedRegion: string = environment.placeholderCountry;
   updatedResolution: string = environment.placeholderStateResolution;
-  gendersDict = { 1: "Hombres", 2: "Mujeres", 9: "Otro" }
+  gendersDict = { 1: "Hombres", 2: "Mujeres", 9: "No registrado" }
   notification = Swal.mixin({
     toast: true,
     position: "top-end",
