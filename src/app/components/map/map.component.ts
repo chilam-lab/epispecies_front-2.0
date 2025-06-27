@@ -3,6 +3,7 @@ import * as L from 'leaflet';
 import { MapService } from './mapService';
 import Swal from 'sweetalert2';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-map',
@@ -13,14 +14,15 @@ import { firstValueFrom } from 'rxjs';
 })
 export class MapComponent implements OnInit {
   private map: L.Map | undefined;
-  @Input() updatedResolution:string = "";
+  @Input() updatedResolution: string = "";
   @Input() munDataToDisplayInMap: [number, number, string][] = [];
   constructor(private mapService: MapService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
   currentGeoJsonLayer: L.GeoJSON | undefined;
-  statesData = [];
-  municipalityData = [];
+  selectedResolution: string = environment.placeholderStateResolution;
+  rawDataTodisplayInMap: [number, number, string][] = [];
+  cleanDataToDisplay:[number, number][] = [];
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -57,11 +59,16 @@ export class MapComponent implements OnInit {
       return;
     }
     let geoJson;
-    if (isStateOrMunicipality === 'Municipal') {
+    let newa: { stateCounts: [number, number][], municipalCounts: [number, number][] } = this.groupByStateAndMunicipal();
+    if (isStateOrMunicipality === 'Municipal') { 
       geoJson = this.geoJsonLayerMunicipal;
+      
+      this.cleanDataToDisplay = newa["municipalCounts"];
     } else {
-      geoJson = this.geoJsonLayerStates;
+        geoJson = this.geoJsonLayerStates;
+      this.cleanDataToDisplay = newa["stateCounts"];
     }
+
     console.log('GeoJSON:', geoJson);
     if (this.currentGeoJsonLayer) {
       this.map.removeLayer(this.currentGeoJsonLayer);
@@ -99,29 +106,107 @@ export class MapComponent implements OnInit {
   }
 
   updateData(id: number) {
-    return this.munDataToDisplayInMap.filter((record) => record[1] === id);
+    return this.cleanDataToDisplay.filter((record) => record[0] === id)[0][1];
   }
 
+  filterAndCountData() {
+    const stateMap = new Map();
+    const municipalMap = new Map();
+    const uniqueValues = [...new Set(this.rawDataTodisplayInMap.map(item => item[0]))];
+    console.log("aaajdjjdj")
+    console.log(uniqueValues)
+    console.log(uniqueValues)
+    console.log("aaajdjjdj")
+
+
+
+    this.rawDataTodisplayInMap.forEach((item: any[]) => {
+      const stateId = item[0];
+      const municipalId = item[1];
+
+
+
+
+      // Count states
+      stateMap.set(stateId, (stateMap.get(stateId) || 0) + 1);
+
+      // Count municipalities  
+      municipalMap.set(municipalId, (municipalMap.get(municipalId) || 0) + 1);
+    });
+
+    // Convert Maps to arrays
+    const stateResult = Array.from(stateMap.entries());
+    const municipalResult = Array.from(municipalMap.entries());
+
+
+    return { stateResult, municipalResult };
+  }
+
+
+  groupByStateAndMunicipal(): { stateCounts: [number, number][], municipalCounts: [number, number][] } {
+    // Create maps to store counts
+    const stateMap = new Map<number, number>();
+    const municipalMap = new Map<number, number>();
+    
+    // Count occurrences
+    this.rawDataTodisplayInMap.forEach(([idState, idMunicipal, _description]) => {
+        stateMap.set(idState, (stateMap.get(idState) || 0) + 1);
+        municipalMap.set(idMunicipal, (municipalMap.get(idMunicipal) || 0) + 1);
+    });
+    
+    // Convert maps to desired array format
+    const stateCounts: [number, number][] = Array.from(stateMap.entries());
+    const municipalCounts: [number, number][] = Array.from(municipalMap.entries());
+    
+        console.log("aaaaaaaSUM")
+    console.log(JSON.stringify(stateCounts))
+    console.log(JSON.stringify(municipalCounts))
+    console.log("aaaaaaaSUM")
+    return { stateCounts, municipalCounts };
+}
 
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes)
-    let layer;
-    let l ;
-    try{
-      layer = changes['updatedResolution']['currentValue']
-      l = changes['munDataToDisplayInMap']['currentValue']
-    } catch(err){
+    try {
+      let newResolution = changes['updatedResolution']['currentValue'];
+      if (newResolution && newResolution != this.selectedResolution) {
 
+        console.log("Dentro de la nuevaresolucion")
+        this.selectedResolution = newResolution;
+        
+      }
+      console.log("newResolution")
+      console.log(newResolution)
+      console.log(newResolution != this.selectedResolution)
+      console.log("newResolution")
+
+    } catch (err) {
+      console.log("no resolution updates");
     }
-    
+    try {
+      let newDataToDisplay = changes['munDataToDisplayInMap']['currentValue'];
+
+      console.log("newDataToDisplay1111")
+      console.log(newDataToDisplay)
+      console.log(this.rawDataTodisplayInMap)
+      console.log(newDataToDisplay !== this.rawDataTodisplayInMap)
+      console.log("newDataToDisplay1111")
+      if (newDataToDisplay.length != 0 && newDataToDisplay != this.rawDataTodisplayInMap) {
+        console.log("Updates dentro de los datos")
+        this.rawDataTodisplayInMap = newDataToDisplay;
+      }
+    } catch (err) {
+      console.log("no updates in the data")
+    }
     console.log("La l:")
-    console.log(l)
     console.log("La munDataToDisplayInMap:")
     console.log(this.munDataToDisplayInMap)
-    this.updateMapLayerView(layer);
+
     // munDataToDisplayInMap
     // statesData = [];
     // municipalityData = [];
+    this.updateMapLayerView(this.selectedResolution);
   }
+
 }
