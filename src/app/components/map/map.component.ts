@@ -22,7 +22,6 @@ export class MapComponent implements OnInit {
   currentGeoJsonLayer: L.GeoJSON | undefined;
   selectedResolution: string = environment.placeholderStateResolution;
   rawDataTodisplayInMap: [number, number, string][] = [];
-  cleanDataToDisplay:[number, number][] = [];
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -59,14 +58,10 @@ export class MapComponent implements OnInit {
       return;
     }
     let geoJson;
-    let newa: { stateCounts: [number, number][], municipalCounts: [number, number][] } = this.groupByStateAndMunicipal();
     if (isStateOrMunicipality === 'Municipal') { 
       geoJson = this.geoJsonLayerMunicipal;
-      
-      this.cleanDataToDisplay = newa["municipalCounts"];
     } else {
         geoJson = this.geoJsonLayerStates;
-      this.cleanDataToDisplay = newa["stateCounts"];
     }
 
     console.log('GeoJSON:', geoJson);
@@ -106,65 +101,21 @@ export class MapComponent implements OnInit {
   }
 
   updateData(id: number) {
-    return this.cleanDataToDisplay.filter((record) => record[0] === id)[0][1];
+    if(this.selectedResolution === 'Municipal'){
+     const sum = this.munDataToDisplayInMap
+        .filter(item => item[1] === id)
+        .reduce((sum, item) => sum + Number(item[2]), 0); 
+        return [id, sum];
+    }
+    else{
+      
+    const sum = this.munDataToDisplayInMap
+        .filter(item => item[0] === id)
+        .reduce((sum, item) => sum + Number(item[2]), 0);
+        return [id, sum];
+      }
+
   }
-
-  filterAndCountData() {
-    const stateMap = new Map();
-    const municipalMap = new Map();
-    const uniqueValues = [...new Set(this.rawDataTodisplayInMap.map(item => item[0]))];
-    console.log("aaajdjjdj")
-    console.log(uniqueValues)
-    console.log(uniqueValues)
-    console.log("aaajdjjdj")
-
-
-
-    this.rawDataTodisplayInMap.forEach((item: any[]) => {
-      const stateId = item[0];
-      const municipalId = item[1];
-
-
-
-
-      // Count states
-      stateMap.set(stateId, (stateMap.get(stateId) || 0) + 1);
-
-      // Count municipalities  
-      municipalMap.set(municipalId, (municipalMap.get(municipalId) || 0) + 1);
-    });
-
-    // Convert Maps to arrays
-    const stateResult = Array.from(stateMap.entries());
-    const municipalResult = Array.from(municipalMap.entries());
-
-
-    return { stateResult, municipalResult };
-  }
-
-
-  groupByStateAndMunicipal(): { stateCounts: [number, number][], municipalCounts: [number, number][] } {
-    // Create maps to store counts
-    const stateMap = new Map<number, number>();
-    const municipalMap = new Map<number, number>();
-    
-    // Count occurrences
-    this.rawDataTodisplayInMap.forEach(([idState, idMunicipal, _description]) => {
-        stateMap.set(idState, (stateMap.get(idState) || 0) + 1);
-        municipalMap.set(idMunicipal, (municipalMap.get(idMunicipal) || 0) + 1);
-    });
-    
-    // Convert maps to desired array format
-    const stateCounts: [number, number][] = Array.from(stateMap.entries());
-    const municipalCounts: [number, number][] = Array.from(municipalMap.entries());
-    
-        console.log("aaaaaaaSUM")
-    console.log(JSON.stringify(stateCounts))
-    console.log(JSON.stringify(municipalCounts))
-    console.log("aaaaaaaSUM")
-    return { stateCounts, municipalCounts };
-}
-
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log(changes)
@@ -196,12 +147,17 @@ export class MapComponent implements OnInit {
         console.log("Updates dentro de los datos")
         this.rawDataTodisplayInMap = newDataToDisplay;
       }
+      console.log("no updates in the data")
+      console.log(this.rawDataTodisplayInMap.length)
+      console.log("no updates in the data")
     } catch (err) {
       console.log("no updates in the data")
     }
     console.log("La l:")
-    console.log("La munDataToDisplayInMap:")
-    console.log(this.munDataToDisplayInMap)
+    console.log("La updateData:")
+    console.log(this.updateData(5))
+    console.log(this.munDataToDisplayInMap.filter(item => item[0] === 5))
+    console.log("La updateData:")
 
     // munDataToDisplayInMap
     // statesData = [];
