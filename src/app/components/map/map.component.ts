@@ -22,6 +22,7 @@ export class MapComponent implements OnInit {
   currentGeoJsonLayer: L.GeoJSON | undefined;
   selectedResolution: string = environment.placeholderStateResolution;
   rawDataTodisplayInMap: [number, number, string][] = [];
+  highestValueInData = 0;
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -58,10 +59,10 @@ export class MapComponent implements OnInit {
       return;
     }
     let geoJson;
-    if (isStateOrMunicipality === 'Municipal') { 
+    if (isStateOrMunicipality === 'Municipal') {
       geoJson = this.geoJsonLayerMunicipal;
     } else {
-        geoJson = this.geoJsonLayerStates;
+      geoJson = this.geoJsonLayerStates;
     }
 
     console.log('GeoJSON:', geoJson);
@@ -71,9 +72,19 @@ export class MapComponent implements OnInit {
     }
 
     this.currentGeoJsonLayer = L.geoJSON(geoJson, {
-      style: (feature) => {  // Changed to arrow function
+      style: (feature: any | undefined) => {
+        if (feature?.properties) {
+          const fillColor = this.getColorForValue(this.updateData(feature.properties.cellid)) || '#ffffff';
+          return {
+            fillColor, // Now guaranteed to be a string
+            weight: 2,
+            opacity: 1,
+            color: '#ffffff',
+            fillOpacity: 0.7,
+          };
+        }
         return {
-          fillColor: '#3388ff',
+          fillColor: '#ffffff',
           weight: 2,
           opacity: 1,
           color: '#ffffff',
@@ -87,7 +98,7 @@ export class MapComponent implements OnInit {
             `<b>Cell ID:</b> ${feature.properties.cellid}<br>` +
             `<b>Clave:</b> ${feature.properties.clave}`
           );
-          layer.bindTooltip(`Clave: ${feature.properties.clave} heelo: ${this.updateData(Number(feature.properties.clave))}`, { sticky: true });
+          layer.bindTooltip(`Clave: ${feature.properties.clave} heelo: ${this.updateData(feature.properties.cellid)}`, { sticky: true });
         }
       },
     }).addTo(this.map);
@@ -101,19 +112,19 @@ export class MapComponent implements OnInit {
   }
 
   updateData(id: number) {
-    if(this.selectedResolution === 'Municipal'){
-     const sum = this.munDataToDisplayInMap
+    if (this.selectedResolution === 'Municipal') {
+      const sum = this.munDataToDisplayInMap
         .filter(item => item[1] === id)
-        .reduce((sum, item) => sum + Number(item[2]), 0); 
-        return [id, sum];
+        .reduce((sum, item) => sum + Number(item[2]), 0);
+      return sum;
     }
-    else{
-      
-    const sum = this.munDataToDisplayInMap
+    else {
+
+      const sum = this.munDataToDisplayInMap
         .filter(item => item[0] === id)
         .reduce((sum, item) => sum + Number(item[2]), 0);
-        return [id, sum];
-      }
+      return sum;
+    }
 
   }
 
@@ -125,7 +136,7 @@ export class MapComponent implements OnInit {
 
         console.log("Dentro de la nuevaresolucion")
         this.selectedResolution = newResolution;
-        
+
       }
       console.log("newResolution")
       console.log(newResolution)
@@ -146,6 +157,17 @@ export class MapComponent implements OnInit {
       if (newDataToDisplay.length != 0 && newDataToDisplay != this.rawDataTodisplayInMap) {
         console.log("Updates dentro de los datos")
         this.rawDataTodisplayInMap = newDataToDisplay;
+        // Calculate the maximum value for the dynamic range
+        let maxValue = 0;
+
+        console.log('Max value:', maxValue);
+        for (const row of this.rawDataTodisplayInMap) {
+          const value = row[2];
+          if (typeof value === 'number' && value > maxValue) {
+            maxValue = value;
+          }
+        }
+        this.highestValueInData = maxValue;
       }
       console.log("no updates in the data")
       console.log(this.rawDataTodisplayInMap.length)
@@ -163,6 +185,31 @@ export class MapComponent implements OnInit {
     // statesData = [];
     // municipalityData = [];
     this.updateMapLayerView(this.selectedResolution);
+  }
+
+  getColorForValue(value: number): string {
+    let maxValue = this.highestValueInData;
+    console.log("el value value")
+    console.log(value)
+    console.log("el max number")
+    console.log(maxValue)
+    if (maxValue === 0) return '#3388ff'; // Avoid division by zero
+
+    // Define thresholds as fractions of maxValue
+    const thresholds = [
+      { limit: 0.8 * maxValue, color: '#faf7b2' }, // Red for top 20%
+      { limit: 0.6 * maxValue, color: '#6a0000' }, // Orange for 60-80%
+      { limit: 0.4 * maxValue, color: '#d50000' }, // Yellow for 40-60%
+      { limit: 0.2 * maxValue, color: '#ffc455' }, // Green for 20-40%
+      { limit: 0, color: '#89e6ff' },              // Cyan for 0-20%
+    ];
+
+    for (const threshold of thresholds) {
+      if (value > threshold.limit) {
+        return threshold.color;
+      }
+    }
+    return '#3388ff'; // Fallback color
   }
 
 }
