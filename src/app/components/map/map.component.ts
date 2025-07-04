@@ -15,7 +15,7 @@ import { environment } from '../../../environments/environment';
 export class MapComponent implements OnInit {
   private map: L.Map | undefined;
   @Input() updatedResolution: string = "";
-  @Input() munDataToDisplayInMap: [number, number, string][] = [];
+  @Input() munDataToDisplayInMap: [number, string, string][] = [];
   constructor(private mapService: MapService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
@@ -60,8 +60,10 @@ export class MapComponent implements OnInit {
     }
     let geoJson;
     if (isStateOrMunicipality === 'Municipal') {
+      console.log("THE GEOJSON IS NOW MI¡UNICIPAL 😱")
       geoJson = this.geoJsonLayerMunicipal;
     } else {
+      console.log("WTF 😱")
       geoJson = this.geoJsonLayerStates;
     }
 
@@ -74,7 +76,7 @@ export class MapComponent implements OnInit {
     this.currentGeoJsonLayer = L.geoJSON(geoJson, {
       style: (feature: any | undefined) => {
         if (feature?.properties) {
-          const fillColor = this.getColorForValue(this.updateData(feature.properties.cellid)) || '#ffffff';
+          const fillColor = this.getColorForValue(this.updateData(feature.properties.clave)) || '#ffffff';
           return {
             fillColor, // Now guaranteed to be a string
             weight: 2,
@@ -98,7 +100,7 @@ export class MapComponent implements OnInit {
             `<b>Cell ID:</b> ${feature.properties.cellid}<br>` +
             `<b>Clave:</b> ${feature.properties.clave}`
           );
-          layer.bindTooltip(`Clave: ${feature.properties.clave} heelo: ${this.updateData(feature.properties.cellid)}`, { sticky: true });
+          layer.bindTooltip(`Clave: ${feature.properties.clave} heelo: ${this.updateData(feature.properties.clave)}`, { sticky: true });
         }
       },
     }).addTo(this.map);
@@ -111,17 +113,17 @@ export class MapComponent implements OnInit {
     }
   }
 
-  updateData(id: number) {
+  updateData(id: string): number {
+    let hey = Number(id)
+    let ajs = hey.toString();
     if (this.selectedResolution === 'Municipal') {
-      const sum = this.munDataToDisplayInMap
-        .filter(item => item[1] === id)
-        .reduce((sum, item) => sum + Number(item[2]), 0);
+      let sum = Number(this.munDataToDisplayInMap.filter(item => item[1] === ajs)[0][2])
       return sum;
     }
     else {
 
       const sum = this.munDataToDisplayInMap
-        .filter(item => item[0] === id)
+        .filter(item => item[0] === Number(id))
         .reduce((sum, item) => sum + Number(item[2]), 0);
       return sum;
     }
@@ -176,8 +178,11 @@ export class MapComponent implements OnInit {
       console.log("no updates in the data")
     }
     console.log("La l:")
-    console.log("La updateData:")
-    console.log(this.updateData(5))
+    if (this.selectedResolution != 'Municipal') {
+      console.log("La updateData:")
+    console.log(this.updateData("5"))
+    }
+    
     console.log(this.munDataToDisplayInMap.filter(item => item[0] === 5))
     console.log("La updateData:")
 

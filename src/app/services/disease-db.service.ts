@@ -4,6 +4,8 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { ApiResponse } from '../models/cve_list';
+import { Record } from '../models/cve_list';
+
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +61,7 @@ export class DiseaseDbService {
     return forkJoin(listOfRequests);
   }
 
-  getDataByYear(year: string, search_id_first_class: string): Observable<any> {
+  getDataByYear(year: string, search_id_first_class: string): Observable<Record[]> {
     let fullUrl = this.apiUrl + 'records_by_year_by_column';
     const params = new HttpParams()
       .set('year', year)

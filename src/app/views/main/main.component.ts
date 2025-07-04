@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { environment } from '../../../environments/environment';
 import { firstValueFrom } from 'rxjs';
+import { Record } from '../../models/cve_list';
 
 @Component({
   selector: 'app-main',
@@ -37,7 +38,7 @@ export class MainComponent implements OnInit {
   gendersList = [];
   yearsList = [];
   statesAndMunList = []
-  allDataByFirstClass = [];
+  allDataByFirstClass:Record[] = [];
   filteredAllDataByClasses: any[] = [];
   displayData: any = [];
   munDataToDisplayInMap: any[] = [];
@@ -172,6 +173,7 @@ export class MainComponent implements OnInit {
     //add verification for the models
     try {
       const allDatabyFirstClass = await this.getAllTheDataByYearAndFirstClassId();
+      console.log("allDatabyFirstClass: ",allDatabyFirstClass)
       this.filteredAllDataByClasses = allDatabyFirstClass;
       let filterDataBySubClasses;
       if (this.selectedSecondClassId != environment.placeholderSecondClass) {
