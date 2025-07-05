@@ -111,12 +111,18 @@
               </tr>
             </thead>
             <tbody>
-              <!-- <ng-container *ngFor="let state of stateList;index as i"> -->
-              <tr>
-                <td>testing</td>
-                <td>again</td>
+              <ng-container *ngIf="updatedResolution == env.placeholderStateResolution; else municipal">
+              <tr *ngFor="let state of top10States">
+                <td>{{getStateName(state[0])}}</td>
+                <td>{{state[1]}}</td>
               </tr>
-              <!-- </ng-container> -->
+              </ng-container>
+              <ng-template #municipal>
+              <tr *ngFor="let mun of top10Municipalities">
+                <td>{{getStateName(mun[0])}} - {{getMunicipalityName(mun[1])}}</td>
+                <td>{{mun[2]}}</td>
+              </tr>
+              </ng-template>
             </tbody>
           </table>
 
@@ -129,7 +135,7 @@
       <div class="col-lg-8 map-section">
 
         <div class="row row-map">
-          <app-map [updatedResolution]="updatedResolution" [munDataToDisplayInMap]="munDataToDisplayInMap">
+          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap">
           </app-map>
         </div>
       </div>

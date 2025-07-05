@@ -33,6 +33,13 @@ export class MainComponent implements OnInit {
   selectedResolution: string = environment.placeholderStateResolution;
   hasChanges = {
     selectedFirstClassId: "",
+    selectedSecondClassId: "",
+    selectedThirdClassId: "",
+    selectedAge: "",
+    selectedGender: "",
+    selectedYear: "",
+    selectedRegion: "",
+    selectedResolution: "",
   }
   firstClassList: any[] = [];
   secondClassList: any[] = [];
@@ -43,12 +50,16 @@ export class MainComponent implements OnInit {
   gendersList = [];
   yearsList = [];
   statesAndMunList = []
+  stateNames: { [key: number]: string } = {}
+  municipalityNames: { [key: string]: string } = {};
   allDataByFirstClass: Record[] = [];
   filteredAllDataByClasses: any[] = [];
   displayData: any = [];
-  munDataToDisplayInMap: any[] = [];
+  dataByMunToDisplayInMap: any[] = [];
   updatedRegion: string = environment.placeholderCountry;
   updatedResolution: string = environment.placeholderStateResolution;
+  top10States: number[][] = [];
+  top10Municipalities: number[][] = [];
   gendersDict = { 1: "Hombres", 2: "Mujeres", 9: "No registrado" }
   notification = Swal.mixin({
     toast: true,
@@ -100,6 +111,15 @@ export class MainComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.statesAndMunList = response;
+          console.log(this.statesAndMunList)
+          this.stateNames = this.statesAndMunList.reduce((acc, state) => {
+            acc[state[0]] = state[1];
+            return acc;
+          }, {} as { [key: number]: string });
+          this.municipalityNames = this.statesAndMunList.reduce((acc, item) => {
+      acc[item[2]] = item[3]; // Map code (position 2) to name (position 3)
+      return acc;
+    }, {} as { [key: string]: string });
           Swal.fire({
             timer: 1100,
             title: 'Datos cargados correctamente.',
@@ -167,7 +187,7 @@ export class MainComponent implements OnInit {
   }
 
   async updateTheDataForTheMap() {
-    
+
     Swal.fire({
       title: 'Cargando datos...',
       allowOutsideClick: false,
@@ -176,7 +196,7 @@ export class MainComponent implements OnInit {
     Swal.showLoading();
     //add verification for the models
     try {
-      if (this.selectedFirstClassId != this.hasChanges.selectedFirstClassId ){
+      if (this.selectedFirstClassId != this.hasChanges.selectedFirstClassId) {
         await this.getAllTheDataByYearAndFirstClassId();
         this.filteredAllDataByClasses = this.allDataByFirstClass;
       }
@@ -200,14 +220,15 @@ export class MainComponent implements OnInit {
       municipalityDataList.push([region[0], region[2], casesNumber])
     })
 
-    this.munDataToDisplayInMap = municipalityDataList
+    this.dataByMunToDisplayInMap = municipalityDataList
     this.updatedResolution = this.selectedResolution
+    this.top10()
     // console.log(municipalityDataList)
     // const result = municipalityDataList.filter((word) => word[0] == 9);
     // const result1 = municipalityDataList.filter((word) => word[0] == 9);
     // console.log(result)
     // console.log(municipalityDataList)//estado municipio cuenta
-    this.hasChanges.selectedFirstClassId = this.selectedFirstClassId;
+    this.saveNewSelectsValues();
     Swal.fire({
       timer: 1100,
       title: 'Datos cargados correctamente.',
@@ -243,12 +264,6 @@ export class MainComponent implements OnInit {
     return item ? item[1] : null;
   }
 
-  updateResolution() {
-    //this.resolution = "nunicipal"
-    this.selectedRegion
-    this.updatedResolution = this.selectedResolution
-  }
-
   updateNotificationSuccess(title: string) {
     this.notification.fire({
       icon: "success",
@@ -261,6 +276,55 @@ export class MainComponent implements OnInit {
       icon: "error",
       title: title
     });
+  }
+
+  top10() {
+    console.log(this.statesAndMunList)
+    const groupedByStates = this.dataByMunToDisplayInMap.reduce((acc, [first, , third]) => {
+      acc[first] = (acc[first] || 0) + third;
+      return acc;
+    }, {});
+
+    const sorted = Object.entries(groupedByStates)
+      .map(([key, sum]) => [parseInt(key), sum as number])
+      .sort((a, b) => b[1] - a[1]);
+
+    this.top10States = sorted.slice(0, 10);
+    this.top10Municipalities = this.dataByMunToDisplayInMap
+      .sort((a, b) => b[2] - a[2])
+      .slice(0, 10);
+    console.log(this.top10States)
+    console.log(this.top10Municipalities)
+  }
+
+  saveNewSelectsValues() {
+    this.hasChanges.selectedFirstClassId = this.selectedFirstClassId;
+    this.hasChanges.selectedSecondClassId = this.selectedSecondClassId;
+    this.hasChanges.selectedThirdClassId = this.selectedThirdClassId;
+    this.hasChanges.selectedAge = this.selectedAge;
+    this.hasChanges.selectedGender = this.selectedGender;
+    this.hasChanges.selectedYear = this.selectedYear;
+    this.hasChanges.selectedRegion = this.selectedRegion;
+    this.hasChanges.selectedResolution = this.selectedResolution;
+  }
+
+  checkChangesInSelects() {
+    this.hasChanges.selectedFirstClassId = this.selectedFirstClassId;
+    this.hasChanges.selectedSecondClassId = this.selectedSecondClassId;
+    this.hasChanges.selectedThirdClassId = this.selectedThirdClassId;
+    this.hasChanges.selectedAge = this.selectedAge;
+    this.hasChanges.selectedGender = this.selectedGender;
+    this.hasChanges.selectedYear = this.selectedYear;
+    this.hasChanges.selectedRegion = this.selectedRegion;
+    this.hasChanges.selectedResolution = this.selectedResolution;
+
+  }
+  getStateName(stateCode: number): string {
+    return this.stateNames[stateCode] || 'Unknown State';
+  }
+  getMunicipalityName(code: any): string {
+    code = code.toString()
+    return this.municipalityNames[code] || 'Unknown Municipality';
   }
 
 }

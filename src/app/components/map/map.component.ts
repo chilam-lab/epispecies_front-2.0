@@ -15,7 +15,7 @@ import { environment } from '../../../environments/environment';
 export class MapComponent implements OnInit {
   private map: L.Map | undefined;
   @Input() updatedResolution: string = "";
-  @Input() munDataToDisplayInMap: [number, string, string][] = [];
+  @Input() dataByMunToDisplayInMap: [number, string, string][] = [];
   constructor(private mapService: MapService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
@@ -117,12 +117,12 @@ export class MapComponent implements OnInit {
     let hey = Number(id)
     let ajs = hey.toString();
     if (this.selectedResolution === 'Municipal') {
-      let sum = Number(this.munDataToDisplayInMap.filter(item => item[1] === ajs)[0][2])
+      let sum = Number(this.dataByMunToDisplayInMap.filter(item => item[1] === ajs)[0][2])
       return sum;
     }
     else {
 
-      const sum = this.munDataToDisplayInMap
+      const sum = this.dataByMunToDisplayInMap
         .filter(item => item[0] === Number(id))
         .reduce((sum, item) => sum + Number(item[2]), 0);
       return sum;
@@ -149,7 +149,7 @@ export class MapComponent implements OnInit {
       console.log("no resolution updates");
     }
     try {
-      let newDataToDisplay = changes['munDataToDisplayInMap']['currentValue'];
+      let newDataToDisplay = changes['dataByMunToDisplayInMap']['currentValue'];
 
       console.log("newDataToDisplay1111")
       console.log(newDataToDisplay)
@@ -183,7 +183,7 @@ export class MapComponent implements OnInit {
     console.log(this.updateData("5"))
     }
     
-    console.log(this.munDataToDisplayInMap.filter(item => item[0] === 5))
+    console.log(this.dataByMunToDisplayInMap.filter(item => item[0] === 5))
     console.log("La updateData:")
 
     // munDataToDisplayInMap
