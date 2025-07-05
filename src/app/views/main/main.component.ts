@@ -29,6 +29,18 @@ export class MainComponent implements OnInit {
   selectedAge: string = environment.placeholderAge;
   selectedGender: string = environment.placeholderGender;
   selectedYear: string = environment.placeholderYear;
+  selectedRegion: string = environment.placeholderCountry;
+  selectedResolution: string = environment.placeholderStateResolution;
+  hasChanges = {
+    selectedFirstClassId: "",
+    selectedSecondClassId: "",
+    selectedThirdClassId: "",
+    selectedAge: "",
+    selectedGender: "",
+    selectedYear: "",
+    selectedRegion: "",
+    selectedResolution: "",
+  }
   firstClassList: any[] = [];
   secondClassList: any[] = [];
   thirdClassList = [];
@@ -38,12 +50,10 @@ export class MainComponent implements OnInit {
   gendersList = [];
   yearsList = [];
   statesAndMunList = []
-  allDataByFirstClass:Record[] = [];
+  allDataByFirstClass: Record[] = [];
   filteredAllDataByClasses: any[] = [];
   displayData: any = [];
   munDataToDisplayInMap: any[] = [];
-  selectedRegion: string = environment.placeholderCountry;
-  selectedResolution: string = environment.placeholderStateResolution;
   updatedRegion: string = environment.placeholderCountry;
   updatedResolution: string = environment.placeholderStateResolution;
   gendersDict = { 1: "Hombres", 2: "Mujeres", 9: "No registrado" }
@@ -147,7 +157,7 @@ export class MainComponent implements OnInit {
     }
   }
 
-  async getAllTheDataByYearAndFirstClassId(): Promise<any> {
+  async getAllTheDataByYearAndFirstClassId(): Promise<Record[]> {
     try {
       const response = await firstValueFrom(
         this.dbService.getDataByYear(this.selectedYear, this.selectedFirstClassId)
@@ -164,6 +174,7 @@ export class MainComponent implements OnInit {
   }
 
   async updateTheDataForTheMap() {
+    
     Swal.fire({
       title: 'Cargando datos...',
       allowOutsideClick: false,
@@ -172,9 +183,10 @@ export class MainComponent implements OnInit {
     Swal.showLoading();
     //add verification for the models
     try {
-      const allDatabyFirstClass = await this.getAllTheDataByYearAndFirstClassId();
-      console.log("allDatabyFirstClass: ",allDatabyFirstClass)
-      this.filteredAllDataByClasses = allDatabyFirstClass;
+      if (this.selectedFirstClassId != this.hasChanges.selectedFirstClassId ){
+        await this.getAllTheDataByYearAndFirstClassId();
+        this.filteredAllDataByClasses = this.allDataByFirstClass;
+      }
       let filterDataBySubClasses;
       if (this.selectedSecondClassId != environment.placeholderSecondClass) {
         filterDataBySubClasses = this.filterby(1, this.selectedSecondClassId, this.allDataByFirstClass);
@@ -192,18 +204,17 @@ export class MainComponent implements OnInit {
     let municipalityDataList: any[] = [];
     this.statesAndMunList.map((region) => {
       let casesNumber = this.filteredAllDataByClasses.filter((record) => record[4] == region[2]).length
-        municipalityDataList.push([region[0], region[2], casesNumber])
+      municipalityDataList.push([region[0], region[2], casesNumber])
     })
 
     this.munDataToDisplayInMap = municipalityDataList
-
-   
     this.updatedResolution = this.selectedResolution
     // console.log(municipalityDataList)
     // const result = municipalityDataList.filter((word) => word[0] == 9);
     // const result1 = municipalityDataList.filter((word) => word[0] == 9);
     // console.log(result)
     // console.log(municipalityDataList)//estado municipio cuenta
+    this.saveNewSelectsValues();
     Swal.fire({
       timer: 1100,
       title: 'Datos cargados correctamente.',
@@ -211,19 +222,19 @@ export class MainComponent implements OnInit {
     })
   }
 
-  applyFilters(dataList: any[]){
+  applyFilters(dataList: any[]) {
     let filteredList = dataList;
     console.log("🌈Before filters: ")
     console.log(filteredList)
     console.log(this.selectedAge)
     console.log(this.selectedGender)
-    if(this.selectedAge != environment.placeholderAge){
+    if (this.selectedAge != environment.placeholderAge) {
       filteredList = this.filterby(8, this.selectedAge, filteredList)//position in the list, value, list
-    console.log("🌈After filter one:")
+      console.log("🌈After filter one:")
       console.log(filteredList)
     }
-    if(this.selectedGender != environment.placeholderGender){
-      filteredList = this.filterby(7, this.selectedGender,filteredList)
+    if (this.selectedGender != environment.placeholderGender) {
+      filteredList = this.filterby(7, this.selectedGender, filteredList)
       console.log("🌈After all filters:")
       console.log(filteredList)
     }
@@ -231,7 +242,7 @@ export class MainComponent implements OnInit {
   }
 
   filterby(position: number, value: string, dataList: any[]) {
-    return dataList.filter((array) => array[position] == value );
+    return dataList.filter((array) => array[position] == value);
   }
 
   getDescriptionByIdInAList(id: string, dataList: [string, string][]): string | null {
@@ -257,5 +268,28 @@ export class MainComponent implements OnInit {
       icon: "error",
       title: title
     });
+  }
+
+  saveNewSelectsValues() {
+    this.hasChanges.selectedFirstClassId = this.selectedFirstClassId;
+    this.hasChanges.selectedSecondClassId = this.selectedSecondClassId;
+    this.hasChanges.selectedThirdClassId = this.selectedThirdClassId;
+    this.hasChanges.selectedAge = this.selectedAge;
+    this.hasChanges.selectedGender = this.selectedGender;
+    this.hasChanges.selectedYear = this.selectedYear;
+    this.hasChanges.selectedRegion = this.selectedRegion;
+    this.hasChanges.selectedResolution = this.selectedResolution;
+  }
+
+  checkChangesInSelects(){
+    this.hasChanges.selectedFirstClassId = this.selectedFirstClassId;
+    this.hasChanges.selectedSecondClassId = this.selectedSecondClassId;
+    this.hasChanges.selectedThirdClassId = this.selectedThirdClassId;
+    this.hasChanges.selectedAge = this.selectedAge;
+    this.hasChanges.selectedGender = this.selectedGender;
+    this.hasChanges.selectedYear = this.selectedYear;
+    this.hasChanges.selectedRegion = this.selectedRegion;
+    this.hasChanges.selectedResolution = this.selectedResolution;
+
   }
 }
