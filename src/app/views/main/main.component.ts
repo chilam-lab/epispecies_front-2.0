@@ -33,13 +33,6 @@ export class MainComponent implements OnInit {
   selectedResolution: string = environment.placeholderStateResolution;
   hasChanges = {
     selectedFirstClassId: "",
-    selectedSecondClassId: "",
-    selectedThirdClassId: "",
-    selectedAge: "",
-    selectedGender: "",
-    selectedYear: "",
-    selectedRegion: "",
-    selectedResolution: "",
   }
   firstClassList: any[] = [];
   secondClassList: any[] = [];
@@ -214,7 +207,7 @@ export class MainComponent implements OnInit {
     // const result1 = municipalityDataList.filter((word) => word[0] == 9);
     // console.log(result)
     // console.log(municipalityDataList)//estado municipio cuenta
-    this.saveNewSelectsValues();
+    this.hasChanges.selectedFirstClassId = this.selectedFirstClassId;
     Swal.fire({
       timer: 1100,
       title: 'Datos cargados correctamente.',
@@ -270,26 +263,4 @@ export class MainComponent implements OnInit {
     });
   }
 
-  saveNewSelectsValues() {
-    this.hasChanges.selectedFirstClassId = this.selectedFirstClassId;
-    this.hasChanges.selectedSecondClassId = this.selectedSecondClassId;
-    this.hasChanges.selectedThirdClassId = this.selectedThirdClassId;
-    this.hasChanges.selectedAge = this.selectedAge;
-    this.hasChanges.selectedGender = this.selectedGender;
-    this.hasChanges.selectedYear = this.selectedYear;
-    this.hasChanges.selectedRegion = this.selectedRegion;
-    this.hasChanges.selectedResolution = this.selectedResolution;
-  }
-
-  checkChangesInSelects(){
-    this.hasChanges.selectedFirstClassId = this.selectedFirstClassId;
-    this.hasChanges.selectedSecondClassId = this.selectedSecondClassId;
-    this.hasChanges.selectedThirdClassId = this.selectedThirdClassId;
-    this.hasChanges.selectedAge = this.selectedAge;
-    this.hasChanges.selectedGender = this.selectedGender;
-    this.hasChanges.selectedYear = this.selectedYear;
-    this.hasChanges.selectedRegion = this.selectedRegion;
-    this.hasChanges.selectedResolution = this.selectedResolution;
-
-  }
 }
