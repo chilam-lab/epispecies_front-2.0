@@ -67,7 +67,7 @@ export class MapComponent implements OnInit {
     console.log("😗")
     if (isStateOrMunicipality === 'Municipal') {
       //un minucupio
-      if (this.selectedCVEMun != "00") {
+      if (this.selectedCVEMun.length > 0) {
         console.log("moew")
         console.log(this.selectedCVEMun)
         console.log("moew")
