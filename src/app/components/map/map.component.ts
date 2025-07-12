@@ -73,17 +73,20 @@ export class MapComponent implements OnInit {
           features: filteredFeatures
         };
       } else {
-        let list = this.statesAndMunList.filter((item: any[]) => item[0] === this.selectedCVEState)
-        let municipalityCodes = list.map((item: any[]) => Number(item[2]) > 10000 ? item[2] : "0" + item[2]);
-        //los municipios del estado
-        //traer la lista de los municipios e iterarla
-        let filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
-          municipalityCodes.includes(feature.properties.clave)
-        );
-        geoJson = {
-          type: "FeatureCollection",
-          features: filteredFeatures
-        };
+        if(this.selectedCVEState !=0 ){
+          let list = this.statesAndMunList.filter((item: any[]) => item[0] === this.selectedCVEState)
+          let municipalityCodes = list.map((item: any[]) => Number(item[2]) > 10000 ? item[2] : "0" + item[2]);
+          //los municipios del estado
+          //traer la lista de los municipios e iterarla
+          let filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
+            municipalityCodes.includes(feature.properties.clave)
+          );
+          geoJson = {
+            type: "FeatureCollection",
+            features: filteredFeatures
+          };
+
+        }
       }
     } else {
       console.log("this part is working fine")
