@@ -66,13 +66,15 @@ export class MapComponent implements OnInit {
     else { geoJson = this.geoJsonLayerStates};
     
 
-    
     if (isStateOrMunicipality === 'Municipal') {
       //un minucupio
       if (this.selectedCVEMun) {
         console.log("moew")
         console.log(this.selectedCVEMun)
         console.log("moew")
+        console.log("Beofre 😱")
+      console.log(geoJson)
+      console.log("Before 😱")
         const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
           feature.properties.clave === this.selectedCVEMun.toString()
       );
@@ -80,9 +82,9 @@ export class MapComponent implements OnInit {
         type: "FeatureCollection",
         features: filteredFeatures
       };
-      console.log("WTFaaaaaa 😱")
+      console.log("Un municipio 😱")
       console.log(geoJson)
-      console.log("WTFaaaaaaa 😱")
+      console.log("municipio 😱")
     } else {
         let list = this.statesAndMunList.filter((item: any[]) => item[0] === this.selectedCVEState)
         const municipalityCodes = list.map((item: any[]) => item[1].toString());
@@ -95,13 +97,14 @@ export class MapComponent implements OnInit {
           type: "FeatureCollection",
           features: filteredFeatures
         };
+        console.log("Multiple, estados por municipios😱")
+        console.log(geoJson)
+        console.log("Multiple, estados por municipios 😱")
 
       }
     } else {
+      console.log("this part is working fine")
       if (this.selectedCVEState > 0) {
-        console.log("moew")
-        console.log(this.selectedCVEState)
-        console.log("moew")
         const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
           feature.properties.cellid === this.selectedCVEState
         );
@@ -109,9 +112,6 @@ export class MapComponent implements OnInit {
           type: "FeatureCollection",
           features: filteredFeatures
         };
-        console.log("WTFaaaaaa 😱")
-        console.log(geoJson)
-        console.log("WTFaaaaaaa 😱")
       }
     }
 

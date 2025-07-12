@@ -246,7 +246,16 @@ export class MainComponent implements OnInit {
     console.log("🥲")
     console.log(this.municipalityNames)
     console.log("🥲")
-    let Mun = Object.keys(this.municipalityNames).find(key => this.municipalityNames[+key] === this.selectedMuncipality) || 0;
+    console.log(this.selectedMuncipality)
+    console.log(this.statesAndMunList.filter(item => item[3] ===  this.selectedMuncipality))
+    let Mun = this.statesAndMunList.find(item => item[3] === this.selectedMuncipality)?.[2] || "0";
+    console.log("😌")
+    console.log(Mun)
+    console.log("😌")
+    Mun = Number(Mun) > 10000 ? Mun : "0" + Mun;
+    console.log("😌")
+    console.log(Mun)
+    console.log("😌")
     this.dataByMunToDisplayInMap = municipalityDataList;
     this.updatedResolution = this.selectedResolution;
     this.selectedCVEState = Number(CVE);
@@ -402,7 +411,11 @@ export class MainComponent implements OnInit {
         title: 'Municipio seleccionado correctamente.',
         icon: 'success'
       })
+      console.log("🤣")
+      console.log(this.selectedMuncipality)
       this.modalMunRef.nativeElement.click();
+      console.log(this.selectedMuncipality)
+      console.log("🤣")
     } else {
       this.selectedState = "";
       this.selectedMuncipality = "";
