@@ -55,7 +55,8 @@ export class MainComponent implements OnInit {
   munNameList: any = []
   selectedState = "";
   selectedMuncipality = "";
-  selectedCVE = 0;
+  selectedCVEState:number = 0;
+  selectedCVEMun:string = "";
   stateNames: { [key: number]: string } = {}
   municipalityNames: { [key: string]: string } = {};
   allDataByFirstClass: Record[] = [];
@@ -214,10 +215,10 @@ export class MainComponent implements OnInit {
       }
       let filterDataBySubClasses;
       if (this.selectedSecondClassId != environment.placeholderSecondClass) {
-        filterDataBySubClasses = this.filterby(1, this.selectedSecondClassId, this.allDataByFirstClass);
+        filterDataBySubClasses = this.filterBy(1, this.selectedSecondClassId, this.allDataByFirstClass);
         this.filteredAllDataByClasses = filterDataBySubClasses;
         if (this.selectedThirdClassId != environment.placeholderThirdClass) {
-          filterDataBySubClasses = this.filterby(2, this.selectedThirdClassId, filterDataBySubClasses);
+          filterDataBySubClasses = this.filterBy(2, this.selectedThirdClassId, filterDataBySubClasses);
           this.filteredAllDataByClasses = filterDataBySubClasses;
         }
       }
@@ -235,7 +236,8 @@ export class MainComponent implements OnInit {
     let CVE = Object.keys(this.stateNames).find(key => this.stateNames[+key] === this.selectedState) || 0;
     this.dataByMunToDisplayInMap = municipalityDataList;
     this.updatedResolution = this.selectedResolution;
-    this.selectedCVE = Number(CVE);
+    this.selectedCVEState = Number(CVE);
+    this.selectedCVEMun = this.selectedMuncipality;
     this.top10()
     this.saveNewSelectsValues();
     Swal.fire({
@@ -252,19 +254,19 @@ export class MainComponent implements OnInit {
     console.log(this.selectedAge)
     console.log(this.selectedGender)
     if (this.selectedAge != environment.placeholderAge) {
-      filteredList = this.filterby(8, this.selectedAge, filteredList)//position in the list, value, list
+      filteredList = this.filterBy(8, this.selectedAge, filteredList)//position in the list, value, list
       console.log("🌈After filter one:")
       console.log(filteredList)
     }
     if (this.selectedGender != environment.placeholderGender) {
-      filteredList = this.filterby(7, this.selectedGender, filteredList)
+      filteredList = this.filterBy(7, this.selectedGender, filteredList)
       console.log("🌈After all filters:")
       console.log(filteredList)
     }
     return filteredList;
   }
 
-  filterby(position: number, value: string, dataList: any[]) {
+  filterBy(position: number, value: string, dataList: any[]) {
     return dataList.filter((array) => array[position] == value);
   }
 
@@ -329,11 +331,11 @@ export class MainComponent implements OnInit {
 
   }
   getStateName(stateCode: number): string {
-    return this.stateNames[stateCode] || 'Unknown State';
+    return this.stateNames[stateCode] || environment.UnknownState;
   }
   getMunicipalityName(code: any): string {
     code = code.toString()
-    return this.municipalityNames[code] || 'Unknown Municipality';
+    return this.municipalityNames[code] || environment.unknownMunicipality;
   }
     onStateModalInputChange(e: Event) {
     this.selectedMuncipality = "";
@@ -343,7 +345,6 @@ export class MainComponent implements OnInit {
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
     if(isAState){
     }
-
   }
   isValueInsideList(list: string[], value: string){
     return list.includes(value)
@@ -363,6 +364,25 @@ export class MainComponent implements OnInit {
             icon: 'success'
           })
       this.modalStateRef.nativeElement.click();
+    }else{
+      this.selectedState = "";
+      Swal.fire({
+            timer: 1100,
+            title: 'Por favor seleccione un estado valido',
+            icon: 'error'
+          })
+    } 
+  }
+  selectMunModal(){
+    let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
+    if(isAState){
+      Swal.fire({
+            timer: 1100,
+            title: 'Estado seleccionado correctamente.',
+            icon: 'success'
+          })
+          this.munNameList = this.filterBy(0, this.selectedState, this.statesAndMunList);
+          this.modalStateRef.nativeElement.click();
     }else{
       this.selectedState = "";
       Swal.fire({

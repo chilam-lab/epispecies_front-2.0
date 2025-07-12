@@ -135,7 +135,7 @@
       <div class="col-lg-8 map-section">
 
         <div class="row row-map">
-          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap" [selectedCVE]="selectedCVE">
+          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap" [selectedCVEState]="selectedCVEState" [selectedCVEMun]="selectedCVEMun" [statesAndMunList]="statesAndMunList">
           </app-map>
         </div>
       </div>
@@ -143,7 +143,7 @@
   </div>
 </body>
 
-<button #modalState type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stateModal">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stateModal">
   Launch demo modal
 </button>
 <button #btn2 type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#municipality">
@@ -176,7 +176,7 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="municipality" tabindex="-1" aria-labelledby="exampleModalLabel">
+<div class="modal fade" id="municipality" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -185,11 +185,11 @@
       </div>
       <div class="modal-body">
         <label for="exampleDataList">Seleccione el estado: </label>
-        <input class="form-control" list="datalistOptions" id="exampleDataList" [(ngModel)]="selectedState"
-          placeholder="Escriba para buscar..." (change)="onStateModalInputChange($event)">
+        <input class="form-control" list="datalistOptions" id="exampleDataList" [(ngModel)]="selectedState" (change)="onStateModalInputChange($event)"
+          placeholder="Escriba para buscar...">
         <datalist id="datalistOptions">
-          <ng-container *ngFor="let item of statesNameList">
-            <option value="{{item}}">
+          <ng-container *ngFor="let state of statesNameList">
+            <option>{{ state }}</option>
           </ng-container>
         </datalist><br>
         <label for="exampleDataList">Seleccione el municipio: </label>
@@ -197,7 +197,7 @@
           placeholder="Escriba para buscar..." >
         <datalist id="datalistOptions2">
           <ng-container *ngFor="let item of munNameList">
-            <option value="{{item}}">
+            <option value="{{item[3]}}">
           </ng-container>
         </datalist>
       </div>

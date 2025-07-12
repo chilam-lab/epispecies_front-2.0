@@ -11,6 +11,8 @@ export const environment = {
   placeholderAge:'Todas las edades',
   placeholderGender: 'Todos los géneros',
   placeholderYear: 'Último año',
+  unknownMunicipality: 'Municipio Desconocido',
+  UnknownState: 'Estado Desconocido', 
 
   modelsDictionaryTable: 'ENFERMEDADES',
   statesMunDictionaryTable: 'ESTADO_MUN',

@@ -16,7 +16,9 @@ export class MapComponent implements OnInit {
   private map: L.Map | undefined;
   @Input() updatedResolution: string = "";
   @Input() dataByMunToDisplayInMap: [number, string, string][] = [];
-  @Input() selectedCVE:number = 0;
+  @Input() selectedCVEState: number = 0;
+  @Input() selectedCVEMun: string = "";
+  @Input() statesAndMunList: any = [];
   constructor(private mapService: MapService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
@@ -70,24 +72,60 @@ export class MapComponent implements OnInit {
       console.log(geoJson)
       console.log("WTF1 😱")
     }
-
-    if (this.selectedCVE > 0) {
-      console.log("moew")
-      console.log(this.selectedCVE)
-      console.log("moew")
-    const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) => 
-      feature.properties.cellid === this.selectedCVE || 
-      feature.properties.clave === this.selectedCVE.toString() 
-    );
+    console.log("🥶")
+    console.log(this.statesAndMunList)
+    console.log(this.statesAndMunList.filter((item: any[]) => item[0] === 5));
+    console.log("🥶")
     
-    geoJson = {
-      type: "FeatureCollection",
-      features: filteredFeatures
-    };
-    console.log("WTFaaaaaa 😱")
+    if (isStateOrMunicipality === 'Municipal') {
+      //un minucupio
+      if (this.selectedCVEMun) {
+        console.log("moew")
+        console.log(this.selectedCVEMun)
+        console.log("moew")
+        const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
+          feature.properties.clave === this.selectedCVEMun.toString()
+      );
+      geoJson = {
+        type: "FeatureCollection",
+        features: filteredFeatures
+      };
+      console.log("WTFaaaaaa 😱")
       console.log(geoJson)
       console.log("WTFaaaaaaa 😱")
-  }
+    } else {
+        let list = this.statesAndMunList.filter((item: any[]) => item[0] === this.selectedCVEState)
+        const municipalityCodes = list.map((item: any[]) => item[1].toString());
+        //los municipios del estado
+        //traer la lista de los municipios e iterarla
+        const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
+          municipalityCodes.includes(feature.properties.clave)
+        );
+        geoJson = {
+          type: "FeatureCollection",
+          features: filteredFeatures
+        };
+
+      }
+    } else {
+      if (this.selectedCVEState > 0) {
+        console.log("moew")
+        console.log(this.selectedCVEState)
+        console.log("moew")
+        const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
+          feature.properties.cellid === this.selectedCVEState
+        );
+        geoJson = {
+          type: "FeatureCollection",
+          features: filteredFeatures
+        };
+        console.log("WTFaaaaaa 😱")
+        console.log(geoJson)
+        console.log("WTFaaaaaaa 😱")
+      }
+    }
+
+
 
     console.log('GeoJSON:', geoJson);
     if (this.currentGeoJsonLayer) {
@@ -133,6 +171,10 @@ export class MapComponent implements OnInit {
     } else {
       this.map.setView([11.87, -81.58], 5);
     }
+  }
+
+  selectedRegion(isStateOrMunicipality: string, geoJson: { features: any; type?: string; }) {
+    
   }
 
   updateData(id: string): number {
@@ -202,11 +244,11 @@ export class MapComponent implements OnInit {
     console.log("La l:")
     if (this.selectedResolution != 'Municipal') {
       console.log("La updateData:")
-    console.log(this.updateData("5"))
+      console.log(this.updateData("5"))
     }
-    
+
     console.log(this.dataByMunToDisplayInMap.filter(item => item[0] === 5))
-    
+
     console.log("La updateData:")
 
     // munDataToDisplayInMap
@@ -221,16 +263,16 @@ export class MapComponent implements OnInit {
     console.log(value)
     console.log("el max number")
     console.log(maxValue)
-    
+
     if (maxValue === 0) return '#3388ff'; // Avoid division by zero
-    
+
     // Define quintiles (5 equal parts)
-    const q_1 = maxValue * (1.0/5.0);
-    const q_2 = maxValue * (2.0/5.0);
-    const q_3 = maxValue * (3.0/5.0);
-    const q_4 = maxValue * (4.0/5.0);
-    const q_5 = maxValue * (5.0/5.0);
-    
+    const q_1 = maxValue * (1.0 / 5.0);
+    const q_2 = maxValue * (2.0 / 5.0);
+    const q_3 = maxValue * (3.0 / 5.0);
+    const q_4 = maxValue * (4.0 / 5.0);
+    const q_5 = maxValue * (5.0 / 5.0);
+
     // Define color ranges based on quintiles
     if (value > q_4) return '#800026';      // Top quintile (80-100%)
     if (value > q_3) return '#BD0026';      // Fourth quintile (60-80%)
@@ -238,6 +280,6 @@ export class MapComponent implements OnInit {
     if (value > q_1) return '#FC4E2A';      // Second quintile (20-40%)
     if (value == 0) return '#FFEDA0';      // Zero quintile (20-40%)
     return '#FD8D3C';                       // Bottom quintile (0-20%)
-}
+  }
 
 }
