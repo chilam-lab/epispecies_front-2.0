@@ -143,10 +143,10 @@
   </div>
 </body>
 
-<button #showStateModal type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stateModal">
+<button #showStateModal [hidden]="true"  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stateModal">
   Launch demo modal
 </button>
-<button #showMunModal type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#municipality">
+<button #showMunModal [hidden]="true"  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#municipality">
   Launch demo modal2
 </button>
 <!--- Modals --->
