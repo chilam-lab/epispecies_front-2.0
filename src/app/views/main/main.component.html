@@ -135,7 +135,7 @@
       <div class="col-lg-8 map-section">
 
         <div class="row row-map">
-          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap">
+          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap" [selectedCVE]="selectedCVE">
           </app-map>
         </div>
       </div>
@@ -143,19 +143,19 @@
   </div>
 </body>
 
-<button #btn1 type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#state">
+<button #modalState type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stateModal">
   Launch demo modal
 </button>
 <button #btn2 type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#municipality">
   Launch demo modal2
 </button>
 <!--- Modals --->
-<div class="modal fade" id="state" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="stateModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Estado</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"
+        <button type="button" class="btn-close" (click)="closingModal('municipio')" data-bs-dismiss="modal"
           aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -176,7 +176,7 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="municipality" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="municipality" tabindex="-1" aria-labelledby="exampleModalLabel">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">

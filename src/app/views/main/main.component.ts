@@ -22,6 +22,7 @@ import { Record } from '../../models/cve_list';
 export class MainComponent implements OnInit {
 
   constructor(private dbService: DiseaseDbService) { }
+  @ViewChild('modalState') modalStateRef!: ElementRef;
   env = environment;
   selectedFirstClassId: string = environment.placeholderFirstClass;
   selectedSecondClassId: string = environment.placeholderSecondClass;
@@ -54,6 +55,7 @@ export class MainComponent implements OnInit {
   munNameList: any = []
   selectedState = "";
   selectedMuncipality = "";
+  selectedCVE = 0;
   stateNames: { [key: number]: string } = {}
   municipalityNames: { [key: string]: string } = {};
   allDataByFirstClass: Record[] = [];
@@ -230,14 +232,11 @@ export class MainComponent implements OnInit {
       municipalityDataList.push([region[0], region[2], casesNumber])
     })
 
-    this.dataByMunToDisplayInMap = municipalityDataList
-    this.updatedResolution = this.selectedResolution
+    let CVE = Object.keys(this.stateNames).find(key => this.stateNames[+key] === this.selectedState) || 0;
+    this.dataByMunToDisplayInMap = municipalityDataList;
+    this.updatedResolution = this.selectedResolution;
+    this.selectedCVE = Number(CVE);
     this.top10()
-    // console.log(municipalityDataList)
-    // const result = municipalityDataList.filter((word) => word[0] == 9);
-    // const result1 = municipalityDataList.filter((word) => word[0] == 9);
-    // console.log(result)
-    // console.log(municipalityDataList)//estado municipio cuenta
     this.saveNewSelectsValues();
     Swal.fire({
       timer: 1100,
@@ -350,9 +349,9 @@ export class MainComponent implements OnInit {
     return list.includes(value)
   }
   closingModal(mensaje: string){
-    this.selectedState = ""
+    this.selectedState = "";
     this.selectedMuncipality = "";
-
+    this.selectedRegion = environment.placeholderCountry;
   }
 
   selectStateInModal(){
@@ -363,6 +362,7 @@ export class MainComponent implements OnInit {
             title: 'Estado seleccionado correctamente.',
             icon: 'success'
           })
+      this.modalStateRef.nativeElement.click();
     }else{
       this.selectedState = "";
       Swal.fire({

@@ -16,12 +16,13 @@ export class MapComponent implements OnInit {
   private map: L.Map | undefined;
   @Input() updatedResolution: string = "";
   @Input() dataByMunToDisplayInMap: [number, string, string][] = [];
+  @Input() selectedCVE:number = 0;
   constructor(private mapService: MapService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
   currentGeoJsonLayer: L.GeoJSON | undefined;
   selectedResolution: string = environment.placeholderStateResolution;
-  rawDataTodisplayByMun: [number, number, string][] = [];
+  rawDataTodisplayByMun: [number, string, string][] = [];
   highestValueInData = 0;
 
   ngAfterViewInit(): void {
@@ -65,7 +66,28 @@ export class MapComponent implements OnInit {
     } else {
       console.log("WTF 😱")
       geoJson = this.geoJsonLayerStates;
+      console.log("WTF1 😱")
+      console.log(geoJson)
+      console.log("WTF1 😱")
     }
+
+    if (this.selectedCVE > 0) {
+      console.log("moew")
+      console.log(this.selectedCVE)
+      console.log("moew")
+    const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) => 
+      feature.properties.cellid === this.selectedCVE || 
+      feature.properties.clave === this.selectedCVE.toString() 
+    );
+    
+    geoJson = {
+      type: "FeatureCollection",
+      features: filteredFeatures
+    };
+    console.log("WTFaaaaaa 😱")
+      console.log(geoJson)
+      console.log("WTFaaaaaaa 😱")
+  }
 
     console.log('GeoJSON:', geoJson);
     if (this.currentGeoJsonLayer) {
@@ -184,6 +206,7 @@ export class MapComponent implements OnInit {
     }
     
     console.log(this.dataByMunToDisplayInMap.filter(item => item[0] === 5))
+    
     console.log("La updateData:")
 
     // munDataToDisplayInMap
