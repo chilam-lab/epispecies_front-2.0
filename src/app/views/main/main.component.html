@@ -142,3 +142,69 @@
     </div>
   </div>
 </body>
+
+<button #btn1 type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#state">
+  Launch demo modal
+</button>
+<button #btn2 type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#municipality">
+  Launch demo modal2
+</button>
+<!--- Modals --->
+<div class="modal fade" id="state" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Estado</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="exampleDataList">Seleccione el estado: </label>
+        <input class="form-control" list="datalistOptions" id="exampleDataList" [(ngModel)]="selectedState"
+          placeholder="Escriba para buscar...">
+        <datalist id="datalistOptions">
+          <ng-container *ngFor="let state of statesNameList">
+            <option>{{ state }}</option>
+          </ng-container>
+        </datalist>
+      </div>
+      <div class="modal-footer">
+        <button type="button" [hidden]="true" class="btn btn-secondary" #modalState
+          data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="selectStateInModal()">Seleccionar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="municipality" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Municipio</h5>
+        <button type="button" class="btn-close" (click)="closingModal('municipio')" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="exampleDataList">Seleccione el estado: </label>
+        <input class="form-control" list="datalistOptions" id="exampleDataList" [(ngModel)]="selectedState"
+          placeholder="Escriba para buscar..." (change)="onStateModalInputChange($event)">
+        <datalist id="datalistOptions">
+          <ng-container *ngFor="let item of statesNameList">
+            <option value="{{item}}">
+          </ng-container>
+        </datalist><br>
+        <label for="exampleDataList">Seleccione el municipio: </label>
+        <input class="form-control" list="datalistOptions2" id="exampleDataList" [(ngModel)]="selectedMuncipality"
+          placeholder="Escriba para buscar..." >
+        <datalist id="datalistOptions2">
+          <ng-container *ngFor="let item of munNameList">
+            <option value="{{item}}">
+          </ng-container>
+        </datalist>
+      </div>
+      <div class="modal-footer">
+        <button type="button" [hidden]="true" class="btn btn-secondary" #modaltes data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" >Seleccionar</button>
+      </div>
+    </div>
+  </div>
+</div>

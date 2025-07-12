@@ -50,6 +50,10 @@ export class MainComponent implements OnInit {
   gendersList = [];
   yearsList = [];
   statesAndMunList = []
+  statesNameList: any = []
+  munNameList: any = []
+  selectedState = "";
+  selectedMuncipality = "";
   stateNames: { [key: number]: string } = {}
   municipalityNames: { [key: string]: string } = {};
   allDataByFirstClass: Record[] = [];
@@ -117,9 +121,15 @@ export class MainComponent implements OnInit {
             return acc;
           }, {} as { [key: number]: string });
           this.municipalityNames = this.statesAndMunList.reduce((acc, item) => {
-      acc[item[2]] = item[3]; // Map code (position 2) to name (position 3)
-      return acc;
-    }, {} as { [key: string]: string });
+            acc[item[2]] = item[3]; // Map code (position 2) to name (position 3)
+            return acc;
+          }, {} as { [key: string]: string });
+          this.statesNameList = Object.values(this.stateNames).sort()
+          console.log("😱")
+          console.log(this.stateNames)
+          console.log(this.municipalityNames)
+          console.log(this.statesNameList)
+          console.log("😱")
           Swal.fire({
             timer: 1100,
             title: 'Datos cargados correctamente.',
@@ -325,6 +335,42 @@ export class MainComponent implements OnInit {
   getMunicipalityName(code: any): string {
     code = code.toString()
     return this.municipalityNames[code] || 'Unknown Municipality';
+  }
+    onStateModalInputChange(e: Event) {
+    this.selectedMuncipality = "";
+    console.log("🌸")
+    console.log(this.selectedState)
+    console.log("🌸")
+    let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
+    if(isAState){
+    }
+
+  }
+  isValueInsideList(list: string[], value: string){
+    return list.includes(value)
+  }
+  closingModal(mensaje: string){
+    this.selectedState = ""
+    this.selectedMuncipality = "";
+
+  }
+
+  selectStateInModal(){
+    let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
+    if(isAState){
+      Swal.fire({
+            timer: 1100,
+            title: 'Estado seleccionado correctamente.',
+            icon: 'success'
+          })
+    }else{
+      this.selectedState = "";
+      Swal.fire({
+            timer: 1100,
+            title: 'Por favor seleccione un estado valido',
+            icon: 'error'
+          })
+    } 
   }
 
 }

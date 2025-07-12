@@ -21,7 +21,7 @@ export class MapComponent implements OnInit {
   geoJsonLayerStates: any;
   currentGeoJsonLayer: L.GeoJSON | undefined;
   selectedResolution: string = environment.placeholderStateResolution;
-  rawDataTodisplayInMap: [number, number, string][] = [];
+  rawDataTodisplayByMun: [number, number, string][] = [];
   highestValueInData = 0;
 
   ngAfterViewInit(): void {
@@ -149,21 +149,21 @@ export class MapComponent implements OnInit {
       console.log("no resolution updates");
     }
     try {
-      let newDataToDisplay = changes['dataByMunToDisplayInMap']['currentValue'];
+      let dataToDisplayByMun = changes['dataByMunToDisplayInMap']['currentValue'];
 
       console.log("newDataToDisplay1111")
-      console.log(newDataToDisplay)
-      console.log(this.rawDataTodisplayInMap)
-      console.log(newDataToDisplay !== this.rawDataTodisplayInMap)
+      console.log(dataToDisplayByMun)
+      console.log(this.rawDataTodisplayByMun)
+      console.log(dataToDisplayByMun !== this.rawDataTodisplayByMun)
       console.log("newDataToDisplay1111")
-      if (newDataToDisplay.length != 0 && newDataToDisplay != this.rawDataTodisplayInMap) {
+      if (dataToDisplayByMun.length != 0 && dataToDisplayByMun != this.rawDataTodisplayByMun) {
         console.log("Updates dentro de los datos")
-        this.rawDataTodisplayInMap = newDataToDisplay;
+        this.rawDataTodisplayByMun = dataToDisplayByMun;
         // Calculate the maximum value for the dynamic range
         let maxValue = 0;
 
         console.log('Max value:', maxValue);
-        for (const row of this.rawDataTodisplayInMap) {
+        for (const row of this.rawDataTodisplayByMun) {
           const value = row[2];
           if (typeof value === 'number' && value > maxValue) {
             maxValue = value;
@@ -172,7 +172,7 @@ export class MapComponent implements OnInit {
         this.highestValueInData = maxValue;
       }
       console.log("no updates in the data")
-      console.log(this.rawDataTodisplayInMap.length)
+      console.log(this.rawDataTodisplayByMun.length)
       console.log("no updates in the data")
     } catch (err) {
       console.log("no updates in the data")
@@ -198,23 +198,23 @@ export class MapComponent implements OnInit {
     console.log(value)
     console.log("el max number")
     console.log(maxValue)
+    
     if (maxValue === 0) return '#3388ff'; // Avoid division by zero
-
-    // Define thresholds as fractions of maxValue
-    const thresholds = [
-      { limit: 0.8 * maxValue, color: '#faf7b2' }, // Red for top 20%
-      { limit: 0.6 * maxValue, color: '#6a0000' }, // Orange for 60-80%
-      { limit: 0.4 * maxValue, color: '#d50000' }, // Yellow for 40-60%
-      { limit: 0.2 * maxValue, color: '#ffc455' }, // Green for 20-40%
-      { limit: 0, color: '#89e6ff' },              // Cyan for 0-20%
-    ];
-
-    for (const threshold of thresholds) {
-      if (value > threshold.limit) {
-        return threshold.color;
-      }
-    }
-    return '#3388ff'; // Fallback color
-  }
+    
+    // Define quintiles (5 equal parts)
+    const q_1 = maxValue * (1.0/5.0);
+    const q_2 = maxValue * (2.0/5.0);
+    const q_3 = maxValue * (3.0/5.0);
+    const q_4 = maxValue * (4.0/5.0);
+    const q_5 = maxValue * (5.0/5.0);
+    
+    // Define color ranges based on quintiles
+    if (value > q_4) return '#800026';      // Top quintile (80-100%)
+    if (value > q_3) return '#BD0026';      // Fourth quintile (60-80%)
+    if (value > q_2) return '#E31A1C';      // Third quintile (40-60%)
+    if (value > q_1) return '#FC4E2A';      // Second quintile (20-40%)
+    if (value == 0) return '#FFEDA0';      // Zero quintile (20-40%)
+    return '#FD8D3C';                       // Bottom quintile (0-20%)
+}
 
 }
