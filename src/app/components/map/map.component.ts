@@ -57,40 +57,45 @@ export class MapComponent implements OnInit {
   }
 
   updateMapLayerView(isStateOrMunicipality: string) {
-    if (!this.map) {
-      console.warn('Map is not initialized');
-      return;
-    }
+    if (!this.map) return;
+
     let geoJson;
     if (isStateOrMunicipality === 'Municipal') { geoJson = this.geoJsonLayerMunicipal; }
-    else { geoJson = this.geoJsonLayerStates};
-    
+    else { geoJson = this.geoJsonLayerStates };
 
+    console.log(this.selectedCVEMun)
+    console.log("😗")
     if (isStateOrMunicipality === 'Municipal') {
       //un minucupio
-      if (this.selectedCVEMun) {
+      if (this.selectedCVEMun != "00") {
         console.log("moew")
         console.log(this.selectedCVEMun)
         console.log("moew")
         console.log("Beofre 😱")
-      console.log(geoJson)
-      console.log("Before 😱")
+        console.log(geoJson)
+        console.log("Before 😱")
         const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
           feature.properties.clave === this.selectedCVEMun.toString()
-      );
-      geoJson = {
-        type: "FeatureCollection",
-        features: filteredFeatures
-      };
-      console.log("Un municipio 😱")
-      console.log(geoJson)
-      console.log("municipio 😱")
-    } else {
+        );
+        geoJson = {
+          type: "FeatureCollection",
+          features: filteredFeatures
+        };
+        console.log("Un municipio 😱")
+        console.log(geoJson)
+        console.log("municipio 😱")
+      } else {
         let list = this.statesAndMunList.filter((item: any[]) => item[0] === this.selectedCVEState)
-        const municipalityCodes = list.map((item: any[]) => item[1].toString());
+        console.log("🥸")
+        console.log(list)
+        console.log("🥸")
+        let municipalityCodes = list.map((item: any[]) => Number(item[2]) > 10000 ? item[2] : "0" + item[2]);
+        console.log("🥸")
+        console.log(municipalityCodes)
+        console.log("🥸")
         //los municipios del estado
         //traer la lista de los municipios e iterarla
-        const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
+        let filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
           municipalityCodes.includes(feature.properties.clave)
         );
         geoJson = {
@@ -164,7 +169,7 @@ export class MapComponent implements OnInit {
   }
 
   selectedRegion(isStateOrMunicipality: string, geoJson: { features: any; type?: string; }) {
-    
+
   }
 
   updateData(id: string): number {
