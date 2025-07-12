@@ -61,7 +61,7 @@
           </select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
-          <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedRegion">
+          <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedRegion" (change)="showingModalsFromSelect()">
             <option value={{env.placeholderCountry}} selected>Todo el país</option>
             <option value={{env.placeholderState}}>Estado</option>
             <option value={{env.placeholderMunicipal}}>Municipio</option>
@@ -71,8 +71,8 @@
         <div class="col-md-2 d-flex justify-content-center my-3">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example"
             [(ngModel)]="selectedResolution">
-            <option value={{env.placeholderStateResolution}} selected>Estatal</option>
-            <option value={{env.placeholderMunResolution}} >Municipal</option>
+            <option *ngIf="selectedRegion != env.placeholderMunicipal" value={{env.placeholderStateResolution}}>Estatal</option>
+            <option value={{env.placeholderMunResolution}} selected>Municipal</option>
           </select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-3">
@@ -143,10 +143,10 @@
   </div>
 </body>
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stateModal">
+<button #showStateModal type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stateModal">
   Launch demo modal
 </button>
-<button #btn2 type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#municipality">
+<button #showMunModal type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#municipality">
   Launch demo modal2
 </button>
 <!--- Modals --->
@@ -203,7 +203,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" [hidden]="true" class="btn btn-secondary" #modalMun data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="selectMunModal()">Seleccionar</button>
+        <button type="button" class="btn btn-primary" (click)="verifyDataInMunModal()">Seleccionar</button>
       </div>
     </div>
   </div>

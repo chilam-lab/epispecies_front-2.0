@@ -62,18 +62,9 @@ export class MapComponent implements OnInit {
     let geoJson;
     if (isStateOrMunicipality === 'Municipal') { geoJson = this.geoJsonLayerMunicipal; }
     else { geoJson = this.geoJsonLayerStates };
-
-    console.log(this.selectedCVEMun)
-    console.log("😗")
     if (isStateOrMunicipality === 'Municipal') {
       //un minucupio
       if (this.selectedCVEMun.length > 0) {
-        console.log("moew")
-        console.log(this.selectedCVEMun)
-        console.log("moew")
-        console.log("Beofre 😱")
-        console.log(geoJson)
-        console.log("Before 😱")
         const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
           feature.properties.clave === this.selectedCVEMun.toString()
         );
@@ -81,18 +72,9 @@ export class MapComponent implements OnInit {
           type: "FeatureCollection",
           features: filteredFeatures
         };
-        console.log("Un municipio 😱")
-        console.log(geoJson)
-        console.log("municipio 😱")
       } else {
         let list = this.statesAndMunList.filter((item: any[]) => item[0] === this.selectedCVEState)
-        console.log("🥸")
-        console.log(list)
-        console.log("🥸")
         let municipalityCodes = list.map((item: any[]) => Number(item[2]) > 10000 ? item[2] : "0" + item[2]);
-        console.log("🥸")
-        console.log(municipalityCodes)
-        console.log("🥸")
         //los municipios del estado
         //traer la lista de los municipios e iterarla
         let filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
@@ -102,10 +84,6 @@ export class MapComponent implements OnInit {
           type: "FeatureCollection",
           features: filteredFeatures
         };
-        console.log("Multiple, estados por municipios😱")
-        console.log(geoJson)
-        console.log("Multiple, estados por municipios 😱")
-
       }
     } else {
       console.log("this part is working fine")

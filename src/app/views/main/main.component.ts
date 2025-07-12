@@ -24,6 +24,8 @@ export class MainComponent implements OnInit {
   constructor(private dbService: DiseaseDbService) { }
   @ViewChild('modalState') modalStateRef!: ElementRef;
   @ViewChild('modalMun') modalMunRef!: ElementRef;
+  @ViewChild('showStateModal') showModalState!: ElementRef;
+  @ViewChild('showMunModal') showModalMun!: ElementRef;
   env = environment;
   selectedFirstClassId: string = environment.placeholderFirstClass;
   selectedSecondClassId: string = environment.placeholderSecondClass;
@@ -201,7 +203,7 @@ export class MainComponent implements OnInit {
   }
 
   async updateTheDataForTheMap() {
-    if(this.selectedFirstClassId == environment.placeholderFirstClass) {
+    if (this.selectedFirstClassId == environment.placeholderFirstClass) {
       Swal.fire({
         timer: 1100,
         title: 'Por favor seleccione una enfermedad',
@@ -244,7 +246,7 @@ export class MainComponent implements OnInit {
 
     let idSelectedState = Object.keys(this.stateNames).find(key => this.stateNames[+key] === this.selectedState) || 0;
     let idSelectedMun = this.statesAndMunList.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
-    idSelectedMun = (idSelectedMun.length > 0) ? Number(idSelectedMun) > 10000 ? idSelectedMun : "0" + idSelectedMun : "" ;
+    idSelectedMun = (idSelectedMun.length > 0) ? Number(idSelectedMun) > 10000 ? idSelectedMun : "0" + idSelectedMun : "";
     this.dataByMunToDisplayInMap = municipalityDataList;
     this.updatedResolution = this.selectedResolution;
     this.selectedCVEState = Number(idSelectedState);
@@ -392,7 +394,7 @@ export class MainComponent implements OnInit {
       })
     }
   }
-  selectMunModal() {
+  verifyDataInMunModal() {
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
     if (isAState) {
       Swal.fire({
@@ -414,6 +416,18 @@ export class MainComponent implements OnInit {
         icon: 'error'
       })
     }
+  }
+  showingModalsFromSelect() {
+    this.selectedState = "";
+    this.selectedMuncipality = "";
+    if (this.selectedRegion == environment.placeholderState) this.showModalState.nativeElement.click();
+    if (this.selectedRegion == environment.placeholderMunicipal) this.showModalMun.nativeElement.click();
+    if (this.selectedRegion != this.env.placeholderMunicipal) {
+      this.selectedResolution = this.env.placeholderStateResolution;
+    } else {
+      this.selectedResolution = this.env.placeholderMunResolution;
+    }
+
   }
 
 }
