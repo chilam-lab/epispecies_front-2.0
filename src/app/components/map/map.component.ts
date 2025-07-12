@@ -62,20 +62,10 @@ export class MapComponent implements OnInit {
       return;
     }
     let geoJson;
-    if (isStateOrMunicipality === 'Municipal') {
-      console.log("THE GEOJSON IS NOW MI¡UNICIPAL 😱")
-      geoJson = this.geoJsonLayerMunicipal;
-    } else {
-      console.log("WTF 😱")
-      geoJson = this.geoJsonLayerStates;
-      console.log("WTF1 😱")
-      console.log(geoJson)
-      console.log("WTF1 😱")
-    }
-    console.log("🥶")
-    console.log(this.statesAndMunList)
-    console.log(this.statesAndMunList.filter((item: any[]) => item[0] === 5));
-    console.log("🥶")
+    if (isStateOrMunicipality === 'Municipal') { geoJson = this.geoJsonLayerMunicipal; }
+    else { geoJson = this.geoJsonLayerStates};
+    
+
     
     if (isStateOrMunicipality === 'Municipal') {
       //un minucupio

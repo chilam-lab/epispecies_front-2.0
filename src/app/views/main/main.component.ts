@@ -201,6 +201,14 @@ export class MainComponent implements OnInit {
   }
 
   async updateTheDataForTheMap() {
+    if(this.selectedFirstClassId == environment.placeholderFirstClass) {
+      Swal.fire({
+        timer: 1100,
+        title: 'Por favor seleccione una enfermedad',
+        icon: 'error'
+      })
+      return;
+    }
 
     Swal.fire({
       title: 'Cargando datos...',
@@ -235,10 +243,14 @@ export class MainComponent implements OnInit {
     })
 
     let CVE = Object.keys(this.stateNames).find(key => this.stateNames[+key] === this.selectedState) || 0;
+    console.log("🥲")
+    console.log(this.municipalityNames)
+    console.log("🥲")
+    let Mun = Object.keys(this.municipalityNames).find(key => this.municipalityNames[+key] === this.selectedMuncipality) || 0;
     this.dataByMunToDisplayInMap = municipalityDataList;
     this.updatedResolution = this.selectedResolution;
     this.selectedCVEState = Number(CVE);
-    this.selectedCVEMun = this.selectedMuncipality;
+    this.selectedCVEMun = Mun.toString();
     this.top10()
     this.saveNewSelectsValues();
     Swal.fire({
@@ -364,6 +376,7 @@ export class MainComponent implements OnInit {
   }
 
   selectStateInModal() {
+    this.selectedMuncipality = "";
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
     if (isAState) {
       Swal.fire({
