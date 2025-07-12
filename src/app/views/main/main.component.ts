@@ -23,6 +23,7 @@ export class MainComponent implements OnInit {
 
   constructor(private dbService: DiseaseDbService) { }
   @ViewChild('modalState') modalStateRef!: ElementRef;
+  @ViewChild('modalMun') modalMunRef!: ElementRef;
   env = environment;
   selectedFirstClassId: string = environment.placeholderFirstClass;
   selectedSecondClassId: string = environment.placeholderSecondClass;
@@ -55,8 +56,8 @@ export class MainComponent implements OnInit {
   munNameList: any = []
   selectedState = "";
   selectedMuncipality = "";
-  selectedCVEState:number = 0;
-  selectedCVEMun:string = "";
+  selectedCVEState: number = 0;
+  selectedCVEMun: string = "";
   stateNames: { [key: number]: string } = {}
   municipalityNames: { [key: string]: string } = {};
   allDataByFirstClass: Record[] = [];
@@ -337,60 +338,67 @@ export class MainComponent implements OnInit {
     code = code.toString()
     return this.municipalityNames[code] || environment.unknownMunicipality;
   }
-    onStateModalInputChange(e: Event) {
+  onStateModalInputChange(e: Event) {
     this.selectedMuncipality = "";
     console.log("🌸")
     console.log(this.selectedState)
     console.log("🌸")
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
-    if(isAState){
+    if (isAState) {
+      this.updateNotificationSuccess("Datos actualizados correctamente")
+      this.munNameList = this.filterBy(1, this.selectedState, this.statesAndMunList)
+        .sort((a, b) => a[3].localeCompare(b[3]));
+      this.modalStateRef.nativeElement.click();
+    } else {
+      this.updateNotificationError("Datos actualizados erroneamente")
+      this.selectedState = "";
     }
   }
-  isValueInsideList(list: string[], value: string){
+  isValueInsideList(list: string[], value: string) {
     return list.includes(value)
   }
-  closingModal(mensaje: string){
+  closingModal(mensaje: string) {
     this.selectedState = "";
     this.selectedMuncipality = "";
     this.selectedRegion = environment.placeholderCountry;
   }
 
-  selectStateInModal(){
+  selectStateInModal() {
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
-    if(isAState){
+    if (isAState) {
       Swal.fire({
-            timer: 1100,
-            title: 'Estado seleccionado correctamente.',
-            icon: 'success'
-          })
+        timer: 1100,
+        title: 'Estado seleccionado correctamente.',
+        icon: 'success'
+      })
       this.modalStateRef.nativeElement.click();
-    }else{
+    } else {
       this.selectedState = "";
       Swal.fire({
-            timer: 1100,
-            title: 'Por favor seleccione un estado valido',
-            icon: 'error'
-          })
-    } 
+        timer: 1100,
+        title: 'Por favor seleccione un estado valido',
+        icon: 'error'
+      })
+    }
   }
-  selectMunModal(){
+  selectMunModal() {
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
-    if(isAState){
+    if (isAState) {
       Swal.fire({
-            timer: 1100,
-            title: 'Estado seleccionado correctamente.',
-            icon: 'success'
-          })
-          this.munNameList = this.filterBy(0, this.selectedState, this.statesAndMunList);
-          this.modalStateRef.nativeElement.click();
-    }else{
+        timer: 1100,
+        title: 'Municipio seleccionado correctamente.',
+        icon: 'success'
+      })
+      this.modalMunRef.nativeElement.click();
+    } else {
       this.selectedState = "";
+      this.selectedMuncipality = "";
       Swal.fire({
-            timer: 1100,
-            title: 'Por favor seleccione un estado valido',
-            icon: 'error'
-          })
-    } 
+        timer: 1100,
+        title: 'Por favor seleccione un estado valido',
+        icon: 'error'
+      })
+    }
   }
 
 }
