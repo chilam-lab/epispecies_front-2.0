@@ -120,17 +120,17 @@ export class MapComponent implements OnInit {
           const fillColor = this.getColorForValue(this.updateData(feature.properties.clave)) || '#ffffff';
           return {
             fillColor, // Now guaranteed to be a string
-            weight: 2,
+            weight: 0.5,
             opacity: 1,
-            color: '#ffffff',
+            color: '#000000',
             fillOpacity: 0.7,
           };
         }
         return {
           fillColor: '#ffffff',
-          weight: 2,
+          weight: 0.5,
           opacity: 1,
-          color: '#ffffff',
+          color: '#000000',
           fillOpacity: 0.7,
         };
       },
