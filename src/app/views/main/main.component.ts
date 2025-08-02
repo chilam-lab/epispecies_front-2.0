@@ -343,13 +343,16 @@ export class MainComponent implements OnInit {
     this.hasChanges.selectedResolution = this.selectedResolution;
 
   }
+
   getStateName(stateCode: number): string {
     return this.stateNames[stateCode] || environment.UnknownState;
   }
+
   getMunicipalityName(code: any): string {
     code = code.toString()
     return this.municipalityNames[code] || environment.unknownMunicipality;
   }
+
   onStateModalInputChange(e: Event) {
     this.selectedMuncipality = "";
     console.log("🌸")
@@ -366,9 +369,11 @@ export class MainComponent implements OnInit {
       this.selectedState = "";
     }
   }
+
   isValueInsideList(list: string[], value: string) {
     return list.includes(value)
   }
+
   closingModal(mensaje: string) {
     this.selectedState = "";
     this.selectedMuncipality = "";

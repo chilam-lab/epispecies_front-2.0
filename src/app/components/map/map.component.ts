@@ -141,7 +141,7 @@ export class MapComponent implements OnInit {
             `<b>Cell ID:</b> ${feature.properties.cellid}<br>` +
             `<b>Clave:</b> ${feature.properties.clave}`
           );
-          layer.bindTooltip(`Clave: ${feature.properties.clave} heelo: ${this.updateData(feature.properties.clave)}`, { sticky: true });
+          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.updateData(feature.properties.clave)}`, { sticky: true });
         }
       },
     }).addTo(this.map);
