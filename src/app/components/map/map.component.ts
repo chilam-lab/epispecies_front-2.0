@@ -22,6 +22,7 @@ export class MapComponent implements OnInit {
   constructor(private mapService: MapService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
+  currentLegend: L.Control | undefined;
   currentGeoJsonLayer: L.GeoJSON | undefined;
   selectedResolution: string = environment.placeholderStateResolution;
   rawDataTodisplayByMun: [number, string, string][] = [];
@@ -108,6 +109,10 @@ export class MapComponent implements OnInit {
       this.map.removeLayer(this.currentGeoJsonLayer);
       this.currentGeoJsonLayer = undefined;
     }
+    if (this.currentLegend) {
+      this.map.removeControl(this.currentLegend);
+      this.currentLegend = undefined; // Important: set to undefined after removing
+    }
 
     this.currentGeoJsonLayer = L.geoJSON(geoJson, {
       style: (feature: any | undefined) => {
@@ -141,6 +146,9 @@ export class MapComponent implements OnInit {
       },
     }).addTo(this.map);
 
+    this.currentLegend = this.createLegend();
+    this.currentLegend.addTo(this.map);
+
     const bounds = this.currentGeoJsonLayer.getBounds();
     if (bounds.isValid()) {
       this.map.fitBounds(bounds);
@@ -154,11 +162,12 @@ export class MapComponent implements OnInit {
   }
 
   updateData(id: string): number {
+    let hey = Number(id)
+    let ajs = hey.toString();
     if (this.selectedResolution === 'Municipal') {
-      let sum = Number(this.dataByMunToDisplayInMap.filter(item => item[1] === id)[0][2])
+      let sum = Number(this.dataByMunToDisplayInMap.filter(item => item[1] === ajs)[0][2])
       return sum;
-    }
-    else {
+    } else {
       const sum = this.dataByMunToDisplayInMap
         .filter(item => item[0] === Number(id))
         .reduce((sum, item) => sum + Number(item[2]), 0);
@@ -226,6 +235,54 @@ export class MapComponent implements OnInit {
     if (value > q_1) return '#FC4E2A';      // Second quintile (20-40%)
     if (value == 0) return '#FFEDA0';      // Zero quintile (20-40%)
     return '#FD8D3C';                       // Bottom quintile (0-20%)
+  }
+  createLegend(): L.Control {
+    const legend = new L.Control({ position: 'bottomright' });
+
+    legend.onAdd = (map) => {
+      const div = L.DomUtil.create('div', 'info legend');
+
+      // Get the max value for calculations
+      const maxValue = this.highestValueInData;
+
+      console.log('Legend - Max Value:', maxValue); // Debug log
+
+      // Handle case where maxValue is 0 or undefined
+      if (!maxValue || maxValue === 0) {
+        div.innerHTML = '<h4>Data Range</h4><p>No data available</p>';
+        return div;
+      }
+
+      // Define quintiles (same as in getColorForValue)
+      const q_1 = maxValue * (1.0 / 5.0);
+      const q_2 = maxValue * (2.0 / 5.0);
+      const q_3 = maxValue * (3.0 / 5.0);
+      const q_4 = maxValue * (4.0 / 5.0);
+      const q_5 = maxValue * (5.0 / 5.0);
+
+      // Define the ranges and colors (matching your getColorForValue logic exactly)
+      const ranges = [
+        { min: 0, max: 0, color: '#FFEDA0', label: '0' },
+        { min: 0.01, max: q_1, color: '#FD8D3C', label: `0.01 - ${q_1.toFixed(0)}` },
+        { min: q_1 + 0.01, max: q_2, color: '#FC4E2A', label: `${(q_1 + 0.01).toFixed(0)} - ${q_2.toFixed(0)}` },
+        { min: q_2 + 0.01, max: q_3, color: '#E31A1C', label: `${(q_2 + 0.01).toFixed(0)} - ${q_3.toFixed(0)}` },
+        { min: q_3 + 0.01, max: q_4, color: '#BD0026', label: `${(q_3 + 0.01).toFixed(0)} - ${q_4.toFixed(0)}` },
+        { min: q_4 + 0.01, max: q_5, color: '#800026', label: `${(q_4 + 0.01).toFixed(0)} - ${q_5.toFixed(0)}` }
+      ];
+
+      // Create legend HTML
+      div.innerHTML = '<h4>Data Range</h4>';
+
+      ranges.forEach(range => {
+        div.innerHTML +=
+          `<i style="background:${range.color}; width: 18px; height: 18px; display: inline-block; margin-right: 8px;"></i> ` +
+          `${range.label}<br>`;
+      });
+
+      return div;
+    };
+
+    return legend;
   }
 
 }
