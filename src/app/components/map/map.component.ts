@@ -248,7 +248,7 @@ export class MapComponent implements OnInit {
 
       // Handle case where maxValue is 0 or undefined
       if (!maxValue || maxValue === 0) {
-        div.innerHTML = '<h4>Data Range</h4><p>No data available</p>';
+        div.innerHTML = `<h5>${environment.placeholderDataRange}</h5><p>${environment.placeholderNoData}</p>`;
         return div;
       }
 
@@ -270,7 +270,7 @@ export class MapComponent implements OnInit {
       ];
 
       // Create legend HTML
-      div.innerHTML = '<h4>Data Range</h4>';
+      div.innerHTML = `<h5>${environment.placeholderDataRange}</h5>`;
 
       ranges.forEach(range => {
         div.innerHTML +=

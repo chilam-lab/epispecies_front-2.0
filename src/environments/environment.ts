@@ -12,7 +12,7 @@ export const environment = {
   placeholderGender: 'Todos los géneros',
   placeholderYear: 'Último año',
   unknownMunicipality: 'Municipio Desconocido',
-  UnknownState: 'Estado Desconocido', 
+  UnknownState: 'Estado Desconocido',
 
   modelsDictionaryTable: 'ENFERMEDADES',
   statesMunDictionaryTable: 'ESTADO_MUN',
@@ -22,4 +22,8 @@ export const environment = {
   ageGrupoColumn: 'Edad_gpo',
   genderColumn: 'Sexo',
   yearColumn: 'Anio',
+
+  //legend in map
+  placeholderDataRange: 'Rango de Datos',
+  placeholderNoData: 'Datos no disponibles',
 };
