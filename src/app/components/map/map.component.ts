@@ -237,11 +237,10 @@ export class MapComponent implements OnInit {
     return '#FD8D3C';                       // Bottom quintile (0-20%)
   }
   createLegend(): L.Control {
-    const legend = new L.Control({ position: 'bottomright' });
+    const legend = new L.Control({ position: 'bottomleft' });
 
     legend.onAdd = (map) => {
       const div = L.DomUtil.create('div', 'info legend');
-
       // Get the max value for calculations
       const maxValue = this.highestValueInData;
 
@@ -263,11 +262,11 @@ export class MapComponent implements OnInit {
       // Define the ranges and colors (matching your getColorForValue logic exactly)
       const ranges = [
         { min: 0, max: 0, color: '#FFEDA0', label: '0' },
-        { min: 0.01, max: q_1, color: '#FD8D3C', label: `0.01 - ${q_1.toFixed(0)}` },
-        { min: q_1 + 0.01, max: q_2, color: '#FC4E2A', label: `${(q_1 + 0.01).toFixed(0)} - ${q_2.toFixed(0)}` },
-        { min: q_2 + 0.01, max: q_3, color: '#E31A1C', label: `${(q_2 + 0.01).toFixed(0)} - ${q_3.toFixed(0)}` },
-        { min: q_3 + 0.01, max: q_4, color: '#BD0026', label: `${(q_3 + 0.01).toFixed(0)} - ${q_4.toFixed(0)}` },
-        { min: q_4 + 0.01, max: q_5, color: '#800026', label: `${(q_4 + 0.01).toFixed(0)} - ${q_5.toFixed(0)}` }
+        { min: 1, max: q_1, color: '#FD8D3C', label: `1 - ${q_1.toFixed(0)}` },
+        { min: q_1 + 1, max: q_2, color: '#FC4E2A', label: `${Math.round(q_1 + 1)} - ${q_2.toFixed(0)}` },
+        { min: q_2 + 1, max: q_3, color: '#E31A1C', label: `${Math.round(q_2 + 1)} - ${q_3.toFixed(0)}` },
+        { min: q_3 + 1, max: q_4, color: '#BD0026', label: `${Math.round(q_3 + 1)} - ${q_4.toFixed(0)}` },
+        { min: q_4 + 1, max: q_5, color: '#800026', label: `${Math.round(q_4 + 1)} - ${q_5.toFixed(0)}` }
       ];
 
       // Create legend HTML
