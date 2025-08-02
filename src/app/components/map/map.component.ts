@@ -214,28 +214,32 @@ export class MapComponent implements OnInit {
 
   getColorForValue(value: number): string {
     let maxValue = this.highestValueInData;
-    console.log("el value value")
-    console.log(value)
     console.log("el max number")
     console.log(maxValue)
 
     if (maxValue === 0) return '#3388ff'; // Avoid division by zero
+    if (value === 0) return '#FFEDA0';
 
-    // Define quintiles (5 equal parts)
-    const q_1 = maxValue * (1.0 / 5.0);
-    const q_2 = maxValue * (2.0 / 5.0);
-    const q_3 = maxValue * (3.0 / 5.0);
-    const q_4 = maxValue * (4.0 / 5.0);
-    const q_5 = maxValue * (5.0 / 5.0);
+    // Define small quintuples (5 equal parts)
+    if (maxValue <= 5) {
+      const colors = ['#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
+      const colorIndex = Math.min(value - 1, colors.length - 1);
+      return colors[colorIndex];
+    }
 
-    // Define color ranges based on quintiles
-    if (value > q_4) return '#800026';      // Top quintile (80-100%)
-    if (value > q_3) return '#BD0026';      // Fourth quintile (60-80%)
-    if (value > q_2) return '#E31A1C';      // Third quintile (40-60%)
-    if (value > q_1) return '#FC4E2A';      // Second quintile (20-40%)
-    if (value == 0) return '#FFEDA0';      // Zero quintile (20-40%)
-    return '#FD8D3C';                       // Bottom quintile (0-20%)
+    // Handle larger datasets with quintuples
+    const q_1 = Math.ceil(maxValue * (1.0 / 5.0));
+    const q_2 = Math.ceil(maxValue * (2.0 / 5.0));
+    const q_3 = Math.ceil(maxValue * (3.0 / 5.0));
+    const q_4 = Math.ceil(maxValue * (4.0 / 5.0));
+
+    if (value > q_4) return '#800026';
+    if (value > q_3) return '#BD0026';
+    if (value > q_2) return '#E31A1C';
+    if (value > q_1) return '#FC4E2A';
+    return '#FD8D3C';
   }
+
   createLegend(): L.Control {
     const legend = new L.Control({ position: 'bottomleft' });
 
@@ -252,23 +256,50 @@ export class MapComponent implements OnInit {
         return div;
       }
 
-      // Define quintiles (same as in getColorForValue)
-      const q_1 = maxValue * (1.0 / 5.0);
-      const q_2 = maxValue * (2.0 / 5.0);
-      const q_3 = maxValue * (3.0 / 5.0);
-      const q_4 = maxValue * (4.0 / 5.0);
-      const q_5 = maxValue * (5.0 / 5.0);
+      let ranges: any[] = [];
 
-      // Define the ranges and colors (matching your getColorForValue logic exactly)
-      const ranges = [
-        { min: 0, max: 0, color: '#FFEDA0', label: '0' },
-        { min: 1, max: q_1, color: '#FD8D3C', label: `1 - ${q_1.toFixed(0)}` },
-        { min: q_1 + 1, max: q_2, color: '#FC4E2A', label: `${Math.round(q_1 + 1)} - ${q_2.toFixed(0)}` },
-        { min: q_2 + 1, max: q_3, color: '#E31A1C', label: `${Math.round(q_2 + 1)} - ${q_3.toFixed(0)}` },
-        { min: q_3 + 1, max: q_4, color: '#BD0026', label: `${Math.round(q_3 + 1)} - ${q_4.toFixed(0)}` },
-        { min: q_4 + 1, max: q_5, color: '#800026', label: `${Math.round(q_4 + 1)} - ${q_5.toFixed(0)}` }
-      ];
+      // Handle small datasets differently
+      if (maxValue <= 5) {
+        // For very small ranges, create individual value ranges
+        ranges.push({ color: '#FFEDA0', label: '0' });
 
+        for (let i = 1; i <= maxValue; i++) {
+          const colors = ['#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
+          const colorIndex = Math.min(i - 1, colors.length - 1);
+          ranges.push({
+            color: colors[colorIndex],
+            label: i.toString()
+          });
+        }
+      } else {
+        // For larger ranges, use quintiles but ensure no overlaps
+        const q_1 = Math.ceil(maxValue * (1.0 / 5.0));
+        const q_2 = Math.ceil(maxValue * (2.0 / 5.0));
+        const q_3 = Math.ceil(maxValue * (3.0 / 5.0));
+        const q_4 = Math.ceil(maxValue * (4.0 / 5.0));
+        const q_5 = Math.ceil(maxValue * (5.0 / 5.0));
+
+        ranges = [
+          { color: '#FFEDA0', label: '0' },
+          { color: '#FD8D3C', label: `1 - ${q_1}` },
+          { color: '#FC4E2A', label: `${q_1 + 1} - ${q_2}` },
+          { color: '#E31A1C', label: `${q_2 + 1} - ${q_3}` },
+          { color: '#BD0026', label: `${q_3 + 1} - ${q_4}` },
+          { color: '#800026', label: `${q_4 + 1} - ${q_5}` }
+        ];
+
+        // Filter out invalid ranges where start > end
+        ranges = ranges.filter((range, index) => {
+          if (index === 0) return true; // Keep the "0" range
+          const parts = range.label.split(' - ');
+          if (parts.length === 2) {
+            const start = parseInt(parts[0]);
+            const end = parseInt(parts[1]);
+            return start <= end;
+          }
+          return true;
+        });
+      }
       // Create legend HTML
       div.innerHTML = `<h5>${environment.placeholderDataRange}</h5>`;
 
