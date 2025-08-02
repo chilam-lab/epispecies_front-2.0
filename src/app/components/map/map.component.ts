@@ -154,20 +154,16 @@ export class MapComponent implements OnInit {
   }
 
   updateData(id: string): number {
-    let hey = Number(id)
-    let ajs = hey.toString();
     if (this.selectedResolution === 'Municipal') {
-      let sum = Number(this.dataByMunToDisplayInMap.filter(item => item[1] === ajs)[0][2])
+      let sum = Number(this.dataByMunToDisplayInMap.filter(item => item[1] === id)[0][2])
       return sum;
     }
     else {
-
       const sum = this.dataByMunToDisplayInMap
         .filter(item => item[0] === Number(id))
         .reduce((sum, item) => sum + Number(item[2]), 0);
       return sum;
     }
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -175,29 +171,14 @@ export class MapComponent implements OnInit {
     try {
       let newResolution = changes['updatedResolution']['currentValue'];
       if (newResolution && newResolution != this.selectedResolution) {
-
-        console.log("Dentro de la nuevaresolucion")
         this.selectedResolution = newResolution;
-
       }
-      console.log("newResolution")
-      console.log(newResolution)
-      console.log(newResolution != this.selectedResolution)
-      console.log("newResolution")
-
     } catch (err) {
       console.log("no resolution updates");
     }
     try {
       let dataToDisplayByMun = changes['dataByMunToDisplayInMap']['currentValue'];
-
-      console.log("newDataToDisplay1111")
-      console.log(dataToDisplayByMun)
-      console.log(this.rawDataTodisplayByMun)
-      console.log(dataToDisplayByMun !== this.rawDataTodisplayByMun)
-      console.log("newDataToDisplay1111")
       if (dataToDisplayByMun.length != 0 && dataToDisplayByMun != this.rawDataTodisplayByMun) {
-        console.log("Updates dentro de los datos")
         this.rawDataTodisplayByMun = dataToDisplayByMun;
         // Calculate the maximum value for the dynamic range
         let maxValue = 0;
@@ -211,25 +192,14 @@ export class MapComponent implements OnInit {
         }
         this.highestValueInData = maxValue;
       }
-      console.log("no updates in the data")
-      console.log(this.rawDataTodisplayByMun.length)
-      console.log("no updates in the data")
+
     } catch (err) {
       console.log("no updates in the data")
     }
-    console.log("La l:")
     if (this.selectedResolution != 'Municipal') {
       console.log("La updateData:")
       console.log(this.updateData("5"))
     }
-
-    console.log(this.dataByMunToDisplayInMap.filter(item => item[0] === 5))
-
-    console.log("La updateData:")
-
-    // munDataToDisplayInMap
-    // statesData = [];
-    // municipalityData = [];
     this.updateMapLayerView(this.selectedResolution);
   }
 
