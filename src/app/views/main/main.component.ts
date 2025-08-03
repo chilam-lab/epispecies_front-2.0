@@ -2,17 +2,25 @@ import { Component, ViewChild, ElementRef, OnInit, HostListener } from '@angular
 import { MapComponent } from '../../components/map/map.component';
 import { DiseaseDbService } from '../../services/disease-db.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { environment } from '../../../environments/environment';
 import { firstValueFrom } from 'rxjs';
 import { Record } from '../../models/cve_list';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input'; // If you use matInput
+import { MatSelectModule } from '@angular/material/select'; // If you use mat-select
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-main',
-  imports: [MapComponent, CommonModule, FormsModule, MatIconModule],
+  imports: [MapComponent, CommonModule, FormsModule, MatIconModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  ReactiveFormsModule,
+  FormsModule],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
   standalone: true,
@@ -432,7 +440,5 @@ export class MainComponent implements OnInit {
     } else {
       this.selectedResolution = this.env.placeholderMunResolution;
     }
-
   }
-
 }

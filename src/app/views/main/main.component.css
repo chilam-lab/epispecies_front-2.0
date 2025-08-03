@@ -26,7 +26,7 @@ body {
   background-color: #223b96;
   color: white;
   }
-  
+
   h1 {
   text-align: center;
   color: #223b96;
@@ -35,7 +35,7 @@ body {
   h3{
     color: #223b96;
   }
-  
+
   .borderedButton {
   border: 1px solid #7c61ff;
   width: 100%;
@@ -49,7 +49,7 @@ body {
   font-weight: bold;
 
   }
-  
+
   .borderedButton:hover {
   background-color: #7c61ff;
   color: white;
@@ -79,7 +79,7 @@ body {
       border-radius: 50%;
       background-color: #7c61ff;
       color: white;
-      display: inline-flex; 
+      display: inline-flex;
       margin-left: 10px;
     }
 
@@ -92,19 +92,19 @@ body {
       overflow-x: hidden;
       max-width: 100%;
     }
-  
+
   .jumbotron h6{
   margin-top: 7px;
   }
   .row-map{
     height: calc(100vh - 75px);
   }
-  
+
   .updateTab{
     overflow-y: scroll !important;
     height: calc(100vh - 215px);
   }
-  
+
   .row_prediction{
     height: 87%;
   }
@@ -117,16 +117,16 @@ body {
     opacity: 1;
     max-height: 1000px;
   }
-  
+
   .borderedButton {
     transition: all 1s ease;
   }
-  
+
   .borderedButton:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
-  .help-icon {  
+  .help-icon {
     transform: scale(0.7);
     color: lightgrey;
   }
@@ -134,7 +134,7 @@ body {
     vertical-align: middle;
     cursor: pointer;
   }
-  
+
   .simulating_icon{
     height: 26px;
   }
@@ -152,28 +152,28 @@ body {
   .second_selection {
     position: relative;
     padding: 15px;
-    padding-top: 10px; 
-    background-color: #ffffff; 
+    padding-top: 10px;
+    background-color: #ffffff;
     border-radius: 8px;
-    margin-top: 25px; 
+    margin-top: 25px;
     overflow: visible;
   }
-  
+
   /* Position the icon section */
   .second_selection_icon {
     position: relative;
     margin-bottom: 15px;
     display: flex;
-    justify-content: center; 
+    justify-content: center;
   }
   .color-icon{
     color: #7c61ff;
     font-size: 24px;
   }
-  
+
   .icon_circle {
     position: absolute;
-    width: 90px; 
+    width: 90px;
     height: 76px;
     background-color: white;
     border-radius: 50%;
@@ -185,12 +185,12 @@ body {
     transform: translateX(-50%);
     z-index: 2;
   }
-  
+
   .icon_circle mat-icon {
     color: #7c61ff;
     font-size: 24px;
   }
-  
+
 /* arrow cards*/
 .arrow-container {
   padding: 1rem;
@@ -238,14 +238,14 @@ body {
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), 50% 100%, 0 calc(100% - 20px));
     padding-bottom: 2rem;
   }
-  
+
   .arrow-card:not(:last-child)::after {
     top: auto;
     right: 50%;
     bottom: -10px;
     transform: translateX(50%) rotate(45deg);
   }
-  
+
   .arrow-card:not(:last-child) {
     margin-bottom: 1.5rem;
   }
@@ -311,11 +311,11 @@ app-map {
     min-height: 500px;
     height: auto;
   }
-  
+
   .col-lg-8 {
     height: 400px;
   }
-  
+
   .jumbotron {
     margin-bottom: 20px;
     height: auto;
@@ -327,7 +327,7 @@ app-map {
   .row-map {
     min-height: 700px;
   }
-  
+
   .col-lg-8 {
     height: 350px;
   }
@@ -371,7 +371,7 @@ app-map {
 
 /* Make label more compact */
 .smaller-select {
-  
+
   font-size: 0.9rem;
 }
 
@@ -382,7 +382,7 @@ app-map {
 
 .icon_circle_select {
   position: absolute;
-  width: 80px; 
+  width: 80px;
   height: 66px;
   background-color: white;
   border-radius: 50%;
@@ -408,7 +408,7 @@ app-map {
   border-radius: 50%;
   background-color: #7c61ff;
   color: white;
-  display: inline-flex; 
+  display: inline-flex;
   margin-left: 10px;
 }
 
@@ -421,7 +421,7 @@ app-map {
   border-radius: 50%;
   background-color: #7c61ff;
   color: white;
-  display: inline-flex; 
+  display: inline-flex;
   margin-left: 10px;
   font-size: 17px;
 }
@@ -483,4 +483,32 @@ app-map {
 }
 .tab-pane#tab2.active {
     left: -100%;
+}
+.bootstrap-style-mat-select {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.25rem;
+  border: 1px solid #ced4da;
+  border-radius: 15px;
+  background-color: #fff;
+  appearance: none;
+  text-align: center;
+  color: #c6c6c6;
+  font-size: medium;
+  font-weight: 700;
+}
+
+.bootstrap-style-mat-select:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+.bootstrap-style-mat-select:hover {
+  background-color: #223b96;
+  color: white;
+  }
+mat-option{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
 }
