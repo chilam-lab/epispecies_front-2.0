@@ -86,7 +86,7 @@ body {
     .jumbotron {
       background-color: #fff;
       width: 96%;
-      height: 100vh;
+      max-height: calc(100vh - 150px);
       margin-left: 3%;
       overflow-y: auto;
       overflow-x: hidden;
@@ -97,7 +97,7 @@ body {
   margin-top: 7px;
   }
   .row-map{
-    height: calc(100vh - 75px);
+    height: calc(100vh - 150px);
   }
 
   .updateTab{
@@ -105,17 +105,9 @@ body {
     height: calc(100vh - 215px);
   }
 
-  .row_prediction{
-    height: 87%;
-  }
-
-  .row_update{
-    height: 13%;
-  }
-
   .map-container.visible {
     opacity: 1;
-    max-height: 1000px;
+    max-height: 800px;
   }
 
   .borderedButton {
