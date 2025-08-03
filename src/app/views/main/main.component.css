@@ -35,6 +35,12 @@ body {
   h3{
     color: #223b96;
   }
+  .h5-header{
+    color: #223b96;
+  }
+  h6{
+  color: #666666;
+  }
 
   .borderedButton {
   border: 1px solid #7c61ff;

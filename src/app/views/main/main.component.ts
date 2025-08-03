@@ -81,7 +81,7 @@ export class MainComponent implements OnInit {
   gendersDict = { 1: "Hombres", 2: "Mujeres", 9: "No registrado" }
   notification = Swal.mixin({
     toast: true,
-    position: "top-end",
+    position: "bottom-end",
     showConfirmButton: false,
     timer: 2000,
     timerProgressBar: true,
