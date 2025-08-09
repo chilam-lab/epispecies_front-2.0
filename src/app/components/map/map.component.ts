@@ -237,7 +237,7 @@ export class MapComponent implements OnInit {
     if (value > q_3) return '#BD0026';
     if (value > q_2) return '#E31A1C';
     if (value > q_1) return '#FC4E2A';
-    return '#FD8D3C';
+    return '#FFEDA0';
   }
 
   createLegend(): L.Control {
