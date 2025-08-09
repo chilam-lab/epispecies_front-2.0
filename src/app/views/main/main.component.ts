@@ -312,12 +312,13 @@ export class MainComponent implements OnInit {
 
   top10() {
     let dataToDisplay = this.dataByMunToDisplayInMap;
-    if( this.selectedRegion !== environment.placeholderMetropoli &&  this.selectedRegion !== environment.placeholderCountry){
+    if( this.selectedRegion !== environment.placeholderMetropoli &&  this.selectedRegion !== environment.placeholderCountry &&
+      this.selectedResolution == environment.placeholderMunResolution){
       if(this.selectedState === "") { this.updateNotificationError("No se pudieron cargar los datos para el top 10"); return;}
       const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
-    if(idState){
-      dataToDisplay = this.filterBy(0, idState[0], dataToDisplay)
-    }
+      if(idState){
+        dataToDisplay = this.filterBy(0, idState[0], dataToDisplay)
+      }
     }
     const groupedByStates = dataToDisplay.reduce((acc, [first, , third]) => {
       acc[first] = (acc[first] || 0) + third;
@@ -332,8 +333,6 @@ export class MainComponent implements OnInit {
     this.top10Municipalities = dataToDisplay
       .sort((a, b) => b[2] - a[2])
       .slice(0, 10);
-    console.log(this.top10States)
-    console.log(this.top10Municipalities)
   }
 
   saveNewSelectsValues() {
