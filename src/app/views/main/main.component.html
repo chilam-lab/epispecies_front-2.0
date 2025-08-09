@@ -10,33 +10,33 @@
     <div class="row">
       <div class="row py-0">
         <div class="col-md-1 d-flex justify-content-left my-2">Modelo:</div>
-        <div class="col-md-3 justify-content-center my-2">
-          <select class="form-select form-select-lg" aria-label="Select disease" [(ngModel)]="selectedFirstClassId"
+        <div class="col-md justify-content-center my-2">
+        <mat-select [(ngModel)]="selectedFirstClassId" class="bootstrap-style-mat-select"
             (ngModelChange)="onFirstClassChange($event)">
-            <option disabled selected>{{env.placeholderFirstClass}}</option>
+            <mat-option [value]="env.placeholderFirstClass" disabled selected>{{env.placeholderFirstClass}}</mat-option>
             <ng-container *ngFor="let sickness of firstClassList">
-              <option [value]="sickness[0]">{{sickness[1]}}</option>
+              <mat-option [value]="sickness[0]">{{sickness[1]}}</mat-option>
             </ng-container>
-          </select>
+          </mat-select>
         </div>
-        <div class="col-md-3 justify-content-center my-2">
-          <select class="form-select form-select-lg mb-1" aria-label=".form-select-lg example" data-bs-toggle="tooltip"
-            [(ngModel)]="selectedSecondClassId" (ngModelChange)="onSecondClassChange($event)"
-            [disabled]="secondClassSelectDisable" title="Esta selección es opcional">
-            <option selected>{{env.placeholderSecondClass}}</option>
+        <div class="col-md justify-content-center my-2">
+          <mat-select [(ngModel)]="selectedSecondClassId" class="bootstrap-style-mat-select"
+            [disabled]="secondClassSelectDisable" (ngModelChange)="onSecondClassChange($event)"
+            title="Esta selección es opcional" data-bs-toggle="tooltip">
+            <mat-option [value]="env.placeholderSecondClass" selected>{{env.placeholderSecondClass}}</mat-option>
             <ng-container *ngFor="let group of secondClassList">
-              <option [value]="group[0]">{{group[1]}}</option>
+              <mat-option [value]="group[0]">{{group[1]}}</mat-option>
             </ng-container>
-          </select>
+          </mat-select>
         </div>
-        <div class="col-md-3 my-2">
-          <select class="form-select form-select-lg mb-1" aria-label=".form-select-lg example" data-bs-toggle="tooltip"
-            [(ngModel)]="selectedThirdClassId" [disabled]="thirdClassSelectDisable" title="Esta selección es opcional">
-            <option selected>{{env.placeholderThirdClass}}</option>
+        <div class="col-md my-2">
+          <mat-select [(ngModel)]="selectedThirdClassId" class="bootstrap-style-mat-select"
+            [disabled]="thirdClassSelectDisable" title="Esta selección es opcional" data-bs-toggle="tooltip">
+            <mat-option [value]="env.placeholderThirdClass" selected>{{env.placeholderThirdClass}}</mat-option>
             <ng-container *ngFor="let cause of thirdClassList">
-              <option [value]="cause[0]">{{cause[1]}}</option>
+              <mat-option [value]="cause[0]">{{cause[1]}}</mat-option>
             </ng-container>
-          </select>
+          </mat-select>
         </div>
       </div>
       <div class="row py-0 h-25 ">
@@ -45,20 +45,20 @@
         </div>
 
         <div class="col-md-2 d-flex justify-content-center my-2">
-          <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedAge">
-            <option selected>{{env.placeholderAge}}</option>
+          <mat-select [(ngModel)]="selectedAge" class="bootstrap-style-mat-select">
+            <mat-option [value]="env.placeholderAge" selected>{{env.placeholderAge}}</mat-option>
             <ng-container *ngFor="let age of agesList">
-              <option [value]="age">{{age}}</option>
+              <mat-option [value]="age">{{age}}</mat-option>
             </ng-container>
-          </select>
+          </mat-select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-2">
-          <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedGender">
-            <option selected>{{env.placeholderGender}}</option>
+          <mat-select [(ngModel)]="selectedGender" class="bootstrap-style-mat-select">
+            <mat-option [value]="env.placeholderGender" selected>{{env.placeholderGender}}</mat-option>
             <ng-container *ngFor="let genderId of gendersList">
-              <option [value]="genderId">{{gendersDict[genderId]}}</option>
+              <mat-option [value]="genderId">{{gendersDict[genderId]}}</mat-option>
             </ng-container>
-          </select>
+          </mat-select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-2">
           <mat-select [(ngModel)]="selectedRegion" (ngModelChange)="showingModalsFromSelect()" class="bootstrap-style-mat-select">
@@ -70,22 +70,17 @@
         </div>
         <div class="col-md-2 d-flex justify-content-center my-2">
           <mat-select [(ngModel)]="selectedResolution" class="bootstrap-style-mat-select">
-            <mat-option *ngIf="selectedRegion != env.placeholderMunicipal" value={{env.placeholderStateResolution}} >Estatal </mat-option>
-            <mat-option value={{env.placeholderMunResolution}} selected>Municipal</mat-option>
+            <mat-option *ngIf="selectedRegion!=env.placeholderMunicipal" value={{env.placeholderStateResolution}}>{{env.placeholderStateResolution}}</mat-option>
+            <mat-option value={{env.placeholderMunResolution}} selected>{{env.placeholderMunResolution}}</mat-option>
           </mat-select>
-          <!-- <select class="form-select form-select-lg" aria-label=".form-select-lg example" -->
-          <!--   [(ngModel)]="selectedResolution"> -->
-          <!--   <option *ngIf="selectedRegion != env.placeholderMunicipal" value={{env.placeholderStateResolution}}>Estatal</option> -->
-          <!--   <option value={{env.placeholderMunResolution}} selected>Municipal</option> -->
-          <!-- </select> -->
         </div>
         <div class="col-md-2 d-flex justify-content-center my-2">
-          <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedYear">
-            <option selected>{{selectedYear}}</option>
+          <mat-select [(ngModel)]="selectedYear" class="bootstrap-style-mat-select">
+            <mat-option [value]="selectedYear" selected>{{selectedYear}}</mat-option>
             <ng-container *ngFor="let year of yearsList">
-              <option [value]="year">{{year}}</option>
+              <mat-option [value]="year">{{year}}</mat-option>
             </ng-container>
-          </select>
+          </mat-select>
         </div>
         <div class="col-md-1 justify-content-center my-2">
           <button class="updateButton" (click)="updateTheDataForTheMap()">Actualizar</button>
