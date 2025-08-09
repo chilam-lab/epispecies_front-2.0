@@ -222,7 +222,7 @@ export class MapComponent implements OnInit {
 
     // Define small quintuples (5 equal parts)
     if (maxValue <= 5) {
-      const colors = ['#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
+      const colors = ['#FFEDA0', '#FD8D3C', '#FC4E2A', '#E31A1C', '#800026'];
       const colorIndex = Math.min(value - 1, colors.length - 1);
       return colors[colorIndex];
     }
