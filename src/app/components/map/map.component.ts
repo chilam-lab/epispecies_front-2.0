@@ -108,16 +108,22 @@ export class MapComponent implements OnInit {
     if (this.currentGeoJsonLayer) {
       this.map.removeLayer(this.currentGeoJsonLayer);
       this.currentGeoJsonLayer = undefined;
+    console.log('updating el layer');
+    console.log(this.currentGeoJsonLayer);
+    console.log('updating el layer');
     }
     if (this.currentLegend) {
       this.map.removeControl(this.currentLegend);
       this.currentLegend = undefined; // Important: set to undefined after removing
+    console.log('mejor');
+    console.log(this.currentLegend);
+    console.log('mejor');
     }
 
     this.currentGeoJsonLayer = L.geoJSON(geoJson, {
       style: (feature: any | undefined) => {
         if (feature?.properties) {
-          const fillColor = this.getColorForValue(this.updateData(feature.properties.clave)) || '#ffffff';
+          const fillColor = this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)) || '#ffffff';
           return {
             fillColor, // Now guaranteed to be a string
             weight: 0.5,
@@ -141,10 +147,11 @@ export class MapComponent implements OnInit {
             `<b>Cell ID:</b> ${feature.properties.cellid}<br>` +
             `<b>Clave:</b> ${feature.properties.clave}`
           );
-          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.updateData(feature.properties.clave)}`, { sticky: true });
+          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
         }
       },
     }).addTo(this.map);
+    console.log("❄️❄️❄️❄️❄️❄️")
 
     this.currentLegend = this.createLegend();
     this.currentLegend.addTo(this.map);
@@ -161,7 +168,7 @@ export class MapComponent implements OnInit {
 
   }
 
-  updateData(id: string): number {
+  numCasesByIdRegion(id: string): number {
     let hey = Number(id)
     let ajs = hey.toString();
     if (this.selectedResolution === 'Municipal') {
@@ -187,35 +194,52 @@ export class MapComponent implements OnInit {
     }
     try {
       let dataToDisplayByMun = changes['dataByMunToDisplayInMap']['currentValue'];
-      if (dataToDisplayByMun.length != 0 && dataToDisplayByMun != this.rawDataTodisplayByMun) {
+      if (dataToDisplayByMun.length != 0) {
         this.rawDataTodisplayByMun = dataToDisplayByMun;
         // Calculate the maximum value for the dynamic range
-        let maxValue = 0;
 
-        console.log('Max value:', maxValue);
-        for (const row of this.rawDataTodisplayByMun) {
-          const value = row[2];
-          if (typeof value === 'number' && value > maxValue) {
-            maxValue = value;
+        let maxValue = 0;
+        // if(this.selectedResolution == "Muncipal"){
+        //   for (const row of this.rawDataTodisplayByMun) {
+        //     const value = row[2];
+        //     if (typeof value === 'number' && value > maxValue) {
+        //       maxValue = value;
+        //     }
+        //   }
+        // }
+        if (this.selectedResolution == "Municipal") {
+          // For municipal level, check individual municipal values
+          for (const row of this.rawDataTodisplayByMun) {
+            const value = row[2];
+            if (typeof value === 'number' && value > maxValue) {
+              maxValue = value;
+            }
           }
+        } else {
+          // For state level, group by state ID and sum cases, then find maximum
+          const stateSums = this.dataByMunToDisplayInMap
+          .reduce((acc, row) => {
+            const stateId = row[0];
+            const cases = Number(row[2]);
+            acc.set(stateId, (acc.get(stateId) || 0) + cases);
+            return acc;
+          }, new Map<number, number>());
+
+          maxValue = Math.max(...stateSums.values());
         }
+        console.log('Max value:', maxValue);
+
         this.highestValueInData = maxValue;
       }
 
     } catch (err) {
       console.log("no updates in the data")
     }
-    if (this.selectedResolution != 'Municipal') {
-      console.log("La updateData:")
-      console.log(this.updateData("5"))
-    }
     this.updateMapLayerView(this.selectedResolution);
   }
 
   getColorForValue(value: number): string {
     let maxValue = this.highestValueInData;
-    console.log("el max number")
-    console.log(maxValue)
 
     if (maxValue === 0) return '#DDDDDD'; // Avoid division by zero
     if (value === 0) return '#DDDDDD';
