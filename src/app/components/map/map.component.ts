@@ -217,8 +217,8 @@ export class MapComponent implements OnInit {
     console.log("el max number")
     console.log(maxValue)
 
-    if (maxValue === 0) return '#3388ff'; // Avoid division by zero
-    if (value === 0) return '#FFEDA0';
+    if (maxValue === 0) return '#DDDDDD'; // Avoid division by zero
+    if (value === 0) return '#DDDDDD';
 
     // Define small quintuples (5 equal parts)
     if (maxValue <= 5) {
@@ -261,10 +261,10 @@ export class MapComponent implements OnInit {
       // Handle small datasets differently
       if (maxValue <= 5) {
         // For very small ranges, create individual value ranges
-        ranges.push({ color: '#FFEDA0', label: '0' });
+        ranges.push({ color: '#DDDDDD', label: '0' });
 
         for (let i = 1; i <= maxValue; i++) {
-          const colors = ['#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
+          const colors = ['#FFEDA0', '#FD8D3C', '#FC4E2A', '#E31A1C', '#800026'];
           const colorIndex = Math.min(i - 1, colors.length - 1);
           ranges.push({
             color: colors[colorIndex],
@@ -280,11 +280,12 @@ export class MapComponent implements OnInit {
         const q_5 = Math.ceil(maxValue * (5.0 / 5.0));
 
         ranges = [
-          { color: '#FFEDA0', label: '0' },
-          { color: '#FD8D3C', label: `1 - ${q_1}` },
-          { color: '#FC4E2A', label: `${q_1 + 1} - ${q_2}` },
-          { color: '#E31A1C', label: `${q_2 + 1} - ${q_3}` },
-          { color: '#BD0026', label: `${q_3 + 1} - ${q_4}` },
+
+          { color: '#DDDDDD', label: '0' },
+          { color: '#FFEDA0', label: `1 - ${q_1}` },
+          { color: '#FD8D3C', label: `${q_1 + 1} - ${q_2}` },
+          { color: '#FC4E2A', label: `${q_2 + 1} - ${q_3}` },
+          { color: '#E31A1C', label: `${q_3 + 1} - ${q_4}` },
           { color: '#800026', label: `${q_4 + 1} - ${q_5}` }
         ];
 
