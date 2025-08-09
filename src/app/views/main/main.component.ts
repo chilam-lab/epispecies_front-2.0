@@ -442,7 +442,7 @@ export class MainComponent implements OnInit {
     if (this.selectedRegion == environment.placeholderState) this.showModalState.nativeElement.click();
     if (this.selectedRegion == environment.placeholderMunicipal) this.showModalMun.nativeElement.click();
     if (this.selectedRegion != this.env.placeholderMunicipal) {
-      this.selectedResolution = this.env.placeholderStateResolution;
+      this.selectedResolution = this.env.placeholderMunResolution;
     } else {
       this.selectedResolution = this.env.placeholderMunResolution;
     }

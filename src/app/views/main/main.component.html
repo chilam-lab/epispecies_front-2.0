@@ -69,11 +69,15 @@
           </mat-select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-2">
-          <select class="form-select form-select-lg" aria-label=".form-select-lg example"
-            [(ngModel)]="selectedResolution">
-            <option *ngIf="selectedRegion != env.placeholderMunicipal" value={{env.placeholderStateResolution}}>Estatal</option>
-            <option value={{env.placeholderMunResolution}} selected>Municipal</option>
-          </select>
+          <mat-select [(ngModel)]="selectedResolution" class="bootstrap-style-mat-select">
+            <mat-option *ngIf="selectedRegion != env.placeholderMunicipal" value={{env.placeholderStateResolution}} >Estatal </mat-option>
+            <mat-option value={{env.placeholderMunResolution}} selected>Municipal</mat-option>
+          </mat-select>
+          <!-- <select class="form-select form-select-lg" aria-label=".form-select-lg example" -->
+          <!--   [(ngModel)]="selectedResolution"> -->
+          <!--   <option *ngIf="selectedRegion != env.placeholderMunicipal" value={{env.placeholderStateResolution}}>Estatal</option> -->
+          <!--   <option value={{env.placeholderMunResolution}} selected>Municipal</option> -->
+          <!-- </select> -->
         </div>
         <div class="col-md-2 d-flex justify-content-center my-2">
           <select class="form-select form-select-lg" aria-label=".form-select-lg example" [(ngModel)]="selectedYear">
