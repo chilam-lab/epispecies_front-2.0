@@ -13,6 +13,9 @@ export const environment = {
   placeholderYear: 'Último año',
   unknownMunicipality: 'Municipio Desconocido',
   UnknownState: 'Estado Desconocido',
+  selectedFirstClass: 'Enfermedad',
+  selectedSecondClass: 'Grupo',
+  selectedThirdClass: 'Subgrupo',
 
   modelsDictionaryTable: 'ENFERMEDADES',
   statesMunDictionaryTable: 'ESTADO_MUN',

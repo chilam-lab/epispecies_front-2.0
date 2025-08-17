@@ -94,13 +94,14 @@
     <div class="row">
       <div class="col-lg-4 p-0 mb-3">
         <div class="jumbotron">
-          <h6>Modelo actual</h6>
-          <h5 class="h5-header">
+          <h6 style="font-size: 0.85rem;">{{env.selectedFirstClass}}</h6>
+          <h6 class="h5-header">
             {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}
-          </h5>
-          <h5 class="h5-header">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</h5>
-          <h5 class="h5-header">{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</h5>
-
+          </h6>
+          <h6 *ngIf="selectedSecondClassId != env.placeholderSecondClass" style="font-size: 0.85rem;">{{env.selectedSecondClass}}</h6>
+          <h6 class="h5-header">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</h6>
+          <h6 *ngIf="selectedThirdClassId != env.placeholderSecondClass" style="font-size: 0.85rem;">{{env.selectedThirdClass}}</h6>
+          <h6 class="h5-header">{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</h6>
           <div class="container-fluid">
             <!-- Navigation Tabs -->
             <ul class="nav nav-tabs" id="dataTab" role="tablist">
@@ -171,8 +172,8 @@
             </div>
           </div>
 
-          <div class="row">
-            <button id="boton_detalles" style="margin-bottom:15%" class="borderedButton" hidden>Ver información
+          <div class="row justify-content-center">
+            <button id="boton_detalles" class="borderedButton">Ver información
               detallada</button>
           </div>
         </div>
