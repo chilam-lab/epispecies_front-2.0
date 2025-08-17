@@ -17,7 +17,7 @@ export const environment = {
   selectedSecondClass: 'Grupo',
   selectedThirdClass: 'Subgrupo',
   placeholderMan: 'Hombres',
-  paceholderWoman: 'Mujeres',
+  placeholderWoman: 'Mujeres',
   placeholderNoGender: 'No registrado',
   ageTotals: 'Casos por edad',
 

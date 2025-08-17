@@ -480,43 +480,19 @@ export class MainComponent implements OnInit {
     }
   }
   totals(){
-    let age = this.hasChanges.selectedAge;
-    let gender = this.hasChanges.selectedGender;
-    let ona = this.selectedAge
-    let one = this.selectedGender
-    let data  = this.filteredAllDataByClasses
-    this.showGenderTotals = [];
-    console.log("🎏")
-    console.log(this.agesList)
-    console.log(this.gendersList)
-    console.log(ona)
-    console.log(one)
-    console.log(one[0])
-    console.log("🎏")
-    let men = 0;
-    let women = 0;
-    let unspecified = 0;
-    if(this.selectedGender == "1"){
-      men = this.filterBy(7,"1",data).length
-      this.showGenderTotals.push([environment.placeholderMan, men]);
-    }
-    if(this.selectedGender == "2"){
-      women = this.filterBy(7,"2",data).length
-      this.showGenderTotals.push([environment.paceholderWoman, women]);
-    }
-    if(this.selectedGender == "9"){
-      unspecified = this.filterBy(7,"9",data).length
-      this.showGenderTotals.push([environment.placeholderNoGender, unspecified]);
-    }
-    if(this.selectedGender == environment.placeholderGender){
-      men = this.filterBy(7,"1",data).length
-      women = this.filterBy(7,"2",data).length
-      unspecified = this.filterBy(7,"9",data).length
+    const data = this.filteredAllDataByClasses;
+    const genderMap = {
+      "1": environment.placeholderMan,
+      "2": environment.placeholderWoman,
+      "9": environment.placeholderNoGender
+    };
 
-      this.showGenderTotals.push([environment.placeholderMan, men]);
-      this.showGenderTotals.push([environment.paceholderWoman, women]);
-      this.showGenderTotals.push([environment.placeholderNoGender, unspecified]);
+    const selectedGenders = this.selectedGender === environment.placeholderGender
+      ? Object.keys(genderMap)
+      : [this.selectedGender];
 
-    }
+    this.showGenderTotals = selectedGenders
+      .filter(id => genderMap[id as keyof typeof genderMap])
+      .map(id => [genderMap[id as keyof typeof genderMap], this.filterBy(7, id, data).length]);
   }
 }
