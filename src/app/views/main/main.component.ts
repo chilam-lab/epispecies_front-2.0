@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { environment } from '../../../environments/environment';
+import { environment, ageMap } from '../../../environments/environment'
 import { firstValueFrom } from 'rxjs';
 import { Record } from '../../models/cve_list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -486,7 +486,6 @@ export class MainComponent implements OnInit {
       "2": environment.placeholderWoman,
       "9": environment.placeholderNoGender
     };
-
     const selectedGenders = this.selectedGender === environment.placeholderGender
       ? Object.keys(genderMap)
       : [this.selectedGender];
@@ -494,5 +493,13 @@ export class MainComponent implements OnInit {
     this.showGenderTotals = selectedGenders
       .filter(id => genderMap[id as keyof typeof genderMap])
       .map(id => [genderMap[id as keyof typeof genderMap], this.filterBy(7, id, data).length]);
+
+    const selectedAge = this.selectedAge === environment.placeholderAge
+      ? Object.keys(ageMap)
+      : [this.selectedAge];
+
+    this.showAgeTotals = selectedAge
+      .filter(id => ageMap[id as keyof typeof ageMap])
+      .map(id => [ageMap[id as keyof typeof ageMap], this.filterBy(8, id, data).length]);
   }
 }

@@ -20,6 +20,7 @@ export const environment = {
   placeholderWoman: 'Mujeres',
   placeholderNoGender: 'No registrado',
   ageTotals: 'Casos por edad',
+  genderTotals: 'Casos por género',
 
   modelsDictionaryTable: 'ENFERMEDADES',
   statesMunDictionaryTable: 'ESTADO_MUN',
@@ -45,13 +46,26 @@ export const environment = {
   age8: 'Más de 65 Años',
   age0: 'Sin especificar',
 
-  "0-04":'age1',
-  "05-14":'age2',
-  "15-24":'age3',
-  "25-34":'age4',
-  "35-44":'age5',
-  "45-54":'age6',
-  "55-64":'age7',
-  "65+":'age8',
-  "nan":'age0',
-};
+  // "0-04":'age1',
+  // "05-14":'age2',
+  // "15-24":'age3',
+  // "25-34":'age4',
+  // "35-44":'age5',
+  // "45-54":'age6',
+  // "55-64":'age7',
+  // "65+":'age8',
+  // "nan":'age0',
+  //
+
+}
+export const ageMap = {
+  "0-04": '0 - 4 Años',
+  "05-14": '5 - 14 Años',
+  "15-24": '15 - 24 Años',
+  "25-34": '25 - 34 Años',
+  "35-44": '35 - 44 Años',
+  "45-54": '45 - 54 Años',
+  "55-64": '55 - 64 Años',
+  "65+": 'Más de 65 Años',
+  "nan": 'Sin especificar',
+}
