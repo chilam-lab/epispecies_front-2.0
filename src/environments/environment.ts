@@ -16,6 +16,10 @@ export const environment = {
   selectedFirstClass: 'Enfermedad',
   selectedSecondClass: 'Grupo',
   selectedThirdClass: 'Subgrupo',
+  placeholderMan: 'Hombres',
+  paceholderWoman: 'Mujeres',
+  placeholderNoGender: 'No registrado',
+  ageTotals: 'Casos por edad',
 
   modelsDictionaryTable: 'ENFERMEDADES',
   statesMunDictionaryTable: 'ESTADO_MUN',
@@ -29,4 +33,25 @@ export const environment = {
   //legend in map
   placeholderDataRange: 'Rango de Datos',
   placeholderNoData: 'Datos no disponibles',
+
+
+  age1: '0 - 4 Años',
+  age2: '5 - 14 Años',
+  age3: '15 - 24 Años',
+  age4: '25 - 34 Años',
+  age5: '35 - 44 Años',
+  age6: '45 - 54 Años',
+  age7: '55 - 64 Años',
+  age8: 'Más de 65 Años',
+  age0: 'Sin especificar',
+
+  "0-04":'age1',
+  "05-14":'age2',
+  "15-24":'age3',
+  "25-34":'age4',
+  "35-44":'age5',
+  "45-54":'age6',
+  "55-64":'age7',
+  "65+":'age8',
+  "nan":'age0',
 };

@@ -415,6 +415,7 @@ app-map {
 .nav-link{
   font-size: xx-large;
   cursor: pointer;
+  text-align: center;
 }
 
 /* .nav-tabs { */
@@ -428,7 +429,7 @@ app-map {
 /*     text-align: center; */
 /* } */
 .nav-tabs .nav-link {
-    color: #7b61fe;
+    color: #8f9197;
     font-size: 1.1em;
     font-weight: 300;
     line-height: 1em;
@@ -441,10 +442,12 @@ app-map {
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {
     border-bottom: 1px solid #7b61fe;
+    color: #7b61fe;
 }
 .nav-tabs .nav-link.active {
     border-bottom: 2px solid #7b61fe;
     background: transparent;
+    color: #7b61fe;
 }
 .table-container{
   min-height: calc(100vh - 420px);

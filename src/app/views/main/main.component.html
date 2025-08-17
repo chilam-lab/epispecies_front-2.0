@@ -48,7 +48,7 @@
           <mat-select [(ngModel)]="selectedAge" class="bootstrap-style-mat-select">
             <mat-option [value]="env.placeholderAge" selected>{{env.placeholderAge}}</mat-option>
             <ng-container *ngFor="let age of agesList">
-              <mat-option [value]="age">{{age}}</mat-option>
+              <mat-option [value]="age[0]">{{age}}</mat-option>
             </ng-container>
           </mat-select>
         </div>
@@ -100,7 +100,7 @@
           </h6>
           <h6 *ngIf="selectedSecondClassId != env.placeholderSecondClass" style="font-size: 0.85rem;">{{env.selectedSecondClass}}</h6>
           <h6 class="h5-header">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</h6>
-          <h6 *ngIf="selectedThirdClassId != env.placeholderSecondClass" style="font-size: 0.85rem;">{{env.selectedThirdClass}}</h6>
+          <h6 *ngIf="selectedThirdClassId != env.placeholderThirdClass" style="font-size: 0.85rem;">{{env.selectedThirdClass}}</h6>
           <h6 class="h5-header">{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</h6>
           <div class="container-fluid">
             <!-- Navigation Tabs -->
@@ -111,14 +111,14 @@
                  data-bs-toggle="tab"
                  data-bs-target="#states-pane"
                  href="#tableX"
-                 aria-current="page">Estados</a>
+                 aria-current="page">Top 10 de la región</a>
               </li>
               <li class="nav-item" role="presentation">
                 <a class="nav-link"
                  id="population-tab"
                  data-bs-toggle="tab"
                  data-bs-target="#population-pane"
-                 href="#tableZ">Población</a>
+                 href="#tableZ">Totales</a>
               </li>
             </ul>
 
@@ -155,17 +155,42 @@
 
               <!-- Population Tab -->
               <div class="tab-pane fade" id="population-pane" role="tabpanel" aria-labelledby="population-tab">
+                <h6>{{env.ageTotals}}</h6>
                 <div class="table-container">
                   <table class="table table-hover">
-                    <thead class="table-header">
-                      <tr>
-                        <th scope="col">Región</th>
-                        <th scope="col">Población</th>
-                        <th scope="col">Densidad</th>
-                      </tr>
-                    </thead>
                     <tbody class="table-body">
+                      <tr *ngFor="let total of showGenderTotals">
+                        <td>{{total[0]}}</td>
+                        <td>{{total[1]}}</td>
+                      </tr>
                     </tbody>
+
+                  </table>
+                </div>
+
+
+
+
+
+                <div class="table-container">
+                  <table class="table table-hover">
+                    <tr>
+                      <td scope="col">Mujeres</td>
+                      <td scope="col"></td>
+                    </tr>
+                  </table>
+                </div>
+
+
+
+
+
+                <div class="table-container">
+                  <table class="table table-hover">
+                    <tr>
+                      <td scope="col">Mujeres</td>
+                      <td scope="col"></td>
+                    </tr>
                   </table>
                 </div>
               </div>
