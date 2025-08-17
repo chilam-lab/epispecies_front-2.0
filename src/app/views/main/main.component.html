@@ -40,10 +40,7 @@
         </div>
       </div>
       <div class="row py-0 h-25 ">
-        <div class="col-md-1 d-flex justify-content-left my-2">
-          Filtrar por:
-        </div>
-
+        <div class="col-md-1 d-flex justify-content-left my-2">Filtrar por:</div>
         <div class="col-md-2 d-flex justify-content-center my-2">
           <mat-select [(ngModel)]="selectedAge" class="bootstrap-style-mat-select">
             <mat-option [value]="env.placeholderAge" selected>{{env.placeholderAge}}</mat-option>
@@ -111,14 +108,14 @@
                  data-bs-toggle="tab"
                  data-bs-target="#states-pane"
                  href="#tableX"
-                 aria-current="page">Top 10 de la región</a>
+                 aria-current="page">{{env.headerTop10}}</a>
               </li>
               <li class="nav-item" role="presentation">
                 <a class="nav-link"
                  id="population-tab"
                  data-bs-toggle="tab"
                  data-bs-target="#population-pane"
-                 href="#tableZ">Totales</a>
+                 href="#tableZ">{{env.headerTotals}}</a>
               </li>
             </ul>
 
@@ -165,11 +162,8 @@
                         <td>{{total[1]}}</td>
                       </tr>
                     </tbody>
-
                   </table>
-
-<br>
-
+                  <br>
                   <h6>{{env.ageTotals}}</h6>
                   <table class="table table-hover">
                     <tbody class="table-body">
@@ -179,12 +173,10 @@
                       </tr>
                     </tbody>
                   </table>
-
                 </div>
               </div>
             </div>
           </div>
-
           <div class="row justify-content-center">
             <button id="boton_detalles" class="borderedButton">Ver información
               detallada</button>

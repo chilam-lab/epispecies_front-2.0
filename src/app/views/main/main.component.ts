@@ -480,6 +480,8 @@ export class MainComponent implements OnInit {
     }
   }
   totals(){
+    this.showAgeTotals = [];
+    this.showGenderTotals = [];
     const data = this.filteredAllDataByClasses;
     const genderMap = {
       "1": environment.placeholderMan,
