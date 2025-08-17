@@ -94,8 +94,6 @@ body {
       width: 96%;
       max-height: calc(100vh - 150px);
       margin-left: 3%;
-      overflow-y: auto;
-      overflow-x: hidden;
       max-width: 100%;
     }
 
@@ -428,22 +426,22 @@ app-map {
   cursor: pointer;
 }
 
-.nav-tabs {
-    border-bottom: none;
-    display: flex;
-    flex-wrap: wrap;
-    overflow: hidden;
-}
-.nav-tabs .nav-item {
-    flex: 0 0 50%;
-    text-align: center;
-}
+/* .nav-tabs { */
+/*     border-bottom: none; */
+/*     display: flex; */
+/*     flex-wrap: wrap; */
+/*     overflow: hidden; */
+/* } */
+/* .nav-tabs .nav-item { */
+/*     flex: 0 0 50%; */
+/*     text-align: center; */
+/* } */
 .nav-tabs .nav-link {
-    color: #efedef;
+    color: #7b61fe;
     font-size: 1.1em;
     font-weight: 300;
     line-height: 1em;
-    padding: 2rem 0;
+    padding: 1rem 0;
     border: none;
     border-bottom: 1px solid rgba(239, 237, 239, 0.5);
     transition: all 0.3s ease-in-out;
@@ -451,37 +449,37 @@ app-map {
 }
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {
-    border-bottom: 1px solid #fd264f;
+    border-bottom: 1px solid #7b61fe;
 }
 .nav-tabs .nav-link.active {
-    border-bottom: 2px solid #fd264f;
+    border-bottom: 2px solid #7b61fe;
     background: transparent;
 }
-.tab-content {
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-}
-.tab-pane {
-    padding: 2rem 0;
-    width: 200%;
-    position: absolute;
-    top: 0;
-    opacity: 0;
-    transition: all 0.3s ease-in-out;
-}
-.tab-pane.active {
-    opacity: 1;
-}
-.tab-pane#tab1 {
-    left: 0;
-}
-.tab-pane#tab2 {
-    left: 200%;
-}
-.tab-pane#tab2.active {
-    left: -100%;
-}
+/* .tab-content { */
+/*     width: 100%; */
+/*     position: relative; */
+/*     overflow: hidden; */
+/* } */
+/* .tab-pane { */
+/*     padding: 2rem 0; */
+/*     width: 200%; */
+/*     position: absolute; */
+/*     top: 0; */
+/*     opacity: 0; */
+/*     transition: all 0.3s ease-in-out; */
+/* } */
+/* .tab-pane.active { */
+/*     opacity: 1; */
+/* } */
+/* .tab-pane#tab1 { */
+/*     left: 0; */
+/* } */
+/* .tab-pane#tab2 { */
+/*     left: 200%; */
+/* } */
+/* .tab-pane#tab2.active { */
+/*     left: -100%; */
+/* } */
 .bootstrap-style-mat-select {
   width: 100%;
   padding: 0.5rem 1rem;

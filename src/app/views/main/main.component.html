@@ -94,8 +94,6 @@
     <div class="row">
       <div class="col-lg-4 p-0 mb-3">
         <div class="jumbotron">
-          <div class="row">
-          </div>
           <h6>Modelo actual</h6>
           <h5 class="h5-header">
             {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}
@@ -103,28 +101,75 @@
           <h5 class="h5-header">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</h5>
           <h5 class="h5-header">{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</h5>
 
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">Estado</th>
-                <th scope="col">Número</th>
-              </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngIf="updatedResolution == env.placeholderStateResolution; else municipal">
-              <tr *ngFor="let state of top10States">
-                <td>{{getStateName(state[0])}}</td>
-                <td>{{state[1]}}</td>
-              </tr>
-              </ng-container>
-              <ng-template #municipal>
-              <tr *ngFor="let mun of top10Municipalities">
-                <td>{{getStateName(mun[0])}} - {{getMunicipalityName(mun[1])}}</td>
-                <td>{{mun[2]}}</td>
-              </tr>
-              </ng-template>
-            </tbody>
-          </table>
+          <div class="container-fluid">
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-tabs" id="dataTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <a class="nav-link active"
+                 id="states-tab"
+                 data-bs-toggle="tab"
+                 data-bs-target="#states-pane"
+                 href="#tableX"
+                 aria-current="page">Estados</a>
+              </li>
+              <li class="nav-item" role="presentation">
+                <a class="nav-link"
+                 id="population-tab"
+                 data-bs-toggle="tab"
+                 data-bs-target="#population-pane"
+                 href="#tableZ">Población</a>
+              </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="dataTabContent">
+
+              <!-- States Tab -->
+              <div class="tab-pane fade show active" id="states-pane" role="tabpanel" aria-labelledby="states-tab">
+                <div class="table-container">
+                  <table class="table table-hover">
+                    <thead class="table-header">
+                      <tr>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Número</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-body">
+                      <ng-container *ngIf="updatedResolution == env.placeholderStateResolution; else municipal">
+                        <tr *ngFor="let state of top10States">
+                          <td>{{getStateName(state[0])}}</td>
+                          <td>{{state[1]}}</td>
+                        </tr>
+                      </ng-container>
+                      <ng-template #municipal>
+                        <tr *ngFor="let mun of top10Municipalities">
+                          <td>{{getStateName(mun[0])}} - {{getMunicipalityName(mun[1])}}</td>
+                          <td>{{mun[2]}}</td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Population Tab -->
+              <div class="tab-pane fade" id="population-pane" role="tabpanel" aria-labelledby="population-tab">
+                <div class="table-container">
+                  <table class="table table-hover">
+                    <thead class="table-header">
+                      <tr>
+                        <th scope="col">Región</th>
+                        <th scope="col">Población</th>
+                        <th scope="col">Densidad</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-body">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="row">
             <button id="boton_detalles" style="margin-bottom:15%" class="borderedButton" hidden>Ver información
