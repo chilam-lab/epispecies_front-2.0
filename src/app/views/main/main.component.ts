@@ -267,28 +267,19 @@ export class MainComponent implements OnInit {
     })
 
     let idSelectedState = Object.keys(this.stateNames).find(key => this.stateNames[+key] === this.selectedState) || 0;
-    let idSelectedMun = this.statesAndMunList.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
+    let munListByState = this.statesAndMunList.filter(x=> x[0]==idSelectedState)
+    let idSelectedMun = munListByState.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
+
     idSelectedMun = (idSelectedMun.length > 0) ? Number(idSelectedMun) > 10000 ? idSelectedMun : "0" + idSelectedMun : "";
     const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
-    console.log("ta 🧇")
-    console.log(idState);
     this.dataByMunToDisplayInMap = municipalityDataList;
-    console.log("🥸")
-    console.log(this.filteredAllDataByClasses)
-    console.log(this.dataByMunToDisplayInMap)
-    console.log("🥸")
     this.top10()
     this.totals()
     let a:any[];
     if(idState){
-      console.log(idState)
       a = this.filterBy(0,idState[0],municipalityDataList)
       this.dataByMunToDisplayInMap = a;
-      console.log(a)
     }
-    console.log("the data 👀")
-    console.log(this.dataByMunToDisplayInMap)
-    console.log("the data 👀")
     this.updatedResolution = this.selectedResolution;
     this.selectedCVEState = Number(idSelectedState);
     this.selectedCVEMun = idSelectedMun;
