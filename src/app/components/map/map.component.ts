@@ -4,6 +4,7 @@ import { MapService } from './mapService';
 import Swal from 'sweetalert2';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { DiseaseDbService } from '../../services/disease-db.service';
 
 @Component({
   selector: 'app-map',
@@ -18,8 +19,9 @@ export class MapComponent implements OnInit {
   @Input() dataByMunToDisplayInMap: [number, string, string][] = [];
   @Input() selectedCVEState: number = 0;
   @Input() selectedCVEMun: string = "";
+  @Input() modelSelected: any;
   @Input() statesAndMunList: any = [];
-  constructor(private mapService: MapService) { }
+  constructor(private mapService: MapService, private diseaseDB: DiseaseDbService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
   currentLegend: L.Control | undefined;
@@ -52,6 +54,23 @@ export class MapComponent implements OnInit {
     }).addTo(this.map);
 
     this.updateMapLayerView("states");
+
+    this.diseaseDB.getDataByYearInTable("2019", environment.tablePopulationTotal)
+      .subscribe({
+        next: (response) => {
+          console.log("🎏🎏🎏🎏🎏");
+          console.log(response);
+          console.log("🎏🎏🎏🎏🎏");
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          Swal.fire({
+            timer: 1000,
+            title: 'Ocurrio un error al cargar los datos.',
+            icon: 'error'
+          })
+        }
+      });
   }
   onclick() {
 
@@ -183,7 +202,9 @@ export class MapComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log("🍥🍥🍥🍥🍥🍥🍥")
     console.log(changes)
+    console.log("🍥🍥🍥🍥🍥🍥🍥")
     try {
       let newResolution = changes['updatedResolution']['currentValue'];
       if (newResolution && newResolution != this.selectedResolution) {

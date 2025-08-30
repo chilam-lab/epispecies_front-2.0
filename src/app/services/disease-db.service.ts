@@ -5,21 +5,21 @@ import { catchError } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
 import { ApiResponse } from '../models/cve_list';
 import { Record } from '../models/cve_list';
-
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DiseaseDbService {
-  private apiUrl = 'http://127.0.0.1:8000/';
+  private apiUrl = environment.urlDeseaseDB;
 
   constructor(private http: HttpClient) { }
 
   uniquePairColumns(column1: string, column2: string, table: string): Observable<any> {
     let fullUrl = this.apiUrl + 'unique_pair_columns';
     const params = new HttpParams()
-      .set('column1', column1)
-      .set('column2', column2)
+      .set('column1', column1.toLowerCase())
+      .set('column2', column2.toLowerCase())
       .set('table', table);
 
     return this.http.get<any>(fullUrl, { params })
@@ -50,7 +50,7 @@ export class DiseaseDbService {
         catchError(this.handleError)
       );
   }
- 
+
   getUniqueValues(columns_name: string[]): Observable<any[]> {
     let listOfRequests:Observable<any>[] = [];
     let fullUrl = this.apiUrl + 'unique_values_by_column';
@@ -72,10 +72,23 @@ export class DiseaseDbService {
         catchError(this.handleError)
       );
   }
+
+  getDataByYearInTable(year: string, table: string): Observable<Record[]> {
+    let fullUrl = this.apiUrl + 'records_by_year';
+    const params = new HttpParams()
+      .set('year', year)
+      .set('table', table);
+
+    return this.http.get<any>(fullUrl, { params })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   getAllFrom(table: string): Observable<any> {
     let fullUrl = this.apiUrl + 'get_all_by_table';
     const params = new HttpParams()
-      .set('table', table)
+      .set('table', table.toUpperCase())
 
     return this.http.get<any>(fullUrl, { params })
       .pipe(

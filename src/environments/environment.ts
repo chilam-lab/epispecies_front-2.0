@@ -1,4 +1,7 @@
 export const environment = {
+  urlDeseaseDB: 'http://127.0.0.1:8000/',
+
+  //placeholders
   placeholderCountry: 'País',
   placeholderState: 'Estado',
   placeholderMunicipal: 'Municipio',
@@ -32,6 +35,7 @@ export const environment = {
   ageGrupoColumn: 'Edad_gpo',
   genderColumn: 'Sexo',
   yearColumn: 'Anio',
+  tablePopulationTotal: 'POPULATION_TOTAL',
 
   //legend in map
   placeholderDataRange: 'Rango de Datos',

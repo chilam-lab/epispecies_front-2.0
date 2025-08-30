@@ -364,7 +364,7 @@ export class MainComponent implements OnInit {
     this.hasChanges.selectedThirdClassId = this.selectedThirdClassId;
     this.hasChanges.selectedAge = this.selectedAge;
     this.hasChanges.selectedGender = this.selectedGender;
-    this.hasChanges.selectedYear = this.selectedYear;
+    this.hasChanges.selectedYear = this.selectedYear[0];
     this.hasChanges.selectedRegion = this.selectedRegion;
     this.hasChanges.selectedResolution = this.selectedResolution;
   }
@@ -375,7 +375,7 @@ export class MainComponent implements OnInit {
     this.hasChanges.selectedThirdClassId = this.selectedThirdClassId;
     this.hasChanges.selectedAge = this.selectedAge;
     this.hasChanges.selectedGender = this.selectedGender;
-    this.hasChanges.selectedYear = this.selectedYear;
+    this.hasChanges.selectedYear = this.selectedYear[0];
     this.hasChanges.selectedRegion = this.selectedRegion;
     this.hasChanges.selectedResolution = this.selectedResolution;
 

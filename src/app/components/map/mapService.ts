@@ -47,13 +47,13 @@ export class MapService {
         catchError(this.handleError)
       );
   }
- 
+
 
   getDataByYear(year: string, search_id_first_class: string): Observable<any> {
     let fullUrl = this.apiUrl + 'records_by_year_by_column';
     const params = new HttpParams()
       .set('year', year)
-      .set('search_id_first_class', search_id_first_class);
+      .set('search_id_first_class', search_id_first_class.toLowerCase());
 
     return this.http.get<any>(fullUrl, { params })
       .pipe(
