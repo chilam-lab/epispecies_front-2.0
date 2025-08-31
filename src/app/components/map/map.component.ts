@@ -30,6 +30,8 @@ export class MapComponent implements OnInit {
   rawDataTodisplayByMun: [number, string, string][] = [];
   highestValueInData = 0;
   populationByYearList: [number, string, number][] = [];
+  coloringMode: 'cases' | 'rate' = 'cases';
+  private coloringControl: L.Control | undefined;
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -77,6 +79,7 @@ export class MapComponent implements OnInit {
   onclick() {
 
   }
+
 
   updateMapLayerView(isStateOrMunicipality: string) {
     if (!this.map) return;
@@ -144,6 +147,7 @@ export class MapComponent implements OnInit {
     this.currentGeoJsonLayer = L.geoJSON(geoJson, {
       style: (feature: any | undefined) => {
         if (feature?.properties) {
+          const value = this.getValueForRegion(feature.properties.clave);
           const fillColor = this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)) || '#ffffff';
           return {
             fillColor, // Now guaranteed to be a string
@@ -168,7 +172,10 @@ export class MapComponent implements OnInit {
             `<b>Cell ID:</b> ${feature.properties.cellid}<br>` +
             `<b>Clave:</b> ${feature.properties.clave}`
           );
-          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)} population: ${this.getPopulationById(feature.properties.clave)}`, { sticky: true });
+          const cases = this.numCasesByIdRegion(feature.properties.clave);
+          const pop = this.getPopulationById(feature.properties.clave);
+          const rate = pop ? (cases / pop) * 1000 : 0;
+          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)} population: ${this.getPopulationById(feature.properties.clave)} rate: ${rate.toFixed(2)} per 1000`, { sticky: true });
         }
       },
     }).addTo(this.map);
@@ -361,6 +368,15 @@ export class MapComponent implements OnInit {
     };
 
     return legend;
+  }
+
+  getValueForRegion(id: string): number {
+    const cases = this.numCasesByIdRegion(id);
+    if (this.coloringMode === 'cases') {
+      return cases;
+    }
+    const pop = this.getPopulationById(id);
+    return pop && pop > 0 ? (cases / pop) * 1000 : 0;
   }
 
   getPopulationById(id: string): number | null {
