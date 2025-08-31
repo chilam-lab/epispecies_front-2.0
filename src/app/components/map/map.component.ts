@@ -168,14 +168,30 @@ export class MapComponent implements OnInit {
 
       onEachFeature: (feature, layer) => {  // Changed to arrow function
         if (feature.properties) {
-          layer.bindPopup(
-            `<b>Cell ID:</b> ${feature.properties.cellid}<br>` +
-            `<b>Clave:</b> ${feature.properties.clave}`
-          );
           const cases = this.numCasesByIdRegion(feature.properties.clave);
           const pop = this.getPopulationById(feature.properties.clave);
           const rate = pop ? (cases / pop) * 1000 : 0;
-          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)} population: ${this.getPopulationById(feature.properties.clave)} rate: ${rate.toFixed(2)} per 1000`, { sticky: true });
+          layer.bindPopup(
+            `<table class="table">
+               <thead>
+                 <tr>
+                   <th scope="col">Clave</th>
+                   <th scope="col">No. Casos</th>
+                   <th scope="col">Población</th>
+                   <th scope="col">Tasa</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <th>${feature.properties.clave}</th>
+                   <td>${cases}</td>
+                   <td>${pop?.toLocaleString('en-US')}</td>
+                   <td>${rate.toFixed(4)}</td>
+                 </tr>
+               </tbody>
+             </table>`
+          );
+          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
         }
       },
     }).addTo(this.map);
