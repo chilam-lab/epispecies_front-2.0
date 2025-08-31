@@ -73,7 +73,7 @@ export class DiseaseDbService {
       );
   }
 
-  getDataByYearInTable(year: string, table: string): Observable<Record[]> {
+  getDataByYearInTable(year: string, table: string): Observable<any[]> {
     let fullUrl = this.apiUrl + 'records_by_year';
     const params = new HttpParams()
       .set('year', year)

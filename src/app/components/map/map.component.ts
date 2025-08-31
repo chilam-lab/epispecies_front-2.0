@@ -29,6 +29,7 @@ export class MapComponent implements OnInit {
   selectedResolution: string = environment.placeholderStateResolution;
   rawDataTodisplayByMun: [number, string, string][] = [];
   highestValueInData = 0;
+  populationByYearList: [number, string, number][] = [];
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -58,8 +59,9 @@ export class MapComponent implements OnInit {
     this.diseaseDB.getDataByYearInTable("2019", environment.tablePopulationTotal)
       .subscribe({
         next: (response) => {
+          this.populationByYearList = response;
           console.log("🎏🎏🎏🎏🎏");
-          console.log(response);
+          console.log(this.populationByYearList);
           console.log("🎏🎏🎏🎏🎏");
         },
         error: (error) => {
@@ -166,7 +168,7 @@ export class MapComponent implements OnInit {
             `<b>Cell ID:</b> ${feature.properties.cellid}<br>` +
             `<b>Clave:</b> ${feature.properties.clave}`
           );
-          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
+          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)} population: ${this.getPopulationById(feature.properties.clave)}`, { sticky: true });
         }
       },
     }).addTo(this.map);
@@ -361,4 +363,8 @@ export class MapComponent implements OnInit {
     return legend;
   }
 
+  getPopulationById(id: string): number | null {
+    const item = this.populationByYearList.find(subarray => Number(subarray[1]) == Number(id));
+    return item ? item[2] : null;
+  }
 }
