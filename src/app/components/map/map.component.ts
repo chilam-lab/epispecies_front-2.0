@@ -388,15 +388,26 @@ export class MapComponent implements OnInit {
 
   getValueForRegion(id: string): number {
     const cases = this.numCasesByIdRegion(id);
-    if (this.coloringMode === 'cases') {
-      return cases;
-    }
     const pop = this.getPopulationById(id);
     return pop && pop > 0 ? (cases / pop) * 1000 : 0;
   }
 
   getPopulationById(id: string): number | null {
-    const item = this.populationByYearList.find(subarray => Number(subarray[1]) == Number(id));
-    return item ? item[2] : null;
+    if (this.selectedResolution === 'Municipal') {
+      // For municipal level, find the population for the specific municipalId (item[1])
+      const item = this.populationByYearList.find(subarray => Number(subarray[1]) == Number(id));
+      return item ? item[2] : null;
+    } else {
+      const munListByState = this.dataByMunToDisplayInMap.filter(item => item[0] === Number(id));
+
+    // Sum populations from populationByYearList where municipal IDs match
+    const sum = munListByState.reduce((total, mun) => {
+      const municipalId = mun[1]; // Municipal ID from dataByMunToDisplayInMap
+      const popItem = this.populationByYearList.find(item => item[1] === municipalId);
+      return total + (popItem ? Number(popItem[2]) : 0);
+    }, 0);
+
+    return sum > 0 ? sum : null;
+    }
   }
 }
