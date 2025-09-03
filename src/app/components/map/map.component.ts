@@ -170,7 +170,7 @@ export class MapComponent implements OnInit {
         if (feature.properties) {
           const cases = this.numCasesByIdRegion(feature.properties.clave);
           const pop = this.getPopulationById(feature.properties.clave);
-          const rate = pop ? (cases / pop) * 1000 : 0;
+          const rate = pop ? (cases / pop) * 100000 : 0;
           layer.bindPopup(
             `<table class="table">
                <thead>
@@ -389,7 +389,7 @@ export class MapComponent implements OnInit {
   getValueForRegion(id: string): number {
     const cases = this.numCasesByIdRegion(id);
     const pop = this.getPopulationById(id);
-    return pop && pop > 0 ? (cases / pop) * 1000 : 0;
+    return pop && pop > 0 ? (cases / pop) * 100000 : 0;
   }
 
   getPopulationById(id: string): number | null {
