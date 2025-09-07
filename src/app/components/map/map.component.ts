@@ -207,15 +207,53 @@ export class MapComponent implements OnInit {
     // console.log("❄️❄️❄️❄️❄️❄️")
     //
     const casesStyleLayer = L.geoJSON(geoJson, {
-      style: (feature: any) => ({
-        fillColor: this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)),
-        weight: 0.5,
-        opacity: 1,
-        color: '#000000',
-        fillOpacity: 0.7,
-      }),
+     style: (feature: any | undefined) => {
+        if (feature?.properties) {
+          const value = this.getValueForRegion(feature.properties.clave);
+          const fillColor = this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)) || '#ffffff';
+          return {
+            fillColor, // Now guaranteed to be a string
+            weight: 0.5,
+            opacity: 1,
+            color: '#000000',
+            fillOpacity: 0.7,
+          };
+        }
+        return {
+          fillColor: '#ffffff',
+          weight: 0.5,
+          opacity: 1,
+          color: '#000000',
+          fillOpacity: 0.7,
+        };
+      },
       onEachFeature: (feature, layer) => {
-        layer.bindPopup(`Default Style → Clave: ${feature.properties.clave}`);
+       if (feature.properties) {
+           const cases = this.numCasesByIdRegion(feature.properties.clave);
+          const pop = this.getPopulationById(feature.properties.clave);
+          const rate = pop ? (cases / pop) * 100000 : 0;
+          layer.bindPopup(
+            `<table class="table">
+               <thead>
+                 <tr>
+                   <th scope="col">Clave</th>
+                   <th scope="col">No. Casos</th>
+                   <th scope="col">Población</th>
+                   <th scope="col">Tasa</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <th>${feature.properties.clave}</th>
+                   <td>${cases}</td>
+                   <td>${pop?.toLocaleString('en-US')}</td>
+                   <td>${rate.toFixed(4)}</td>
+                 </tr>
+               </tbody>
+             </table>`
+          );
+          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
+        }
       }
     });
 
@@ -239,7 +277,7 @@ export class MapComponent implements OnInit {
   // Add group to map
   //this.currentLayerGroup.addTo(this.map);
   const baseLayers = {
-  "Red Layer": casesStyleLayer,
+  "Número de casos": casesStyleLayer,
   "Blue Layer": rateStyleLayer
 };
 
@@ -464,5 +502,7 @@ casesStyleLayer.addTo(this.map)
 
     return sum > 0 ? sum : null;
     }
+  }
+  getStyle(){
   }
 }
