@@ -20,8 +20,8 @@ export class MapComponent implements OnInit {
   @Input() dataByMunToDisplayInMap: [number, string, string][] = [];
   @Input() selectedCVEState: number = 0;
   @Input() selectedCVEMun: string = "";
-  @Input() modelSelected: any;
   @Input() statesAndMunList: any = [];
+  @Input() selectedYear: string = "";
   constructor(private mapService: MapService, private diseaseDB: DiseaseDbService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
@@ -33,12 +33,8 @@ export class MapComponent implements OnInit {
   highestRateInData = 0;
   populationByYearList: [number, string, number][] = [];
   coloringMode: 'cases' | 'rate' = 'cases';
-  private coloringControl: L.Control | undefined;
-  //currentLayerGroup: L.LayerGroup | undefined;
   currentLayerGroup: L.FeatureGroup | undefined;
   private layerControl: L.Control.Layers | undefined;
-
-
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -58,30 +54,14 @@ export class MapComponent implements OnInit {
     this.map.boxZoom.disable();
     this.map.keyboard.disable();
     this.map.scrollWheelZoom.disable();
+        console.log("🎏🎏🎏🎏🎏<<<<<<<<<");
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.map);
 
     this.updateMapLayerView("states");
-
-    this.diseaseDB.getDataByYearInTable("2019", environment.tablePopulationTotal)
-    .subscribe({
-      next: (response) => {
-        this.populationByYearList = response;
-        console.log("🎏🎏🎏🎏🎏");
-        console.log(this.populationByYearList);
-        console.log("🎏🎏🎏🎏🎏");
-      },
-      error: (error) => {
-        console.error('Error fetching data:', error);
-        Swal.fire({
-          timer: 1000,
-          title: 'Ocurrio un error al cargar los datos.',
-          icon: 'error'
-        })
-      }
-    });
+    this.getPopulationData();
   }
 
   updateMapLayerView(isStateOrMunicipality: string) {
@@ -303,90 +283,69 @@ export class MapComponent implements OnInit {
     }
 
     try {
+      let year = changes['selectedYear']['currentValue'];
+        console.log("🥸")
+      console.log(year)
+        console.log("🥸")
+      if (year && typeof year[0] === 'number') {
+        let numberYear = Number(year[0]).toString();
+        this.selectedYear = numberYear;
+        // this.getPopulationData();
+      }
+    } catch (err) {
+      console.log("no year updates");
+    }
+
+    try {
       let dataToDisplayByMun = changes['dataByMunToDisplayInMap']['currentValue'];
       if (dataToDisplayByMun.length != 0) {
         this.rawDataTodisplayByMun = dataToDisplayByMun;
 
-        // Calculate both maximum cases and maximum rate
         let maxValue = 0;
-let maxRate = 0;
+        let maxRate = 0;
 
-if (this.selectedResolution === "Municipal") {
-  // Municipal level: check individual municipal values
-  for (const row of this.rawDataTodisplayByMun) {
-    const cases = Number(row[2]);
-    const population = this.getPopulationById(row[1])
-    if (cases > maxValue) {
-      maxValue = cases;
-    }
-    if (population && population > 0) {
+        if (this.selectedResolution === "Municipal") {
 
-      const rate = cases / population;
-      if (rate > maxRate) {
-        maxRate = rate;
-      }
-    }
-  }
-} else {
-   const stateSums = this.dataByMunToDisplayInMap
-          .reduce((acc, row) => {
+          for (const row of this.rawDataTodisplayByMun) {
+            const value = row[2];           // number of cases
+            const id = row[1];              // the ID to get population
+            const population = this.getPopulationById(id);
+
+            if (typeof value === 'number' && value > maxValue) {
+              maxValue = value;
+            }
+
+            if (population && population > 0) {
+              const rate = (Number(value) / population) * 100000;
+              if (rate > maxRate) {
+                maxRate = rate;
+              }
+            }
+          }
+        } else {
+
+          const stateSums = this.dataByMunToDisplayInMap.reduce((acc, row) => {
             const stateId = row[0];
             const cases = Number(row[2]);
             acc.set(stateId, (acc.get(stateId) || 0) + cases);
             return acc;
           }, new Map<number, number>());
-  maxValue = Math.max(...stateSums.values());
-  console.log("🤭");
-  console.log(stateSums)
-  console.log("🤭");
-  let maxRateStateId: number | null = null;
+          maxValue = Math.max(...stateSums.values());
+          let maxRateStateId: number | null = null;
 
-for (const [stateId, cases] of stateSums.entries()) {
-  const population = this.getPopulationById(stateId.toString());
-  if (population && population > 0) { // avoid division by zero
-    const rate = (cases / population) * 100000;
-    if (rate > maxRate) {
-      maxRate = rate;
-      maxRateStateId = stateId;
-    }
-  }
-}
-console.log(`State with highest rate: ${maxRateStateId}, Rate: ${maxRate}`);
-console.log('Max value:', maxValue);
-  // State level: group by state ID
-  // const stateSums = new Map<number, { cases: number; population: number }>();
-  // console.log("🤭");
-  // console.log(this.dataByMunToDisplayInMap);
-  // console.log("🤭");
-  //
-  // for (const row of this.dataByMunToDisplayInMap) {
-  //   const stateId = row[0];
-  //   const cases = Number(row[2]);
-  //   const population = this.getPopulationById(stateId.toString()); // assuming row[3] contains population
-  //
-  //   if (!stateSums.has(stateId)) {
-  //     stateSums.set(stateId, { cases: 0, population: 0 });
-  //   }
-  //
-  //   const current = stateSums.get(stateId)!;
-  //   current.cases += cases;
-  //   current.population += population || 0;
-  // }
-  //
-  // // Find max values and max rate
-  // for (const { cases, population } of stateSums.values()) {
-  //   if (cases > maxValue) maxValue = cases;
-  //   if (population > 0) {
-  //     const rate = cases / population;
-  //     if (rate > maxRate) maxRate = rate;
-  //   }
-  // }
-}
-
-console.log('Max value:', maxValue);
-console.log('Max rate:', maxRate);
-  this.highestValueInData = maxValue;
-  this.highestRateInData = maxRate;
+          for (const [stateId, cases] of stateSums.entries()) {
+            const population = this.getPopulationById(stateId.toString());
+            if (population && population > 0) { // avoid division by zero
+              const rate = (cases / population) * 100000;
+              if (rate > maxRate) {
+                maxRate = rate;
+                maxRateStateId = stateId;
+              }
+            }
+          }
+        }
+        this.highestValueInData = maxValue;
+        this.highestRateInData = maxRate;
 
       }
     } catch (err) {
@@ -394,64 +353,6 @@ console.log('Max rate:', maxRate);
     }
 
     this.updateMapLayerView(this.selectedResolution);
-  }
-
-  calculateMaxValues(resolution: string, data: any[]): { maxCases: number, maxRate: number } {
-    let maxCases = 0;
-    let maxRate = 0;
-
-    if (resolution === "Municipal") {
-      // Municipal: each row is a municipality
-      for (const row of data) {
-        const cases = Number(row[2]);
-        const municipalId = row[1];
-
-        if (cases > maxCases) {
-          maxCases = cases;
-        }
-
-        const population = this.getPopulationById(municipalId);
-        if (population && population > 0) {
-          const rate = (cases / population) * 100000;
-          if (rate > maxRate) {
-            maxRate = rate;
-          }
-        }
-      }
-    } else {
-      // State: aggregate by stateId
-      const stateData = new Map<number, { cases: number, population: number }>();
-
-      for (const row of data) {
-        const stateId = row[0];
-        const cases = Number(row[2]);
-        const municipalId = row[1];
-        const population = this.getPopulationById(municipalId) || 0;
-
-        if (!stateData.has(stateId)) {
-          stateData.set(stateId, { cases: 0, population: 0 });
-        }
-
-        const existing = stateData.get(stateId)!;
-        existing.cases += cases;
-        existing.population += population;
-      }
-
-      for (const [stateId, stats] of stateData) {
-        if (stats.cases > maxCases) {
-          maxCases = stats.cases;
-        }
-
-        if (stats.population > 0) {
-          const rate = (stats.cases / stats.population) * 100000;
-          if (rate > maxRate) {
-            maxRate = rate;
-          }
-        }
-      }
-    }
-
-    return { maxCases, maxRate };
   }
 
 
@@ -520,6 +421,9 @@ console.log('Max rate:', maxRate);
 
       const maxValue = this.coloringMode === 'rate' ? this.highestRateInData : this.highestValueInData;
       const title = this.coloringMode === 'rate' ? 'Tasa por 100,000 hab.' : 'Número de casos';
+      console.log("🪅")
+      console.log(maxValue)
+      console.log("🪅")
 
       if (!maxValue || maxValue === 0) {
         div.innerHTML = `<h5>${title}</h5><p>${environment.placeholderNoData}</p>`;
@@ -570,5 +474,25 @@ console.log('Max rate:', maxRate);
     };
 
     return legend;
+  }
+  getPopulationData(){
+    console.log("xxxxxxxxxxxxxxx")
+    console.log(this.selectedYear)
+    console.log(typeof(this.selectedYear))
+    let popa = Number(this.selectedYear).toString()
+    this.diseaseDB.getDataByYearInTable(popa, environment.tablePopulationTotal)
+    .subscribe({
+      next: (response) => {
+        this.populationByYearList = response;
+      },
+      error: (error) => {
+        console.error('Error fetching data:', error);
+        Swal.fire({
+          timer: 1000,
+          title: 'Ocurrio un error al cargar los datos.',
+          icon: 'error'
+        })
+      }
+    });
   }
 }
