@@ -29,6 +29,7 @@ export class MapComponent implements OnInit {
   selectedResolution: string = environment.placeholderStateResolution;
   rawDataTodisplayByMun: [number, string, string][] = [];
   highestValueInData = 0;
+  highestRateInData = 0;
   populationByYearList: [number, string, number][] = [];
   coloringMode: 'cases' | 'rate' = 'cases';
   private coloringControl: L.Control | undefined;
@@ -257,16 +258,66 @@ export class MapComponent implements OnInit {
       }
     });
 
+    // const rateStyleLayer = L.geoJSON(geoJson, {
+    //   style: (feature: any) => ({
+    //     fillColor: 'blue',   // 👈 example alternative coloring
+    //     weight: 0.5,
+    //     opacity: 1,
+    //     color: '#000000',
+    //     fillOpacity: 0.3,
+    //   }),
+    //   onEachFeature: (feature, layer) => {
+    //     layer.bindPopup(`Alt Style → Clave: ${feature.properties.clave}`);
+    //   }
+    // });
     const rateStyleLayer = L.geoJSON(geoJson, {
-      style: (feature: any) => ({
-        fillColor: 'blue',   // 👈 example alternative coloring
-        weight: 0.5,
-        opacity: 1,
-        color: '#000000',
-        fillOpacity: 0.3,
-      }),
+      style: (feature: any | undefined) => {
+        if (feature?.properties) {
+          const rate = this.getRateForRegion(feature.properties.clave);
+          const fillColor = this.getColorForValue(rate, true) || '#ffffff'; // true = rate mode
+          return {
+            fillColor,
+            weight: 0.5,
+            opacity: 1,
+            color: '#000000',
+            fillOpacity: 0.7,
+          };
+        }
+        return {
+          fillColor: '#ffffff',
+          weight: 0.5,
+          opacity: 1,
+          color: '#000000',
+          fillOpacity: 0.7,
+        };
+      },
       onEachFeature: (feature, layer) => {
-        layer.bindPopup(`Alt Style → Clave: ${feature.properties.clave}`);
+        if (feature.properties) {
+          const cases = this.numCasesByIdRegion(feature.properties.clave);
+          const pop = this.getPopulationById(feature.properties.clave);
+          const rate = pop ? (cases / pop) * 100000 : 0;
+          layer.bindPopup(
+            `<table class="table">
+               <thead>
+                 <tr>
+                   <th scope="col">Clave</th>
+                   <th scope="col">No. Casos</th>
+                   <th scope="col">Población</th>
+                   <th scope="col">Tasa</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <th>${feature.properties.clave}</th>
+                   <td>${cases}</td>
+                   <td>${pop?.toLocaleString('en-US')}</td>
+                   <td>${rate.toFixed(4)}</td>
+                 </tr>
+               </tbody>
+             </table>`
+          );
+          layer.bindTooltip(`Clave: ${feature.properties.clave} tasa: ${rate.toFixed(2)}`, { sticky: true });
+        }
       }
     });
 
@@ -278,7 +329,7 @@ export class MapComponent implements OnInit {
   //this.currentLayerGroup.addTo(this.map);
   const baseLayers = {
   "Número de casos": casesStyleLayer,
-  "Blue Layer": rateStyleLayer
+  "Tasa por 100,000": rateStyleLayer
 };
 
 // If control already exists, remove and rebuild it
@@ -331,70 +382,105 @@ casesStyleLayer.addTo(this.map)
     } catch (err) {
       console.log("no resolution updates");
     }
+
     try {
       let dataToDisplayByMun = changes['dataByMunToDisplayInMap']['currentValue'];
       if (dataToDisplayByMun.length != 0) {
         this.rawDataTodisplayByMun = dataToDisplayByMun;
-        // Calculate the maximum value for the dynamic range
 
-        let maxValue = 0;
-        // if(this.selectedResolution == "Muncipal"){
-        //   for (const row of this.rawDataTodisplayByMun) {
-        //     const value = row[2];
-        //     if (typeof value === 'number' && value > maxValue) {
-        //       maxValue = value;
-        //     }
-        //   }
-        // }
+        // Calculate both maximum cases and maximum rate
+        let maxCases = 0;
+        let maxRate = 0;
+
         if (this.selectedResolution == "Municipal") {
           // For municipal level, check individual municipal values
           for (const row of this.rawDataTodisplayByMun) {
-            const value = row[2];
-            if (typeof value === 'number' && value > maxValue) {
-              maxValue = value;
+            const cases = Number(row[2]);
+            const municipalId = row[1];
+
+            // Update max cases
+            if (cases > maxCases) {
+              maxCases = cases;
+            }
+
+            // Calculate and update max rate
+            const population = this.getPopulationById(municipalId);
+            if (population && population > 0) {
+              const rate = (cases / population) * 100000;
+              if (rate > maxRate) {
+                maxRate = rate;
+              }
             }
           }
         } else {
-          // For state level, group by state ID and sum cases, then find maximum
-          const stateSums = this.dataByMunToDisplayInMap
-          .reduce((acc, row) => {
+          // For state level, group by state ID and calculate both sums and rates
+          const stateData = new Map<number, { cases: number, population: number }>();
+
+          // First, aggregate cases and population by state
+          for (const row of this.dataByMunToDisplayInMap) {
             const stateId = row[0];
             const cases = Number(row[2]);
-            acc.set(stateId, (acc.get(stateId) || 0) + cases);
-            return acc;
-          }, new Map<number, number>());
+            const municipalId = row[1];
+            const population = this.getPopulationById(municipalId) || 0;
 
-          maxValue = Math.max(...stateSums.values());
+            if (stateData.has(stateId)) {
+              const existing = stateData.get(stateId)!;
+              stateData.set(stateId, {
+                cases: existing.cases + cases,
+                population: existing.population + population
+              });
+            } else {
+              stateData.set(stateId, { cases, population });
+            }
+          }
+
+          // Now find max cases and max rate
+          for (const [stateId, data] of stateData) {
+            // Update max cases
+            if (data.cases > maxCases) {
+              maxCases = data.cases;
+            }
+
+            // Calculate and update max rate
+            if (data.population > 0) {
+              const rate = (data.cases / data.population) * 100000;
+              if (rate > maxRate) {
+                maxRate = rate;
+              }
+            }
+          }
         }
-        console.log('Max value:', maxValue);
 
-        this.highestValueInData = maxValue;
+        console.log('Max cases:', maxCases);
+        console.log('Max rate:', maxRate);
+
+        this.highestValueInData = maxCases;
+        this.highestRateInData = maxRate;
       }
-
     } catch (err) {
       console.log("no updates in the data")
     }
+
     this.updateMapLayerView(this.selectedResolution);
   }
+  getColorForValue(value: number, isRate: boolean = false): string {
+    const maxValue = isRate ? this.highestRateInData : this.highestValueInData;
 
-  getColorForValue(value: number): string {
-    let maxValue = this.highestValueInData;
-
-    if (maxValue === 0) return '#DDDDDD'; // Avoid division by zero
+    if (maxValue === 0) return '#DDDDDD';
     if (value === 0) return '#DDDDDD';
 
-    // Define small quintuples (5 equal parts)
+    // Define small ranges (5 equal parts)
     if (maxValue <= 5) {
       const colors = ['#FFEDA0', '#FD8D3C', '#FC4E2A', '#E31A1C', '#800026'];
-      const colorIndex = Math.min(value - 1, colors.length - 1);
-      return colors[colorIndex];
+      const colorIndex = Math.min(Math.floor(value) - 1, colors.length - 1);
+      return colors[Math.max(0, colorIndex)];
     }
 
-    // Handle larger datasets with quintuples
-    const q_1 = Math.ceil(maxValue * (1.0 / 5.0));
-    const q_2 = Math.ceil(maxValue * (2.0 / 5.0));
-    const q_3 = Math.ceil(maxValue * (3.0 / 5.0));
-    const q_4 = Math.ceil(maxValue * (4.0 / 5.0));
+    // Handle larger datasets with quintiles
+    const q_1 = maxValue * (1.0 / 5.0);
+    const q_2 = maxValue * (2.0 / 5.0);
+    const q_3 = maxValue * (3.0 / 5.0);
+    const q_4 = maxValue * (4.0 / 5.0);
 
     if (value > q_4) return '#800026';
     if (value > q_3) return '#BD0026';
@@ -403,70 +489,60 @@ casesStyleLayer.addTo(this.map)
     return '#FFEDA0';
   }
 
+  getRateForRegion(id: string): number {
+    const cases = this.numCasesByIdRegion(id);
+    const population = this.getPopulationById(id);
+    return population && population > 0 ? (cases / population) * 100000 : 0;
+  }
+
   createLegend(): L.Control {
     const legend = new L.Control({ position: 'bottomleft' });
 
     legend.onAdd = (map) => {
       const div = L.DomUtil.create('div', 'info legend');
-      // Get the max value for calculations
-      const maxValue = this.highestValueInData;
 
-      console.log('Legend - Max Value:', maxValue); // Debug log
+      // Determine which max value to use based on current mode
+      const maxValue = this.coloringMode === 'rate' ? this.highestRateInData : this.highestValueInData;
+      const title = this.coloringMode === 'rate' ? 'Tasa por 100,000 hab.' : 'Número de casos';
 
-      // Handle case where maxValue is 0 or undefined
       if (!maxValue || maxValue === 0) {
-        div.innerHTML = `<h5>${environment.placeholderDataRange}</h5><p>${environment.placeholderNoData}</p>`;
+        div.innerHTML = `<h5>${title}</h5><p>${environment.placeholderNoData}</p>`;
         return div;
       }
 
       let ranges: any[] = [];
 
-      // Handle small datasets differently
       if (maxValue <= 5) {
-        // For very small ranges, create individual value ranges
         ranges.push({ color: '#DDDDDD', label: '0' });
-
         for (let i = 1; i <= maxValue; i++) {
           const colors = ['#FFEDA0', '#FD8D3C', '#FC4E2A', '#E31A1C', '#800026'];
           const colorIndex = Math.min(i - 1, colors.length - 1);
           ranges.push({
             color: colors[colorIndex],
-            label: i.toString()
+            label: this.coloringMode === 'rate' ? i.toFixed(2) : i.toString()
           });
         }
       } else {
-        // For larger ranges, use quintiles but ensure no overlaps
-        const q_1 = Math.ceil(maxValue * (1.0 / 5.0));
-        const q_2 = Math.ceil(maxValue * (2.0 / 5.0));
-        const q_3 = Math.ceil(maxValue * (3.0 / 5.0));
-        const q_4 = Math.ceil(maxValue * (4.0 / 5.0));
-        const q_5 = Math.ceil(maxValue * (5.0 / 5.0));
+        const q_1 = maxValue * (1.0 / 5.0);
+        const q_2 = maxValue * (2.0 / 5.0);
+        const q_3 = maxValue * (3.0 / 5.0);
+        const q_4 = maxValue * (4.0 / 5.0);
+        const q_5 = maxValue;
+
+        const formatValue = (val: number) =>
+          this.coloringMode === 'rate' ? val.toFixed(2) : Math.ceil(val).toString();
 
         ranges = [
-
           { color: '#DDDDDD', label: '0' },
-          { color: '#FFEDA0', label: `1 - ${q_1}` },
-          { color: '#FD8D3C', label: `${q_1 + 1} - ${q_2}` },
-          { color: '#FC4E2A', label: `${q_2 + 1} - ${q_3}` },
-          { color: '#E31A1C', label: `${q_3 + 1} - ${q_4}` },
-          { color: '#800026', label: `${q_4 + 1} - ${q_5}` }
+          { color: '#FFEDA0', label: `0.01 - ${formatValue(q_1)}` },
+          { color: '#FD8D3C', label: `${formatValue(q_1 + 0.01)} - ${formatValue(q_2)}` },
+          { color: '#FC4E2A', label: `${formatValue(q_2 + 0.01)} - ${formatValue(q_3)}` },
+          { color: '#E31A1C', label: `${formatValue(q_3 + 0.01)} - ${formatValue(q_4)}` },
+          { color: '#800026', label: `${formatValue(q_4 + 0.01)} - ${formatValue(q_5)}` }
         ];
-
-        // Filter out invalid ranges where start > end
-        ranges = ranges.filter((range, index) => {
-          if (index === 0) return true; // Keep the "0" range
-          const parts = range.label.split(' - ');
-          if (parts.length === 2) {
-            const start = parseInt(parts[0]);
-            const end = parseInt(parts[1]);
-            return start <= end;
-          }
-          return true;
-        });
       }
-      // Create legend HTML
-      div.innerHTML = `<h5>${environment.placeholderDataRange}</h5>`;
 
+      div.innerHTML = `<h5>${title}</h5>`;
       ranges.forEach(range => {
         div.innerHTML +=
           `<i style="background:${range.color}; width: 18px; height: 18px; display: inline-block; margin-right: 8px;"></i> ` +
