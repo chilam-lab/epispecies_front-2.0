@@ -258,18 +258,6 @@ export class MapComponent implements OnInit {
       }
     });
 
-    // const rateStyleLayer = L.geoJSON(geoJson, {
-    //   style: (feature: any) => ({
-    //     fillColor: 'blue',   // 👈 example alternative coloring
-    //     weight: 0.5,
-    //     opacity: 1,
-    //     color: '#000000',
-    //     fillOpacity: 0.3,
-    //   }),
-    //   onEachFeature: (feature, layer) => {
-    //     layer.bindPopup(`Alt Style → Clave: ${feature.properties.clave}`);
-    //   }
-    // });
     const rateStyleLayer = L.geoJSON(geoJson, {
       style: (feature: any | undefined) => {
         if (feature?.properties) {
@@ -338,6 +326,21 @@ if (this.layerControl) {
 }
 
 this.layerControl = L.control.layers(baseLayers, {}, { collapsed: false }).addTo(this.map);
+
+this.map.on('baselayerchange', (e: any) => {
+      if (e.name === "Número de casos") {
+        this.coloringMode = 'cases';
+      } else if (e.name === "Tasa por 100,000") {
+        this.coloringMode = 'rate';
+      }
+
+      // Update legend when layer changes
+      if (this.currentLegend) {
+        this.map!.removeControl(this.currentLegend);
+        this.currentLegend = this.createLegend();
+        this.currentLegend.addTo(this.map!);
+      }
+    });
 
 casesStyleLayer.addTo(this.map)
     this.currentLegend = this.createLegend();
@@ -463,6 +466,7 @@ casesStyleLayer.addTo(this.map)
 
     this.updateMapLayerView(this.selectedResolution);
   }
+
   getColorForValue(value: number, isRate: boolean = false): string {
     const maxValue = isRate ? this.highestRateInData : this.highestValueInData;
 
@@ -471,7 +475,7 @@ casesStyleLayer.addTo(this.map)
 
     // Define small ranges (5 equal parts)
     if (maxValue <= 5) {
-      const colors = ['#FFEDA0', '#FD8D3C', '#FC4E2A', '#E31A1C', '#800026'];
+      const colors = ['#FFEDA0', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
       const colorIndex = Math.min(Math.floor(value) - 1, colors.length - 1);
       return colors[Math.max(0, colorIndex)];
     }
@@ -500,6 +504,9 @@ casesStyleLayer.addTo(this.map)
 
     legend.onAdd = (map) => {
       const div = L.DomUtil.create('div', 'info legend');
+      console.log("❄️🪆")
+      console.log(this.coloringMode)
+      console.log("❄️🪆")
 
       // Determine which max value to use based on current mode
       const maxValue = this.coloringMode === 'rate' ? this.highestRateInData : this.highestValueInData;
@@ -523,6 +530,7 @@ casesStyleLayer.addTo(this.map)
           });
         }
       } else {
+        const minimunNumber = this.coloringMode === 'rate' ? 0.01 : 1
         const q_1 = maxValue * (1.0 / 5.0);
         const q_2 = maxValue * (2.0 / 5.0);
         const q_3 = maxValue * (3.0 / 5.0);
@@ -534,7 +542,7 @@ casesStyleLayer.addTo(this.map)
 
         ranges = [
           { color: '#DDDDDD', label: '0' },
-          { color: '#FFEDA0', label: `0.01 - ${formatValue(q_1)}` },
+          { color: '#FFEDA0', label: `${minimunNumber} - ${formatValue(q_1)}` },
           { color: '#FD8D3C', label: `${formatValue(q_1 + 0.01)} - ${formatValue(q_2)}` },
           { color: '#FC4E2A', label: `${formatValue(q_2 + 0.01)} - ${formatValue(q_3)}` },
           { color: '#E31A1C', label: `${formatValue(q_3 + 0.01)} - ${formatValue(q_4)}` },
