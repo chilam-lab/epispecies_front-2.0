@@ -32,6 +32,11 @@ export class MapComponent implements OnInit {
   populationByYearList: [number, string, number][] = [];
   coloringMode: 'cases' | 'rate' = 'cases';
   private coloringControl: L.Control | undefined;
+  //currentLayerGroup: L.LayerGroup | undefined;
+  currentLayerGroup: L.FeatureGroup | undefined;
+  private layerControl: L.Control.Layers | undefined;
+
+
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -129,13 +134,17 @@ export class MapComponent implements OnInit {
 
 
     console.log('GeoJSON:', geoJson);
-    if (this.currentGeoJsonLayer) {
-      this.map.removeLayer(this.currentGeoJsonLayer);
-      this.currentGeoJsonLayer = undefined;
-    console.log('updating el layer');
-    console.log(this.currentGeoJsonLayer);
-    console.log('updating el layer');
+    if (this.currentLayerGroup) {
+      this.map.removeLayer(this.currentLayerGroup);
+      this.currentLayerGroup = undefined;
     }
+    // if (this.currentGeoJsonLayer) {
+    //   this.map.removeLayer(this.currentGeoJsonLayer);
+    //   this.currentGeoJsonLayer = undefined;
+    // console.log('updating el layer');
+    // console.log(this.currentGeoJsonLayer);
+    // console.log('updating el layer');
+    // }
     if (this.currentLegend) {
       this.map.removeControl(this.currentLegend);
       this.currentLegend = undefined; // Important: set to undefined after removing
@@ -144,63 +153,109 @@ export class MapComponent implements OnInit {
     console.log('mejor');
     }
 
-    this.currentGeoJsonLayer = L.geoJSON(geoJson, {
-      style: (feature: any | undefined) => {
-        if (feature?.properties) {
-          const value = this.getValueForRegion(feature.properties.clave);
-          const fillColor = this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)) || '#ffffff';
-          return {
-            fillColor, // Now guaranteed to be a string
-            weight: 0.5,
-            opacity: 1,
-            color: '#000000',
-            fillOpacity: 0.7,
-          };
-        }
-        return {
-          fillColor: '#ffffff',
-          weight: 0.5,
-          opacity: 1,
-          color: '#000000',
-          fillOpacity: 0.7,
-        };
-      },
+    // this.currentGeoJsonLayer = L.geoJSON(geoJson, {
+    //   style: (feature: any | undefined) => {
+    //     if (feature?.properties) {
+    //       const value = this.getValueForRegion(feature.properties.clave);
+    //       const fillColor = this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)) || '#ffffff';
+    //       return {
+    //         fillColor, // Now guaranteed to be a string
+    //         weight: 0.5,
+    //         opacity: 1,
+    //         color: '#000000',
+    //         fillOpacity: 0.7,
+    //       };
+    //     }
+    //     return {
+    //       fillColor: '#ffffff',
+    //       weight: 0.5,
+    //       opacity: 1,
+    //       color: '#000000',
+    //       fillOpacity: 0.7,
+    //     };
+    //   },
+    //
+    //   onEachFeature: (feature, layer) => {  // Changed to arrow function
+    //     if (feature.properties) {
+    //       const cases = this.numCasesByIdRegion(feature.properties.clave);
+    //       const pop = this.getPopulationById(feature.properties.clave);
+    //       const rate = pop ? (cases / pop) * 100000 : 0;
+    //       layer.bindPopup(
+    //         `<table class="table">
+    //            <thead>
+    //              <tr>
+    //                <th scope="col">Clave</th>
+    //                <th scope="col">No. Casos</th>
+    //                <th scope="col">Población</th>
+    //                <th scope="col">Tasa</th>
+    //              </tr>
+    //            </thead>
+    //            <tbody>
+    //              <tr>
+    //                <th>${feature.properties.clave}</th>
+    //                <td>${cases}</td>
+    //                <td>${pop?.toLocaleString('en-US')}</td>
+    //                <td>${rate.toFixed(4)}</td>
+    //              </tr>
+    //            </tbody>
+    //          </table>`
+    //       );
+    //       layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
+    //     }
+    //   },
+    // }).addTo(this.map);
+    // console.log("❄️❄️❄️❄️❄️❄️")
+    //
+    const casesStyleLayer = L.geoJSON(geoJson, {
+      style: (feature: any) => ({
+        fillColor: this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)),
+        weight: 0.5,
+        opacity: 1,
+        color: '#000000',
+        fillOpacity: 0.7,
+      }),
+      onEachFeature: (feature, layer) => {
+        layer.bindPopup(`Default Style → Clave: ${feature.properties.clave}`);
+      }
+    });
 
-      onEachFeature: (feature, layer) => {  // Changed to arrow function
-        if (feature.properties) {
-          const cases = this.numCasesByIdRegion(feature.properties.clave);
-          const pop = this.getPopulationById(feature.properties.clave);
-          const rate = pop ? (cases / pop) * 100000 : 0;
-          layer.bindPopup(
-            `<table class="table">
-               <thead>
-                 <tr>
-                   <th scope="col">Clave</th>
-                   <th scope="col">No. Casos</th>
-                   <th scope="col">Población</th>
-                   <th scope="col">Tasa</th>
-                 </tr>
-               </thead>
-               <tbody>
-                 <tr>
-                   <th>${feature.properties.clave}</th>
-                   <td>${cases}</td>
-                   <td>${pop?.toLocaleString('en-US')}</td>
-                   <td>${rate.toFixed(4)}</td>
-                 </tr>
-               </tbody>
-             </table>`
-          );
-          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
-        }
-      },
-    }).addTo(this.map);
-    console.log("❄️❄️❄️❄️❄️❄️")
+    const rateStyleLayer = L.geoJSON(geoJson, {
+      style: (feature: any) => ({
+        fillColor: 'blue',   // 👈 example alternative coloring
+        weight: 0.5,
+        opacity: 1,
+        color: '#000000',
+        fillOpacity: 0.3,
+      }),
+      onEachFeature: (feature, layer) => {
+        layer.bindPopup(`Alt Style → Clave: ${feature.properties.clave}`);
+      }
+    });
 
+//     this.currentLayerGroup = L.layerGroup([casesStyleLayer, rateStyleLayer]);
+     this.currentLayerGroup = L.featureGroup([casesStyleLayer, rateStyleLayer]);
+
+
+  // Add group to map
+  //this.currentLayerGroup.addTo(this.map);
+  const baseLayers = {
+  "Red Layer": casesStyleLayer,
+  "Blue Layer": rateStyleLayer
+};
+
+// If control already exists, remove and rebuild it
+if (this.layerControl) {
+  this.map.removeControl(this.layerControl);
+}
+
+this.layerControl = L.control.layers(baseLayers, {}, { collapsed: false }).addTo(this.map);
+
+casesStyleLayer.addTo(this.map)
     this.currentLegend = this.createLegend();
     this.currentLegend.addTo(this.map);
 
-    const bounds = this.currentGeoJsonLayer.getBounds();
+    // const bounds = this.currentGeoJsonLayer.getBounds();
+    const bounds = this.currentLayerGroup.getBounds();
     if (bounds.isValid()) {
       this.map.fitBounds(bounds);
     } else {
