@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { DiseaseDbService } from '../../services/disease-db.service';
+import { getMatInputUnsupportedTypeError } from '@angular/material/input';
 
 @Component({
   selector: 'app-map',
@@ -65,27 +66,23 @@ export class MapComponent implements OnInit {
     this.updateMapLayerView("states");
 
     this.diseaseDB.getDataByYearInTable("2019", environment.tablePopulationTotal)
-      .subscribe({
-        next: (response) => {
-          this.populationByYearList = response;
-          console.log("🎏🎏🎏🎏🎏");
-          console.log(this.populationByYearList);
-          console.log("🎏🎏🎏🎏🎏");
-        },
-        error: (error) => {
-          console.error('Error fetching data:', error);
-          Swal.fire({
-            timer: 1000,
-            title: 'Ocurrio un error al cargar los datos.',
-            icon: 'error'
-          })
-        }
-      });
+    .subscribe({
+      next: (response) => {
+        this.populationByYearList = response;
+        console.log("🎏🎏🎏🎏🎏");
+        console.log(this.populationByYearList);
+        console.log("🎏🎏🎏🎏🎏");
+      },
+      error: (error) => {
+        console.error('Error fetching data:', error);
+        Swal.fire({
+          timer: 1000,
+          title: 'Ocurrio un error al cargar los datos.',
+          icon: 'error'
+        })
+      }
+    });
   }
-  onclick() {
-
-  }
-
 
   updateMapLayerView(isStateOrMunicipality: string) {
     if (!this.map) return;
@@ -96,9 +93,8 @@ export class MapComponent implements OnInit {
     if (isStateOrMunicipality === 'Municipal') {
       //un minucupio
       if (this.selectedCVEMun.length > 0) {
-        const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
-          feature.properties.clave === this.selectedCVEMun.toString()
-        );
+        const filteredFeatures = geoJson.features.filter(
+          (feature: { properties: { cellid: number; clave: string; }; }) => feature.properties.clave === this.selectedCVEMun.toString());
         geoJson = {
           type: "FeatureCollection",
           features: filteredFeatures
@@ -108,10 +104,8 @@ export class MapComponent implements OnInit {
           let list = this.statesAndMunList.filter((item: any[]) => item[0] === this.selectedCVEState)
           let municipalityCodes = list.map((item: any[]) => Number(item[2]) > 10000 ? item[2] : "0" + item[2]);
           //los municipios del estado
-          //traer la lista de los municipios e iterarla
-          let filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
-            municipalityCodes.includes(feature.properties.clave)
-          );
+          let filteredFeatures = geoJson.features.filter(
+            (feature: { properties: { cellid: number; clave: string; }; }) => municipalityCodes.includes(feature.properties.clave));
           geoJson = {
             type: "FeatureCollection",
             features: filteredFeatures
@@ -120,11 +114,9 @@ export class MapComponent implements OnInit {
         }
       }
     } else {
-      console.log("this part is working fine")
       if (this.selectedCVEState > 0) {
-        const filteredFeatures = geoJson.features.filter((feature: { properties: { cellid: number; clave: string; }; }) =>
-          feature.properties.cellid === this.selectedCVEState
-        );
+        const filteredFeatures = geoJson.features.filter(
+          (feature: { properties: { cellid: number; clave: string; }; }) => feature.properties.cellid === this.selectedCVEState);
         geoJson = {
           type: "FeatureCollection",
           features: filteredFeatures
@@ -132,92 +124,30 @@ export class MapComponent implements OnInit {
       }
     }
 
-
-
-    console.log('GeoJSON:', geoJson);
     if (this.currentLayerGroup) {
       this.map.removeLayer(this.currentLayerGroup);
       this.currentLayerGroup = undefined;
     }
-    // if (this.currentGeoJsonLayer) {
-    //   this.map.removeLayer(this.currentGeoJsonLayer);
-    //   this.currentGeoJsonLayer = undefined;
-    // console.log('updating el layer');
-    // console.log(this.currentGeoJsonLayer);
-    // console.log('updating el layer');
-    // }
+
     if (this.currentLegend) {
       this.map.removeControl(this.currentLegend);
-      this.currentLegend = undefined; // Important: set to undefined after removing
-    console.log('mejor');
-    console.log(this.currentLegend);
-    console.log('mejor');
+      this.currentLegend = undefined;
     }
 
-    // this.currentGeoJsonLayer = L.geoJSON(geoJson, {
-    //   style: (feature: any | undefined) => {
-    //     if (feature?.properties) {
-    //       const value = this.getValueForRegion(feature.properties.clave);
-    //       const fillColor = this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)) || '#ffffff';
-    //       return {
-    //         fillColor, // Now guaranteed to be a string
-    //         weight: 0.5,
-    //         opacity: 1,
-    //         color: '#000000',
-    //         fillOpacity: 0.7,
-    //       };
-    //     }
-    //     return {
-    //       fillColor: '#ffffff',
-    //       weight: 0.5,
-    //       opacity: 1,
-    //       color: '#000000',
-    //       fillOpacity: 0.7,
-    //     };
-    //   },
-    //
-    //   onEachFeature: (feature, layer) => {  // Changed to arrow function
-    //     if (feature.properties) {
-    //       const cases = this.numCasesByIdRegion(feature.properties.clave);
-    //       const pop = this.getPopulationById(feature.properties.clave);
-    //       const rate = pop ? (cases / pop) * 100000 : 0;
-    //       layer.bindPopup(
-    //         `<table class="table">
-    //            <thead>
-    //              <tr>
-    //                <th scope="col">Clave</th>
-    //                <th scope="col">No. Casos</th>
-    //                <th scope="col">Población</th>
-    //                <th scope="col">Tasa</th>
-    //              </tr>
-    //            </thead>
-    //            <tbody>
-    //              <tr>
-    //                <th>${feature.properties.clave}</th>
-    //                <td>${cases}</td>
-    //                <td>${pop?.toLocaleString('en-US')}</td>
-    //                <td>${rate.toFixed(4)}</td>
-    //              </tr>
-    //            </tbody>
-    //          </table>`
-    //       );
-    //       layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
-    //     }
-    //   },
-    // }).addTo(this.map);
-    // console.log("❄️❄️❄️❄️❄️❄️")
-    //
+    if (this.layerControl) {
+      this.map.removeControl(this.layerControl);
+    }
+
     const casesStyleLayer = L.geoJSON(geoJson, {
-     style: (feature: any | undefined) => {
+      style: (feature: any | undefined) => {
         if (feature?.properties) {
-          const value = this.getValueForRegion(feature.properties.clave);
           const fillColor = this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)) || '#ffffff';
           return {
-            fillColor, // Now guaranteed to be a string
+            fillColor,
             weight: 0.5,
             opacity: 1,
             color: '#000000',
-            fillOpacity: 0.7,
+            fillOpacity: 1,
           };
         }
         return {
@@ -225,12 +155,12 @@ export class MapComponent implements OnInit {
           weight: 0.5,
           opacity: 1,
           color: '#000000',
-          fillOpacity: 0.7,
+          fillOpacity: 1,
         };
       },
       onEachFeature: (feature, layer) => {
-       if (feature.properties) {
-           const cases = this.numCasesByIdRegion(feature.properties.clave);
+        if (feature.properties) {
+          const cases = this.numCasesByIdRegion(feature.properties.clave);
           const pop = this.getPopulationById(feature.properties.clave);
           const rate = pop ? (cases / pop) * 100000 : 0;
           layer.bindPopup(
@@ -268,7 +198,7 @@ export class MapComponent implements OnInit {
             weight: 0.5,
             opacity: 1,
             color: '#000000',
-            fillOpacity: 0.7,
+            fillOpacity: 1,
           };
         }
         return {
@@ -276,7 +206,7 @@ export class MapComponent implements OnInit {
           weight: 0.5,
           opacity: 1,
           color: '#000000',
-          fillOpacity: 0.7,
+          fillOpacity: 1,
         };
       },
       onEachFeature: (feature, layer) => {
@@ -309,25 +239,16 @@ export class MapComponent implements OnInit {
       }
     });
 
-//     this.currentLayerGroup = L.layerGroup([casesStyleLayer, rateStyleLayer]);
-     this.currentLayerGroup = L.featureGroup([casesStyleLayer, rateStyleLayer]);
+    this.currentLayerGroup = L.featureGroup([casesStyleLayer, rateStyleLayer]);
 
+    const baseLayers = {
+      "Número de casos": casesStyleLayer,
+      "Tasa por 100,000": rateStyleLayer
+    };
 
-  // Add group to map
-  //this.currentLayerGroup.addTo(this.map);
-  const baseLayers = {
-  "Número de casos": casesStyleLayer,
-  "Tasa por 100,000": rateStyleLayer
-};
+    this.layerControl = L.control.layers(baseLayers, {}, { collapsed: false }).addTo(this.map);
 
-// If control already exists, remove and rebuild it
-if (this.layerControl) {
-  this.map.removeControl(this.layerControl);
-}
-
-this.layerControl = L.control.layers(baseLayers, {}, { collapsed: false }).addTo(this.map);
-
-this.map.on('baselayerchange', (e: any) => {
+    this.map.on('baselayerchange', (e: any) => {
       if (e.name === "Número de casos") {
         this.coloringMode = 'cases';
       } else if (e.name === "Tasa por 100,000") {
@@ -342,21 +263,16 @@ this.map.on('baselayerchange', (e: any) => {
       }
     });
 
-casesStyleLayer.addTo(this.map)
+    casesStyleLayer.addTo(this.map)
     this.currentLegend = this.createLegend();
     this.currentLegend.addTo(this.map);
 
-    // const bounds = this.currentGeoJsonLayer.getBounds();
     const bounds = this.currentLayerGroup.getBounds();
     if (bounds.isValid()) {
       this.map.fitBounds(bounds);
     } else {
       this.map.setView([11.87, -81.58], 5);
     }
-  }
-
-  selectedRegion(isStateOrMunicipality: string, geoJson: { features: any; type?: string; }) {
-
   }
 
   numCasesByIdRegion(id: string): number {
@@ -367,8 +283,8 @@ casesStyleLayer.addTo(this.map)
       return sum;
     } else {
       const sum = this.dataByMunToDisplayInMap
-        .filter(item => item[0] === Number(id))
-        .reduce((sum, item) => sum + Number(item[2]), 0);
+      .filter(item => item[0] === Number(id))
+      .reduce((sum, item) => sum + Number(item[2]), 0);
       return sum;
     }
   }
@@ -392,73 +308,86 @@ casesStyleLayer.addTo(this.map)
         this.rawDataTodisplayByMun = dataToDisplayByMun;
 
         // Calculate both maximum cases and maximum rate
-        let maxCases = 0;
-        let maxRate = 0;
+        let maxValue = 0;
+let maxRate = 0;
 
-        if (this.selectedResolution == "Municipal") {
-          // For municipal level, check individual municipal values
-          for (const row of this.rawDataTodisplayByMun) {
-            const cases = Number(row[2]);
-            const municipalId = row[1];
+if (this.selectedResolution === "Municipal") {
+  // Municipal level: check individual municipal values
+  for (const row of this.rawDataTodisplayByMun) {
+    const cases = Number(row[2]);
+    const population = this.getPopulationById(row[1])
+    if (cases > maxValue) {
+      maxValue = cases;
+    }
+    if (population && population > 0) {
 
-            // Update max cases
-            if (cases > maxCases) {
-              maxCases = cases;
-            }
-
-            // Calculate and update max rate
-            const population = this.getPopulationById(municipalId);
-            if (population && population > 0) {
-              const rate = (cases / population) * 100000;
-              if (rate > maxRate) {
-                maxRate = rate;
-              }
-            }
-          }
-        } else {
-          // For state level, group by state ID and calculate both sums and rates
-          const stateData = new Map<number, { cases: number, population: number }>();
-
-          // First, aggregate cases and population by state
-          for (const row of this.dataByMunToDisplayInMap) {
+      const rate = cases / population;
+      if (rate > maxRate) {
+        maxRate = rate;
+      }
+    }
+  }
+} else {
+   const stateSums = this.dataByMunToDisplayInMap
+          .reduce((acc, row) => {
             const stateId = row[0];
             const cases = Number(row[2]);
-            const municipalId = row[1];
-            const population = this.getPopulationById(municipalId) || 0;
+            acc.set(stateId, (acc.get(stateId) || 0) + cases);
+            return acc;
+          }, new Map<number, number>());
+  maxValue = Math.max(...stateSums.values());
+  console.log("🤭");
+  console.log(stateSums)
+  console.log("🤭");
+  let maxRateStateId: number | null = null;
 
-            if (stateData.has(stateId)) {
-              const existing = stateData.get(stateId)!;
-              stateData.set(stateId, {
-                cases: existing.cases + cases,
-                population: existing.population + population
-              });
-            } else {
-              stateData.set(stateId, { cases, population });
-            }
-          }
+for (const [stateId, cases] of stateSums.entries()) {
+  const population = this.getPopulationById(stateId.toString());
+  if (population && population > 0) { // avoid division by zero
+    const rate = (cases / population) * 100000;
+    if (rate > maxRate) {
+      maxRate = rate;
+      maxRateStateId = stateId;
+    }
+  }
+}
+console.log(`State with highest rate: ${maxRateStateId}, Rate: ${maxRate}`);
+console.log('Max value:', maxValue);
+  // State level: group by state ID
+  // const stateSums = new Map<number, { cases: number; population: number }>();
+  // console.log("🤭");
+  // console.log(this.dataByMunToDisplayInMap);
+  // console.log("🤭");
+  //
+  // for (const row of this.dataByMunToDisplayInMap) {
+  //   const stateId = row[0];
+  //   const cases = Number(row[2]);
+  //   const population = this.getPopulationById(stateId.toString()); // assuming row[3] contains population
+  //
+  //   if (!stateSums.has(stateId)) {
+  //     stateSums.set(stateId, { cases: 0, population: 0 });
+  //   }
+  //
+  //   const current = stateSums.get(stateId)!;
+  //   current.cases += cases;
+  //   current.population += population || 0;
+  // }
+  //
+  // // Find max values and max rate
+  // for (const { cases, population } of stateSums.values()) {
+  //   if (cases > maxValue) maxValue = cases;
+  //   if (population > 0) {
+  //     const rate = cases / population;
+  //     if (rate > maxRate) maxRate = rate;
+  //   }
+  // }
+}
 
-          // Now find max cases and max rate
-          for (const [stateId, data] of stateData) {
-            // Update max cases
-            if (data.cases > maxCases) {
-              maxCases = data.cases;
-            }
+console.log('Max value:', maxValue);
+console.log('Max rate:', maxRate);
+  this.highestValueInData = maxValue;
+  this.highestRateInData = maxRate;
 
-            // Calculate and update max rate
-            if (data.population > 0) {
-              const rate = (data.cases / data.population) * 100000;
-              if (rate > maxRate) {
-                maxRate = rate;
-              }
-            }
-          }
-        }
-
-        console.log('Max cases:', maxCases);
-        console.log('Max rate:', maxRate);
-
-        this.highestValueInData = maxCases;
-        this.highestRateInData = maxRate;
       }
     } catch (err) {
       console.log("no updates in the data")
@@ -466,6 +395,65 @@ casesStyleLayer.addTo(this.map)
 
     this.updateMapLayerView(this.selectedResolution);
   }
+
+  calculateMaxValues(resolution: string, data: any[]): { maxCases: number, maxRate: number } {
+    let maxCases = 0;
+    let maxRate = 0;
+
+    if (resolution === "Municipal") {
+      // Municipal: each row is a municipality
+      for (const row of data) {
+        const cases = Number(row[2]);
+        const municipalId = row[1];
+
+        if (cases > maxCases) {
+          maxCases = cases;
+        }
+
+        const population = this.getPopulationById(municipalId);
+        if (population && population > 0) {
+          const rate = (cases / population) * 100000;
+          if (rate > maxRate) {
+            maxRate = rate;
+          }
+        }
+      }
+    } else {
+      // State: aggregate by stateId
+      const stateData = new Map<number, { cases: number, population: number }>();
+
+      for (const row of data) {
+        const stateId = row[0];
+        const cases = Number(row[2]);
+        const municipalId = row[1];
+        const population = this.getPopulationById(municipalId) || 0;
+
+        if (!stateData.has(stateId)) {
+          stateData.set(stateId, { cases: 0, population: 0 });
+        }
+
+        const existing = stateData.get(stateId)!;
+        existing.cases += cases;
+        existing.population += population;
+      }
+
+      for (const [stateId, stats] of stateData) {
+        if (stats.cases > maxCases) {
+          maxCases = stats.cases;
+        }
+
+        if (stats.population > 0) {
+          const rate = (stats.cases / stats.population) * 100000;
+          if (rate > maxRate) {
+            maxRate = rate;
+          }
+        }
+      }
+    }
+
+    return { maxCases, maxRate };
+  }
+
 
   getColorForValue(value: number, isRate: boolean = false): string {
     const maxValue = isRate ? this.highestRateInData : this.highestValueInData;
@@ -499,16 +487,37 @@ casesStyleLayer.addTo(this.map)
     return population && population > 0 ? (cases / population) * 100000 : 0;
   }
 
+  getValueForRegion(id: string): number {
+    const cases = this.numCasesByIdRegion(id);
+    const pop = this.getPopulationById(id);
+    return pop && pop > 0 ? (cases / pop) * 100000 : 0;
+  }
+
+  getPopulationById(id: string): number | null {
+    if (this.selectedResolution === 'Municipal') {
+      // For municipal level, find the population for the specific municipalId (item[1])
+      const item = this.populationByYearList.find(subarray => Number(subarray[1]) == Number(id));
+      return item ? item[2] : null;
+    } else {
+      const munListByState = this.dataByMunToDisplayInMap.filter(item => item[0] === Number(id));
+
+      // Sum populations from populationByYearList where municipal IDs match
+      const sum = munListByState.reduce((total, mun) => {
+        const municipalId = mun[1]; // Municipal ID from dataByMunToDisplayInMap
+        const popItem = this.populationByYearList.find(item => item[1] === municipalId);
+        return total + (popItem ? Number(popItem[2]) : 0);
+      }, 0);
+
+      return sum > 0 ? sum : null;
+    }
+  }
+
   createLegend(): L.Control {
     const legend = new L.Control({ position: 'bottomleft' });
 
     legend.onAdd = (map) => {
       const div = L.DomUtil.create('div', 'info legend');
-      console.log("❄️🪆")
-      console.log(this.coloringMode)
-      console.log("❄️🪆")
 
-      // Determine which max value to use based on current mode
       const maxValue = this.coloringMode === 'rate' ? this.highestRateInData : this.highestValueInData;
       const title = this.coloringMode === 'rate' ? 'Tasa por 100,000 hab.' : 'Número de casos';
 
@@ -538,7 +547,7 @@ casesStyleLayer.addTo(this.map)
         const q_5 = maxValue;
 
         const formatValue = (val: number) =>
-          this.coloringMode === 'rate' ? val.toFixed(2) : Math.ceil(val).toString();
+        this.coloringMode === 'rate' ? val.toFixed(2) : Math.ceil(val).toString();
 
         ranges = [
           { color: '#DDDDDD', label: '0' },
@@ -561,32 +570,5 @@ casesStyleLayer.addTo(this.map)
     };
 
     return legend;
-  }
-
-  getValueForRegion(id: string): number {
-    const cases = this.numCasesByIdRegion(id);
-    const pop = this.getPopulationById(id);
-    return pop && pop > 0 ? (cases / pop) * 100000 : 0;
-  }
-
-  getPopulationById(id: string): number | null {
-    if (this.selectedResolution === 'Municipal') {
-      // For municipal level, find the population for the specific municipalId (item[1])
-      const item = this.populationByYearList.find(subarray => Number(subarray[1]) == Number(id));
-      return item ? item[2] : null;
-    } else {
-      const munListByState = this.dataByMunToDisplayInMap.filter(item => item[0] === Number(id));
-
-    // Sum populations from populationByYearList where municipal IDs match
-    const sum = munListByState.reduce((total, mun) => {
-      const municipalId = mun[1]; // Municipal ID from dataByMunToDisplayInMap
-      const popItem = this.populationByYearList.find(item => item[1] === municipalId);
-      return total + (popItem ? Number(popItem[2]) : 0);
-    }, 0);
-
-    return sum > 0 ? sum : null;
-    }
-  }
-  getStyle(){
   }
 }
