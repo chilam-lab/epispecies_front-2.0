@@ -54,7 +54,6 @@ export class MapComponent implements OnInit {
     this.map.boxZoom.disable();
     this.map.keyboard.disable();
     this.map.scrollWheelZoom.disable();
-        console.log("🎏🎏🎏🎏🎏<<<<<<<<<");
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -284,13 +283,10 @@ export class MapComponent implements OnInit {
 
     try {
       let year = changes['selectedYear']['currentValue'];
-        console.log("🥸")
-      console.log(year)
-        console.log("🥸")
       if (year && typeof year[0] === 'number') {
         let numberYear = Number(year[0]).toString();
         this.selectedYear = numberYear;
-        // this.getPopulationData();
+        this.getPopulationData();
       }
     } catch (err) {
       console.log("no year updates");
