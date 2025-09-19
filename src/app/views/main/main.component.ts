@@ -34,6 +34,7 @@ export class MainComponent implements OnInit {
   @ViewChild('modalMun') modalMunRef!: ElementRef;
   @ViewChild('showStateModal') showModalState!: ElementRef;
   @ViewChild('showMunModal') showModalMun!: ElementRef;
+  @ViewChild('showMetroModal') showModalMetro!: ElementRef;
   env = environment;
   selectedFirstClassId: string = environment.placeholderFirstClass;
   selectedSecondClassId: string = environment.placeholderSecondClass;
@@ -488,6 +489,16 @@ export class MainComponent implements OnInit {
     if (this.selectedRegion == environment.placeholderState) this.showModalState.nativeElement.click();
     if (this.selectedRegion == environment.placeholderMunicipal) this.showModalMun.nativeElement.click();
     if (this.selectedRegion != this.env.placeholderMunicipal) {
+      this.selectedResolution = this.env.placeholderMunResolution;
+    } else {
+      this.selectedResolution = this.env.placeholderMunResolution;
+    }
+  }
+  showingMetropoliModal() {
+    this.selectedState = "";
+    this.selectedMuncipality = "";
+    this.showModalMetro.nativeElement.click();
+    if (this.selectedRegion != this.env.placeholderMetropoli) {
       this.selectedResolution = this.env.placeholderMunResolution;
     } else {
       this.selectedResolution = this.env.placeholderMunResolution;

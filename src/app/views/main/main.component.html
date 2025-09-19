@@ -62,7 +62,7 @@
             <mat-option value={{env.placeholderCountry}}  (click)="showingModalsFromSelect()" selected>Todo el país </mat-option>
             <mat-option value={{env.placeholderState}}  (click)="showingModalsFromSelect()" selected>{{env.placeholderState}}</mat-option>
             <mat-option value={{env.placeholderMunicipal}}  (click)="showingModalsFromSelect()">{{env.placeholderMunicipal}} </mat-option>
-            <mat-option value={{env.placeholderMetropoli}}>{{env.placeholderMetropoli}}</mat-option>
+            <mat-option value={{env.placeholderMetropoli}} (click)="showingMetropoliModal()">{{env.placeholderMetropoli}}</mat-option>
           </mat-select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-2">
@@ -194,6 +194,8 @@
   </div>
 </body>
 
+<!-- Modals -->
+
 <button #showStateModal [hidden]="true"  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stateModal">
   Launch demo modal
 </button>
@@ -266,19 +268,18 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Municipio</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Metropoli</h5>
         <button type="button" class="btn-close" (click)="closingModal('municipio')" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <label for="exampleDataList">Seleccione el municipio: </label>
+        <label for="exampleDataList">Seleccione una metropoli: </label><br>
         <!-- <input class="form-control" list="datalistOptions2" id="exampleDataList" [(ngModel)]="selectedMuncipality" -->
-        <input class="form-control" list="datalistOptions3" id="exampleDataList"
-          placeholder="Escriba para buscar..." >
-        <datalist id="datalistOptions3">
+        <select>
+            <option value="all" selected>Todas</option>
           <ng-container *ngFor="let item of metropolyList">
-            <option value="{{item[1]}}">
+            <option value="{{item[1]}}">{{item[1]}}</option>
           </ng-container>
-        </datalist>
+        </select>
       </div>
       <div class="modal-footer">
         <button type="button" [hidden]="true" class="btn btn-secondary" #modalMun data-bs-dismiss="modal">Close</button>
