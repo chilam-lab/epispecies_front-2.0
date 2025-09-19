@@ -19,6 +19,7 @@ export const environment = {
   selectedFirstClass: 'Enfermedad',
   selectedSecondClass: 'Grupo',
   selectedThirdClass: 'Subgrupo',
+  selectedMetropoli: 'Todas',
   placeholderMan: 'Hombres',
   placeholderWoman: 'Mujeres',
   placeholderNoGender: 'No registrado',

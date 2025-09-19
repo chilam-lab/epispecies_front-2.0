@@ -22,6 +22,7 @@ export class MapComponent implements OnInit {
   @Input() selectedCVEMun: string = "";
   @Input() statesAndMunList: any = [];
   @Input() selectedYear: string = "";
+  @Input() selectedMetropoly: string = "";
   constructor(private mapService: MapService, private diseaseDB: DiseaseDbService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;

@@ -186,7 +186,7 @@
       <div class="col-lg-8 map-section">
 
         <div class="row row-map">
-          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap" [selectedCVEState]="selectedCVEState" [selectedCVEMun]="selectedCVEMun" [statesAndMunList]="statesAndMunList" [selectedYear]="selectedYear">
+          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap" [selectedCVEState]="selectedCVEState" [selectedCVEMun]="selectedCVEMun" [statesAndMunList]="statesAndMunList" [selectedYear]="selectedYear" [selectedMetropoly]="selectedMetropoly">
           </app-map>
         </div>
       </div>
@@ -211,7 +211,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Estado</h5>
-        <button type="button" class="btn-close" (click)="closingModal('municipio')" data-bs-dismiss="modal"
+        <button type="button" class="btn-close" (click)="closingModal()" data-bs-dismiss="modal"
           aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -237,7 +237,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Municipio</h5>
-        <button type="button" class="btn-close" (click)="closingModal('municipio')" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" (click)="closingModal()" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <label for="exampleDataList">Seleccione el estado: </label>
@@ -269,21 +269,21 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Metropoli</h5>
-        <button type="button" class="btn-close" (click)="closingModal('municipio')" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" (click)="closingModal()" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <label for="exampleDataList">Seleccione una metropoli: </label><br>
         <!-- <input class="form-control" list="datalistOptions2" id="exampleDataList" [(ngModel)]="selectedMuncipality" -->
-        <select>
-            <option value="all" selected>Todas</option>
+        <select (change)="updateMetropoly($event)" >
+            <option value="{{env.selectedMetropoli}}" selected>{{env.selectedMetropoli}}</option>
           <ng-container *ngFor="let item of metropolyList">
-            <option value="{{item[1]}}">{{item[1]}}</option>
+            <option value="{{item[0]}}">{{item[1]}}</option>
           </ng-container>
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" [hidden]="true" class="btn btn-secondary" #modalMun data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" (click)="verifyDataInMunModal()">Seleccionar</button>
+        <button type="button" [hidden]="true" class="btn btn-secondary" #closeMetroModal data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="verifyDataInMetroModal()">Seleccionar</button>
       </div>
     </div>
   </div>

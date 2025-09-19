@@ -32,6 +32,7 @@ export class MainComponent implements OnInit {
   constructor(private dbService: DiseaseDbService) { }
   @ViewChild('modalState') modalStateRef!: ElementRef;
   @ViewChild('modalMun') modalMunRef!: ElementRef;
+  @ViewChild('closeMetroModal') metroCloseRef!: ElementRef;
   @ViewChild('showStateModal') showModalState!: ElementRef;
   @ViewChild('showMunModal') showModalMun!: ElementRef;
   @ViewChild('showMetroModal') showModalMetro!: ElementRef;
@@ -44,6 +45,7 @@ export class MainComponent implements OnInit {
   selectedYear: string = environment.placeholderYear;
   selectedRegion: string = environment.placeholderCountry;
   selectedResolution: string = environment.placeholderStateResolution;
+  selectedMetropoly: string = environment.selectedMetropoli;
   hasChanges = {
     selectedFirstClassId: "",
     selectedSecondClassId: "",
@@ -82,6 +84,7 @@ export class MainComponent implements OnInit {
   gendersDict = { 1: "Hombres", 2: "Mujeres", 9: "No registrado" }
   genderTotals = {women: [], man: [], unspecified: []}
   metropolyList: [string, string][] = [];
+  metropolyMunList: [string, string, string][] = []
   ageTotals = {
     age1:[],
     age2:[],
@@ -145,7 +148,6 @@ export class MainComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.statesAndMunList = response;
-          console.log(this.statesAndMunList)
           this.stateNames = this.statesAndMunList.reduce((acc, state) => {
             acc[state[0]] = state[1];
             return acc;
@@ -155,11 +157,6 @@ export class MainComponent implements OnInit {
             return acc;
           }, {} as { [key: string]: string });
           this.statesNameList = Object.values(this.stateNames).sort()
-          console.log("😱")
-          console.log(this.stateNames)
-          console.log(this.municipalityNames)
-          console.log(this.statesNameList)
-          console.log("😱")
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -170,18 +167,17 @@ export class MainComponent implements OnInit {
         next: (response) => {
           console.log("😱🎏")
           console.log(response)
+          this.metropolyMunList = response;
           const municipalityMap = new Map<string, string>();
 
-      (response as string[][]).forEach((item: string[]) => {
-        municipalityMap.set(item[2], item[1]); // name as key, id as value
-      });
+          (response as string[][]).forEach((item: string[]) => {
+            municipalityMap.set(item[2], item[1]); // name as key, id as value
+          });
 
-      const uniqueMetropoly: [string, string][] = Array.from(municipalityMap.entries())
-        .map(([name, id]) => [id, name] as [string, string])
-        .sort((a, b) => a[1].localeCompare(b[1]));
-          console.log(uniqueMetropoly);
+          const uniqueMetropoly: [string, string][] = Array.from(municipalityMap.entries())
+            .map(([name, id]) => [id, name] as [string, string])
+            .sort((a, b) => a[1].localeCompare(b[1]));
           this.metropolyList = uniqueMetropoly
-          console.log("😱🎏")
           Swal.fire({
             timer: 1100,
             title: 'Datos cargados correctamente.',
@@ -435,9 +431,10 @@ export class MainComponent implements OnInit {
     return list.includes(value)
   }
 
-  closingModal(mensaje: string) {
+  closingModal() {
     this.selectedState = "";
     this.selectedMuncipality = "";
+    this.selectedMetropoly = environment.selectedMetropoli;
     this.selectedRegion = environment.placeholderCountry;
   }
 
@@ -460,6 +457,7 @@ export class MainComponent implements OnInit {
       })
     }
   }
+
   verifyDataInMunModal() {
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
     if (isAState) {
@@ -483,6 +481,14 @@ export class MainComponent implements OnInit {
       })
     }
   }
+
+  verifyDataInMetroModal() {
+      console.log("🤣-")
+      console.log(this.selectedMetropoly)
+      this.metroCloseRef.nativeElement.click();
+      console.log("🤣-")
+  }
+
   showingModalsFromSelect() {
     this.selectedState = "";
     this.selectedMuncipality = "";
@@ -495,8 +501,7 @@ export class MainComponent implements OnInit {
     }
   }
   showingMetropoliModal() {
-    this.selectedState = "";
-    this.selectedMuncipality = "";
+    this.selectedMetropoly = environment.selectedMetropoli;
     this.showModalMetro.nativeElement.click();
     if (this.selectedRegion != this.env.placeholderMetropoli) {
       this.selectedResolution = this.env.placeholderMunResolution;
@@ -504,6 +509,16 @@ export class MainComponent implements OnInit {
       this.selectedResolution = this.env.placeholderMunResolution;
     }
   }
+
+  updateMetropoly(metropoly: any){
+    console.log("🎎")
+    if(metropoly.target?.value){
+      console.log(metropoly.target.value)
+      this.selectedMetropoly = metropoly.target.value;
+    }
+    console.log("🎎")
+  }
+
   totals(){
     this.showAgeTotals = [];
     this.showGenderTotals = [];
