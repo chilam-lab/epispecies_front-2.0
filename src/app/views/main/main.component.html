@@ -200,6 +200,9 @@
 <button #showMunModal [hidden]="true"  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#municipality">
   Launch demo modal2
 </button>
+<button #showMetroModal  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#metropoli">
+  Launch demo modal2
+</button>
 <!--- Modals --->
 <div class="modal fade" id="stateModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
@@ -249,6 +252,31 @@
         <datalist id="datalistOptions2">
           <ng-container *ngFor="let item of munNameList">
             <option value="{{item[3]}}">
+          </ng-container>
+        </datalist>
+      </div>
+      <div class="modal-footer">
+        <button type="button" [hidden]="true" class="btn btn-secondary" #modalMun data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="verifyDataInMunModal()">Seleccionar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="metropoli" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Municipio</h5>
+        <button type="button" class="btn-close" (click)="closingModal('municipio')" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="exampleDataList">Seleccione el municipio: </label>
+        <!-- <input class="form-control" list="datalistOptions2" id="exampleDataList" [(ngModel)]="selectedMuncipality" -->
+        <input class="form-control" list="datalistOptions3" id="exampleDataList"
+          placeholder="Escriba para buscar..." >
+        <datalist id="datalistOptions3">
+          <ng-container *ngFor="let item of metropolyList">
+            <option value="{{item[1]}}">
           </ng-container>
         </datalist>
       </div>

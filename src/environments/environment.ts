@@ -29,6 +29,7 @@ export const environment = {
 
   modelsDictionaryTable: 'ENFERMEDADES',
   statesMunDictionaryTable: 'ESTADO_MUN',
+  municipalityTable: 'CVE_METROPOLIS',
 
   firstClassDescripColumn: 'Enfermedad',
   firstClassIdColumn: 'CVE_Enfermedad',

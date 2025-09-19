@@ -80,6 +80,7 @@ export class MainComponent implements OnInit {
   top10Municipalities: number[][] = [];
   gendersDict = { 1: "Hombres", 2: "Mujeres", 9: "No registrado" }
   genderTotals = {women: [], man: [], unspecified: []}
+  metropolyList: [string, string][] = [];
   ageTotals = {
     age1:[],
     age2:[],
@@ -158,6 +159,28 @@ export class MainComponent implements OnInit {
           console.log(this.municipalityNames)
           console.log(this.statesNameList)
           console.log("😱")
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+        }
+      });
+      this.dbService.getAllFrom(environment.municipalityTable)
+      .subscribe({
+        next: (response) => {
+          console.log("😱🎏")
+          console.log(response)
+          const municipalityMap = new Map<string, string>();
+
+      (response as string[][]).forEach((item: string[]) => {
+        municipalityMap.set(item[2], item[1]); // name as key, id as value
+      });
+
+      const uniqueMetropoly: [string, string][] = Array.from(municipalityMap.entries())
+        .map(([name, id]) => [id, name] as [string, string])
+        .sort((a, b) => a[1].localeCompare(b[1]));
+          console.log(uniqueMetropoly);
+          this.metropolyList = uniqueMetropoly
+          console.log("😱🎏")
           Swal.fire({
             timer: 1100,
             title: 'Datos cargados correctamente.',
@@ -167,7 +190,7 @@ export class MainComponent implements OnInit {
         error: (error) => {
           console.error('Error fetching data:', error);
         }
-      });
+      })
   }
 
   onFirstClassChange(firstClassId: string) {
