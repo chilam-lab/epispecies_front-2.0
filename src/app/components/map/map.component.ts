@@ -70,225 +70,190 @@ export class MapComponent implements OnInit {
   updateMapLayerView(isStateOrMunicipality: string) {
     if (!this.map) return;
 
-  let geoJson;
-  if (isStateOrMunicipality === 'Municipal') {
-    geoJson = this.geoJsonLayerMunicipal;
-  } else {
-    geoJson = this.geoJsonLayerStates;
-  }
+    let geoJson;
+    (isStateOrMunicipality === 'Municipal') ?
+      geoJson = this.geoJsonLayerMunicipal :
+      geoJson = this.geoJsonLayerStates;
 
-  if (isStateOrMunicipality === 'Municipal') {
-    // Single municipality
-    if (this.selectedCVEMun.length > 0) {
-      const filteredFeatures = geoJson.features.filter(
-        (feature: { properties: { cellid: number; clave: string; }; }) =>
-          feature.properties.clave === this.selectedCVEMun.toString()
-      );
-      geoJson = {
-        type: "FeatureCollection",
-        features: filteredFeatures
-      };
-    } else {
-      if (this.selectedCVEState != 0) {
-        let list = this.statesAndMunList.filter((item: any[]) => item[0] === this.selectedCVEState);
-        console.log("👁️")
-        console.log(list)
-        let municipalityCodes = list.map((item: any[]) => Number(item[2]) > 10000 ? item[2] : "0" + item[2]);
-        console.log(municipalityCodes)
-        // Municipalities of the state
-        let filteredFeatures = geoJson.features.filter(
+    if (isStateOrMunicipality === 'Municipal') {
+      // Single municipality
+      if (this.selectedCVEMun.length > 0) {
+        const filteredFeatures = geoJson.features.filter(
           (feature: { properties: { cellid: number; clave: string; }; }) =>
-            municipalityCodes.includes(feature.properties.clave)
+          feature.properties.clave === this.selectedCVEMun.toString());
+        geoJson = { type: "FeatureCollection", features: filteredFeatures};
+      } else {
+        // Municipalities of the state
+        if (this.selectedCVEState != 0) {
+          let list = this.statesAndMunList.filter((item: any[]) => item[0] === this.selectedCVEState);
+          let municipalityCodes = list.map((item: any[]) => Number(item[2]) > 10000 ? item[2] : "0" + item[2]);
+          let filteredFeatures = geoJson.features.filter(
+            (feature: { properties: { cellid: number; clave: string; }; }) =>
+            municipalityCodes.includes(feature.properties.clave));
+          geoJson = { type: "FeatureCollection", features: filteredFeatures };
+        }
+      }
+    } else {
+      //States
+      if (this.selectedCVEState > 0) {
+        const filteredFeatures = geoJson.features.filter(
+          (feature: { properties: { cellid: number; clave: string; }; }) =>
+          feature.properties.cellid === this.selectedCVEState
         );
-        console.log(filteredFeatures)
-        console.log("👁️")
-        geoJson = {
-          type: "FeatureCollection",
-          features: filteredFeatures
-        };
+        geoJson = { type: "FeatureCollection", features: filteredFeatures};
       }
     }
-  } else {
-    if (this.selectedCVEState > 0) {
-      const filteredFeatures = geoJson.features.filter(
-        (feature: { properties: { cellid: number; clave: string; }; }) =>
-          feature.properties.cellid === this.selectedCVEState
-      );
-      geoJson = {
-        type: "FeatureCollection",
-        features: filteredFeatures
-      };
+
+    if (this.currentLegend) {
+      this.map.removeControl(this.currentLegend);
+      this.currentLegend = undefined;
     }
-  }
 
-  if (this.currentLegend) {
-    this.map.removeControl(this.currentLegend);
-    this.currentLegend = undefined;
-  }
-
-  if (this.layerControl) {
-    this.map.removeControl(this.layerControl);
-  }
-      if (this.casesGeoJsonLayer) {
+    if (this.layerControl) {
+      this.map.removeControl(this.layerControl);
+    }
+    if (this.casesGeoJsonLayer) {
       this.map.removeLayer(this.casesGeoJsonLayer);
       this.casesGeoJsonLayer = undefined;
-    console.log('updating el layer');
-    console.log(this.casesGeoJsonLayer);
-    console.log('updating el layer');
     }
     if (this.rateGeoJsonLayer) {
       this.map.removeLayer(this.rateGeoJsonLayer);
       this.rateGeoJsonLayer = undefined;
-    console.log('updating el layer');
-    console.log(this.rateGeoJsonLayer);
-    console.log('updating el layer');
     }
 
-  // Create the cases layer
-  console.log("🫧")
-  console.log(geoJson)
-  console.log("🫧")
-  this.casesGeoJsonLayer = L.geoJSON(geoJson, {
-    style: (feature: any | undefined) => {
-      if (feature?.properties) {
-        const fillColor = this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)) || 'transparent';
+    // Create the cases layer
+    this.casesGeoJsonLayer = L.geoJSON(geoJson, {
+      style: (feature: any | undefined) => {
+        if (feature?.properties) {
+          const fillColor = this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)) || 'transparent';
+          return {
+            fillColor,
+            weight: 0.5,
+            opacity: 1,
+            color: '#000000',
+            fillOpacity: 0.8,
+          };
+        }
         return {
-          fillColor,
+          fillColor: 'transparent',
+          weight: 0,
+          opacity: 0,
+          color: 'transparent',
+          fillOpacity: 0,
+        };
+      },
+      onEachFeature: (feature, layer) => {
+        if (feature.properties) {
+          const cases = this.numCasesByIdRegion(feature.properties.clave);
+          const pop = this.getPopulationById(feature.properties.clave);
+          const rate = pop ? (cases / pop) * 100000 : 0;
+          layer.bindPopup(
+            `<table class="table">
+               <thead>
+                 <tr>
+                   <th scope="col">Clave</th>
+                   <th scope="col">No. Casos</th>
+                   <th scope="col">Población</th>
+                   <th scope="col">Tasa</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <th>${feature.properties.clave}</th>
+                   <td>${cases}</td>
+                   <td>${pop?.toLocaleString('en-US')}</td>
+                   <td>${rate.toFixed(4)}</td>
+                 </tr>
+               </tbody>
+             </table>`
+          );
+          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
+        }
+      }
+    });
+
+    // Create the rate layer
+    this.rateGeoJsonLayer = L.geoJSON(geoJson, {
+      style: (feature: any | undefined) => {
+        if (feature?.properties) {
+          const rate = this.getRateForRegion(feature.properties.clave);
+          const fillColor = this.getColorForValue(rate, true) || '#ffffff'; // true = rate mode
+          return {
+            fillColor,
+            weight: 0.5,
+            opacity: 1,
+            color: '#000000',
+            fillOpacity: 0.7,
+          };
+        }
+        return {
+          fillColor: '#ffffff',
           weight: 0.5,
           opacity: 1,
           color: '#000000',
           fillOpacity: 0.8,
         };
+      },
+      onEachFeature: (feature, layer) => {
+        if (feature.properties) {
+          const cases = this.numCasesByIdRegion(feature.properties.clave);
+          const pop = this.getPopulationById(feature.properties.clave);
+          const rate = pop ? (cases / pop) * 100000 : 0;
+          layer.bindPopup(
+            `<table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Clave</th>
+                  <th scope="col">No. Casos</th>
+                  <th scope="col">Población</th>
+                  <th scope="col">Tasa</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>${feature.properties.clave}</th>
+                  <td>${cases}</td>
+                  <td>${pop?.toLocaleString('en-US')}</td>
+                  <td>${rate.toFixed(4)}</td>
+                </tr>
+              </tbody>
+            </table>`
+          );
+          layer.bindTooltip(`Clave: ${feature.properties.clave} tasa: ${rate.toFixed(2)}`, { sticky: true });
+        }
       }
-     return {
-        fillColor: 'transparent',
-        weight: 0,
-        opacity: 0,
-        color: 'transparent',
-        fillOpacity: 0,
-      };
-    },
-    onEachFeature: (feature, layer) => {
-      if (feature.properties) {
-        const cases = this.numCasesByIdRegion(feature.properties.clave);
-        const pop = this.getPopulationById(feature.properties.clave);
-        const rate = pop ? (cases / pop) * 100000 : 0;
-        layer.bindPopup(
-          `<table class="table">
-             <thead>
-               <tr>
-                 <th scope="col">Clave</th>
-                 <th scope="col">No. Casos</th>
-                 <th scope="col">Población</th>
-                 <th scope="col">Tasa</th>
-               </tr>
-             </thead>
-             <tbody>
-               <tr>
-                 <th>${feature.properties.clave}</th>
-                 <td>${cases}</td>
-                 <td>${pop?.toLocaleString('en-US')}</td>
-                 <td>${rate.toFixed(4)}</td>
-               </tr>
-             </tbody>
-           </table>`
-        );
-        layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
+    }).addTo(this.map);
+
+    const baseLayers = {
+      "Número de casos": this.casesGeoJsonLayer,
+      "Tasa por 100,000": this.rateGeoJsonLayer
+    };
+
+    // Add layer control
+    this.layerControl = L.control.layers(baseLayers, {}, { collapsed: false }).addTo(this.map);
+    this.coloringMode = 'rate';
+
+    // Handle layer changes
+    this.map.on('baselayerchange', (e: any) => {
+      this.coloringMode = e.name === "Número de casos" ? "cases" : "rate";
+      if (this.currentLegend) {
+        this.map!.removeControl(this.currentLegend);
+        this.currentLegend = this.createLegend();
+        this.currentLegend.addTo(this.map!);
       }
+    });
+
+    // Create and add legend
+    this.currentLegend = this.createLegend();
+    this.currentLegend.addTo(this.map);
+
+    // Fit bounds to the filtered data only
+    const bounds = this.casesGeoJsonLayer.getBounds();
+    if (bounds.isValid()) {
+      this.map.fitBounds(bounds);
+    } else {
+      this.map.setView([11.87, -81.58], 5);
     }
-  });
-
-
-  // Create the rate layer
-  this.rateGeoJsonLayer = L.geoJSON(geoJson, {
-    style: (feature: any | undefined) => {
-      if (feature?.properties) {
-        const rate = this.getRateForRegion(feature.properties.clave);
-        const fillColor = this.getColorForValue(rate, true) || '#ffffff'; // true = rate mode
-        return {
-          fillColor,
-          weight: 0.5,
-          opacity: 1,
-          color: '#000000',
-          fillOpacity: 0.7,
-        };
-      }
-      return {
-        fillColor: '#ffffff',
-        weight: 0.5,
-        opacity: 1,
-        color: '#000000',
-        fillOpacity: 0.8,
-      };
-    },
-    onEachFeature: (feature, layer) => {
-      if (feature.properties) {
-        const cases = this.numCasesByIdRegion(feature.properties.clave);
-        const pop = this.getPopulationById(feature.properties.clave);
-        const rate = pop ? (cases / pop) * 100000 : 0;
-        layer.bindPopup(
-          `<table class="table">
-             <thead>
-               <tr>
-                 <th scope="col">Clave</th>
-                 <th scope="col">No. Casos</th>
-                 <th scope="col">Población</th>
-                 <th scope="col">Tasa</th>
-               </tr>
-             </thead>
-             <tbody>
-               <tr>
-                 <th>${feature.properties.clave}</th>
-                 <td>${cases}</td>
-                 <td>${pop?.toLocaleString('en-US')}</td>
-                 <td>${rate.toFixed(4)}</td>
-               </tr>
-             </tbody>
-           </table>`
-        );
-        layer.bindTooltip(`Clave: ${feature.properties.clave} tasa: ${rate.toFixed(2)}`, { sticky: true });
-      }
-    }
-  }).addTo(this.map);
-
-  const baseLayers = {
-    "Número de casos": this.casesGeoJsonLayer,
-    "Tasa por 100,000": this.rateGeoJsonLayer
-  };
-
-  // Add layer control
-  this.layerControl = L.control.layers(baseLayers, {}, { collapsed: false }).addTo(this.map);
-
-  // Handle layer changes
-  this.map.on('baselayerchange', (e: any) => {
-    if (e.name === "Número de casos") {
-      this.coloringMode = 'cases';
-    } else if (e.name === "Tasa por 100,000") {
-      this.coloringMode = 'rate';
-    }
-
-    // Update legend when layer changes
-    if (this.currentLegend) {
-      this.map!.removeControl(this.currentLegend);
-      this.currentLegend = this.createLegend();
-      this.currentLegend.addTo(this.map!);
-    }
-  });
-
-  // Add the default layer (cases) to the map
-  //casesStyleLayer.addTo(this.map);
-
-  // Create and add legend
-  this.currentLegend = this.createLegend();
-  this.currentLegend.addTo(this.map);
-
-  // Fit bounds to the filtered data only
-  const bounds = this.casesGeoJsonLayer.getBounds();
-  if (bounds.isValid()) {
-    this.map.fitBounds(bounds);
-  } else {
-    this.map.setView([11.87, -81.58], 5);
-  }
   }
 
   numCasesByIdRegion(id: string): number {
