@@ -76,6 +76,10 @@ export class MapComponent implements OnInit {
       geoJson = this.geoJsonLayerStates;
 
     if (isStateOrMunicipality === 'Municipal') {
+      console.log("🍰")
+      console.log(this.selectedCVEMun)
+      console.log(this.selectedCVEState)
+      console.log("🍰")
       // Single municipality
       if (this.selectedCVEMun.length > 0) {
         const filteredFeatures = geoJson.features.filter(
@@ -243,11 +247,9 @@ export class MapComponent implements OnInit {
       }
     });
 
-    // Create and add legend
     this.currentLegend = this.createLegend();
     this.currentLegend.addTo(this.map);
 
-    // Fit bounds to the filtered data only
     const bounds = this.casesGeoJsonLayer.getBounds();
     if (bounds.isValid()) {
       this.map.fitBounds(bounds);
