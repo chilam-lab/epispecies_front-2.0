@@ -23,6 +23,7 @@ export class MapComponent implements OnInit {
   @Input() statesAndMunList: any = [];
   @Input() selectedYear: string = "";
   @Input() selectedMetropoly: string = "";
+  @Input() metropolyMunList: any[] = [];
   constructor(private mapService: MapService, private diseaseDB: DiseaseDbService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
@@ -37,8 +38,6 @@ export class MapComponent implements OnInit {
   coloringMode: 'cases' | 'rate' = 'rate';
   currentLayerGroup: L.FeatureGroup | undefined;
   private layerControl: L.Control.Layers | undefined;
-  private casesLayer: L.GeoJSON | undefined;
-  private rateLayer: L.GeoJSON | undefined;
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -65,6 +64,7 @@ export class MapComponent implements OnInit {
 
     this.updateMapLayerView("states");
     this.getPopulationData();
+
   }
 
   updateMapLayerView(isStateOrMunicipality: string) {
@@ -86,16 +86,30 @@ export class MapComponent implements OnInit {
           (feature: { properties: { cellid: number; clave: string; }; }) =>
           feature.properties.clave === this.selectedCVEMun.toString());
         geoJson = { type: "FeatureCollection", features: filteredFeatures};
-      } else {
+      } else if (this.selectedCVEState != 0) {
         // Municipalities of the state
-        if (this.selectedCVEState != 0) {
           let list = this.statesAndMunList.filter((item: any[]) => item[0] === this.selectedCVEState);
           let municipalityCodes = list.map((item: any[]) => Number(item[2]) > 10000 ? item[2] : "0" + item[2]);
           let filteredFeatures = geoJson.features.filter(
             (feature: { properties: { cellid: number; clave: string; }; }) =>
             municipalityCodes.includes(feature.properties.clave));
           geoJson = { type: "FeatureCollection", features: filteredFeatures };
-        }
+      } else {
+        //Metropoli
+        console.log("🍦")
+        console.log(this.statesAndMunList)
+        console.log(this.metropolyMunList)
+        console.log(this.dataByMunToDisplayInMap)
+        const municipalityCodes= this.dataByMunToDisplayInMap.map(([, code]) => {
+          return Number(code) > 10000 ? code : '0' + code });
+
+        console.log(municipalityCodes)
+        console.log("🍦")
+          let filteredFeatures = geoJson.features.filter(
+            (feature: { properties: { cellid: number; clave: string; }; }) =>
+            municipalityCodes.includes(feature.properties.clave));
+          geoJson = { type: "FeatureCollection", features: filteredFeatures };
+
       }
     } else {
       //States
@@ -275,6 +289,8 @@ export class MapComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     console.log("🍥🍥🍥🍥🍥🍥🍥")
     console.log(changes)
+    console.log(this.metropolyMunList)
+
     console.log("🍥🍥🍥🍥🍥🍥🍥")
     try {
       let newResolution = changes['updatedResolution']['currentValue'];

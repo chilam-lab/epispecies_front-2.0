@@ -84,7 +84,7 @@ export class MainComponent implements OnInit {
   gendersDict = { 1: "Hombres", 2: "Mujeres", 9: "No registrado" }
   genderTotals = {women: [], man: [], unspecified: []}
   metropolyList: [string, string][] = [];
-  metropolyMunList: [string, string, string][] = []
+  metropolyMunList: [string, string, string][] = [];
   ageTotals = {
     age1:[],
     age2:[],
@@ -286,19 +286,30 @@ export class MainComponent implements OnInit {
       municipalityDataList.push([region[0], region[2], casesNumber])
     })
 
+    //check
+
     let idSelectedState = Object.keys(this.stateNames).find(key => this.stateNames[+key] === this.selectedState) || 0;
     let munListByState = this.statesAndMunList.filter(x=> x[0]==idSelectedState)
     let idSelectedMun = munListByState.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
 
     idSelectedMun = (idSelectedMun.length > 0) ? Number(idSelectedMun) > 10000 ? idSelectedMun : "0" + idSelectedMun : "";
     const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
+
+    console.log("❄️-")
+    console.log(this.selectedRegion)
+    console.log(municipalityDataList)
+    console.log(this.selectedMetropoly)
+    console.log("❄️-")
     this.dataByMunToDisplayInMap = municipalityDataList;
+    if(this.selectedRegion == environment.placeholderMetropoli){
+      this.dataByMunToDisplayInMap = this.filterByMetropoli(municipalityDataList);
+    }
     this.top10()
     this.totals()
-    let a:any[];
+    let stateMunList:any[];
     if(idState){
-      a = this.filterBy(0,idState[0],municipalityDataList)
-      this.dataByMunToDisplayInMap = a;
+      stateMunList = this.filterBy(0,idState[0],municipalityDataList)
+      this.dataByMunToDisplayInMap = stateMunList;
     }
     this.updatedResolution = this.selectedResolution;
     this.selectedCVEState = Number(idSelectedState);
@@ -328,6 +339,21 @@ export class MainComponent implements OnInit {
       console.log(filteredList)
     }
     return filteredList;
+  }
+
+  filterByMetropoli(list: any[]){
+    if(this.selectedMetropoly != environment.selectedMetropoli){
+      let filteredMetropoly = this.metropolyMunList.filter(b => b[1] == this.selectedMetropoly);
+
+      let metropolyIds = filteredMetropoly.map(item => item[0]);
+
+      let finalFilteredList = list.filter((a: any[]) => metropolyIds.includes(a[1]));
+      console.log('Final filtered list:', finalFilteredList);
+      console.log('Final filtered list:', metropolyIds);
+      console.log('Final filtered list:', filteredMetropoly);
+      return finalFilteredList;
+    }
+    return []
   }
 
   filterBy(position: number, value: string, dataList: any[]) {
@@ -485,6 +511,8 @@ export class MainComponent implements OnInit {
   verifyDataInMetroModal() {
       console.log("🤣-")
       console.log(this.selectedMetropoly)
+      this.selectedState = "";
+      this.selectedMuncipality = "";
       this.metroCloseRef.nativeElement.click();
       console.log("🤣-")
   }
