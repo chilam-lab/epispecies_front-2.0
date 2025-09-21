@@ -23,7 +23,6 @@ export class MapComponent implements OnInit {
   @Input() statesAndMunList: any = [];
   @Input() selectedYear: string = "";
   @Input() selectedMetropoly: string = "";
-  @Input() metropolyMunList: any[] = [];
   constructor(private mapService: MapService, private diseaseDB: DiseaseDbService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
@@ -76,10 +75,6 @@ export class MapComponent implements OnInit {
       geoJson = this.geoJsonLayerStates;
 
     if (isStateOrMunicipality === 'Municipal') {
-      console.log("🍰")
-      console.log(this.selectedCVEMun)
-      console.log(this.selectedCVEState)
-      console.log("🍰")
       // Single municipality
       if (this.selectedCVEMun.length > 0) {
         const filteredFeatures = geoJson.features.filter(
@@ -96,20 +91,12 @@ export class MapComponent implements OnInit {
           geoJson = { type: "FeatureCollection", features: filteredFeatures };
       } else {
         //Metropoli
-        console.log("🍦")
-        console.log(this.statesAndMunList)
-        console.log(this.metropolyMunList)
-        console.log(this.dataByMunToDisplayInMap)
         const municipalityCodes= this.dataByMunToDisplayInMap.map(([, code]) => {
           return Number(code) > 10000 ? code : '0' + code });
-
-        console.log(municipalityCodes)
-        console.log("🍦")
           let filteredFeatures = geoJson.features.filter(
             (feature: { properties: { cellid: number; clave: string; }; }) =>
             municipalityCodes.includes(feature.properties.clave));
           geoJson = { type: "FeatureCollection", features: filteredFeatures };
-
       }
     } else {
       //States
@@ -289,7 +276,6 @@ export class MapComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     console.log("🍥🍥🍥🍥🍥🍥🍥")
     console.log(changes)
-    console.log(this.metropolyMunList)
 
     console.log("🍥🍥🍥🍥🍥🍥🍥")
     try {

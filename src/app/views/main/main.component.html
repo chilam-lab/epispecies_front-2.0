@@ -186,7 +186,7 @@
       <div class="col-lg-8 map-section">
 
         <div class="row row-map">
-          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap" [selectedCVEState]="selectedCVEState" [selectedCVEMun]="selectedCVEMun" [statesAndMunList]="statesAndMunList" [selectedYear]="selectedYear" [selectedMetropoly]="selectedMetropoly" [metropolyMunList]="metropolyMunList">
+          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap" [selectedCVEState]="selectedCVEState" [selectedCVEMun]="selectedCVEMun" [statesAndMunList]="statesAndMunList" [selectedYear]="selectedYear" [selectedMetropoly]="selectedMetropoly">
           </app-map>
         </div>
       </div>
@@ -202,7 +202,7 @@
 <button #showMunModal [hidden]="true"  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#municipality">
   Launch demo modal2
 </button>
-<button #showMetroModal  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#metropoli">
+<button #showMetroModal [hidden]="true" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#metropoli">
   Launch demo modal2
 </button>
 <!--- Modals --->

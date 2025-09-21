@@ -344,16 +344,12 @@ export class MainComponent implements OnInit {
   filterByMetropoli(list: any[]){
     if(this.selectedMetropoly != environment.selectedMetropoli){
       let filteredMetropoly = this.metropolyMunList.filter(b => b[1] == this.selectedMetropoly);
-
       let metropolyIds = filteredMetropoly.map(item => item[0]);
-
-      let finalFilteredList = list.filter((a: any[]) => metropolyIds.includes(a[1]));
-      console.log('Final filtered list:', finalFilteredList);
-      console.log('Final filtered list:', metropolyIds);
-      console.log('Final filtered list:', filteredMetropoly);
-      return finalFilteredList;
+      return list.filter((a: any[]) => metropolyIds.includes(a[1]));
+    } else {
+      let metropolyIds = this.metropolyMunList.map(item => item[0]);
+      return list.filter((a: any[]) => metropolyIds.includes(a[1]));
     }
-    return []
   }
 
   filterBy(position: number, value: string, dataList: any[]) {
