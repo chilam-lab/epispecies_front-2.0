@@ -57,13 +57,35 @@ body {
 
   .updateButton{
     border: 1px solid #223b96;
-  width: 100%;
-  height: 45px;
-  border-radius: 20px;
-  background-color: #223b96;
-  color: white;
-  font-size: 1.2rem;
+    width: auto;
+    height: 35px;
+    border-radius: 15px;
+    background-color: #223b96;
+    color: white;
+    font-size: 1.1rem;
+    padding: 5px 20px;
+    text-align: center;
+    margin-left: 1px;
   }
+
+  .updateButton:hover {
+  background-color: #1a2d75; /* Opcional: efecto hover */
+}
+
+@media (max-width: 768px) {
+  .updateButton {
+    width: 100%;
+    padding: 5px; /* Padding reducido o puedes quitarlo */
+  }
+}
+
+/* O si prefieres un breakpoint más específico */
+@media (max-width: 992px) {
+  .updateButton {
+    width: 100%;
+    padding: 5px 0; /* Solo padding vertical */
+  }
+}
 
   .btn-text-end{
     text-align: end;
@@ -185,32 +207,6 @@ app-map {
   flex-direction: column;
 }
 
-@media (max-width: 992px) {
-  .row-map {
-    min-height: 500px;
-    height: auto;
-  }
-
-  .col-lg-8 {
-    height: 400px;
-  }
-
-  .jumbotron {
-    height: auto;
-    min-height: 300px;
-  }
-}
-
-@media (max-width: 576px) {
-  .row-map {
-    min-height: 700px;
-  }
-
-  .col-lg-8 {
-    height: 350px;
-  }
-}
-
 .nav-item{
   width: 50%;
 }
@@ -323,17 +319,20 @@ app-map {
 }
 .bootstrap-style-mat-select {
   width: 100%;
-  padding: 0.5rem 1rem;
+  /*padding: 0.5rem 1rem;*/
+  padding: 2px 8px;   /* adjust padding */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 1.25rem;
+  font-size: 1rem;
   border: 1px solid #ced4da;
   border-radius: 15px;
   background-color: #fff;
   appearance: none;
   text-align: center;
   color: #c6c6c6;
-  font-size: medium;
+  /*font-size: medium;*/
+  /*font-size: 0.85rem; /* smaller font */
   font-weight: 700;
+  height: 32px;
 }
 
 .bootstrap-style-mat-select:focus {
@@ -349,5 +348,21 @@ app-map {
   background-color: #f4f4f4 !important;
 }
 mat-option{
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+   font-size: 0.85rem; /* options smaller too */
+  line-height: 1.4;
+  padding: 4px 8px;
+ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
+
+.bootstrap-style-mat-select .mat-select-trigger {
+  min-height: 22px;   /* reduce height */
+  padding: 2px 8px;   /* adjust padding */
+  line-height: 1.2;
+}
+
+/* mat-option { */
+/*   font-size: 0.85rem; /* options smaller too */
+/*   line-height: 1.4; */
+/*   padding: 4px 8px; */
+/* } */
+

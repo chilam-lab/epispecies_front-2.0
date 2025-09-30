@@ -1,42 +1,46 @@
 <body><br>
   <div class="container-fluid">
-    <div class="border_radius">
-      <h1>Modo</h1>
+    <div class="row justify-content-center">
+      <div class="col-2">
+        <h4>Modo</h4>
+      </div>
     </div>
-
   </div>
-  <br><br>
   <div class="container-fluid">
     <div class="row">
       <div class="row py-0">
         <div class="col-md-1 d-flex justify-content-left my-2">Modelo:</div>
-        <div class="col-md justify-content-center my-2">
-        <mat-select [(ngModel)]="selectedFirstClassId" class="bootstrap-style-mat-select"
-            (ngModelChange)="onFirstClassChange($event)">
-            <mat-option [value]="env.placeholderFirstClass" disabled selected>{{env.placeholderFirstClass}}</mat-option>
-            <ng-container *ngFor="let sickness of firstClassList">
-              <mat-option [value]="sickness[0]">{{sickness[1]}}</mat-option>
-            </ng-container>
-          </mat-select>
-        </div>
-        <div class="col-md justify-content-center my-2">
-          <mat-select [(ngModel)]="selectedSecondClassId" class="bootstrap-style-mat-select"
-            [disabled]="secondClassSelectDisable" (ngModelChange)="onSecondClassChange($event)"
-            title="Esta selección es opcional" data-bs-toggle="tooltip">
-            <mat-option [value]="env.placeholderSecondClass" selected>{{env.placeholderSecondClass}}</mat-option>
-            <ng-container *ngFor="let group of secondClassList">
-              <mat-option [value]="group[0]">{{group[1]}}</mat-option>
-            </ng-container>
-          </mat-select>
-        </div>
-        <div class="col-md my-2">
-          <mat-select [(ngModel)]="selectedThirdClassId" class="bootstrap-style-mat-select"
-            [disabled]="thirdClassSelectDisable" title="Esta selección es opcional" data-bs-toggle="tooltip">
-            <mat-option [value]="env.placeholderThirdClass" selected>{{env.placeholderThirdClass}}</mat-option>
-            <ng-container *ngFor="let cause of thirdClassList">
-              <mat-option [value]="cause[0]">{{cause[1]}}</mat-option>
-            </ng-container>
-          </mat-select>
+        <div class="col-md-11">
+          <div class="row">
+            <div class="col-md-4 justify-content-center my-2">
+              <mat-select [(ngModel)]="selectedFirstClassId" class="bootstrap-style-mat-select"
+                (ngModelChange)="onFirstClassChange($event)">
+                <mat-option [value]="env.placeholderFirstClass" disabled selected>{{env.placeholderFirstClass}}</mat-option>
+                <ng-container *ngFor="let sickness of firstClassList">
+                  <mat-option [value]="sickness[0]">{{sickness[1]}}</mat-option>
+                </ng-container>
+              </mat-select>
+            </div>
+            <div class="col-md-4 justify-content-center my-2">
+              <mat-select [(ngModel)]="selectedSecondClassId" class="bootstrap-style-mat-select"
+                [disabled]="secondClassSelectDisable" (ngModelChange)="onSecondClassChange($event)"
+                title="Esta selección es opcional" data-bs-toggle="tooltip">
+                <mat-option [value]="env.placeholderSecondClass" selected>{{env.placeholderSecondClass}}</mat-option>
+                <ng-container *ngFor="let group of secondClassList">
+                  <mat-option [value]="group[0]">{{group[1]}}</mat-option>
+                </ng-container>
+              </mat-select>
+            </div>
+            <div class="col-md-4 my-2">
+              <mat-select [(ngModel)]="selectedThirdClassId" class="bootstrap-style-mat-select"
+                [disabled]="thirdClassSelectDisable" title="Esta selección es opcional" data-bs-toggle="tooltip">
+                <mat-option [value]="env.placeholderThirdClass" selected>{{env.placeholderThirdClass}}</mat-option>
+                <ng-container *ngFor="let cause of thirdClassList">
+                  <mat-option [value]="cause[0]">{{cause[1]}}</mat-option>
+                </ng-container>
+              </mat-select>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row py-0 h-25 ">
@@ -79,116 +83,112 @@
             </ng-container>
           </mat-select>
         </div>
-        <div class="col-md-1 justify-content-center my-2">
+        <!-- <div class="col-1 d-flex justify-content-center my-2"> -->
+        <div class="col-lg-1 d-flex justify-content-center  my-2">
           <button class="updateButton" (click)="updateTheDataForTheMap()">Actualizar</button>
+        </div>
+        <!-- <div class="col"> -->
+        <!-- <div class="row"> -->
+        <!--   <div class="col-12"> -->
+        <!--     <button class="updateButton" (click)="updateTheDataForTheMap()">Actualizar</button> -->
+        <!--   </div> -->
+        <!-- </div> -->
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid map-container">
+    <div class="row">
+      <div class="col-lg-12 map-section">
+        <div class="row row-map">
+          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap" [selectedCVEState]="selectedCVEState" [selectedCVEMun]="selectedCVEMun" [statesAndMunList]="statesAndMunList" [selectedYear]="selectedYear" [selectedMetropoly]="selectedMetropoly">
+          </app-map>
         </div>
       </div>
     </div>
   </div>
   <br>
-
-  <div class="container-fluid map-container">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-4 p-0 mb-3">
-        <div class="jumbotron">
-          <h6 style="font-size: 0.85rem;">{{env.selectedFirstClass}}</h6>
-          <h6 class="h5-header">
-            {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}
-          </h6>
-          <h6 *ngIf="selectedSecondClassId != env.placeholderSecondClass" style="font-size: 0.85rem;">{{env.selectedSecondClass}}</h6>
-          <h6 class="h5-header">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</h6>
+      <div class="col-md-3 justify-content-center">
+        <h2>Información detallada</h2>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-md-3 justify-content-center">
+         <h6 style="font-size: 0.85rem;">{{env.selectedFirstClass}}</h6>
+         <h6 class="h5-header">
+           {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}
+         </h6>
+      </div>
+      <div class="col-md-3 justify-content-center">
+         <h6 *ngIf="selectedSecondClassId != env.placeholderSecondClass" style="font-size: 0.85rem;">{{env.selectedSecondClass}}</h6>
+         <h6 class="h5-header">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</h6>
+       </div>
+       <div class="col-md-3 justify-content-center">
           <h6 *ngIf="selectedThirdClassId != env.placeholderThirdClass" style="font-size: 0.85rem;">{{env.selectedThirdClass}}</h6>
           <h6 class="h5-header">{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</h6>
-          <div class="container-fluid">
-            <!-- Navigation Tabs -->
-            <ul class="nav nav-tabs" id="dataTab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <a class="nav-link active"
-                 id="states-tab"
-                 data-bs-toggle="tab"
-                 data-bs-target="#states-pane"
-                 href="#tableX"
-                 aria-current="page">{{env.headerTop10}}</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link"
-                 id="population-tab"
-                 data-bs-toggle="tab"
-                 data-bs-target="#population-pane"
-                 href="#tableZ">{{env.headerTotals}}</a>
-              </li>
-            </ul>
-
-            <!-- Tab Content -->
-            <div class="tab-content" id="dataTabContent">
-
-              <!-- States Tab -->
-              <div class="tab-pane fade show active" id="states-pane" role="tabpanel" aria-labelledby="states-tab">
-                <div class="table-container">
-                  <table class="table table-hover">
-                    <thead class="table-header">
-                      <tr>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Número</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-body">
-                      <ng-container *ngIf="updatedResolution == env.placeholderStateResolution; else municipal">
-                        <tr *ngFor="let state of top10States">
-                          <td>{{getStateName(state[0])}}</td>
-                          <td>{{state[1]}}</td>
-                        </tr>
-                      </ng-container>
-                      <ng-template #municipal>
-                        <tr *ngFor="let mun of top10Municipalities">
-                          <td>{{getStateName(mun[0])}} - {{getMunicipalityName(mun[1])}}</td>
-                          <td>{{mun[2]}}</td>
-                        </tr>
-                      </ng-template>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <!-- Population Tab -->
-              <div class="tab-pane fade" id="population-pane" role="tabpanel" aria-labelledby="population-tab">
-                <div class="table-container">
-                <br>
-                  <h6>{{env.genderTotals}}</h6>
-                  <table class="table table-hover">
-                    <tbody class="table-body">
-                      <tr *ngFor="let total of showGenderTotals">
-                        <td>{{total[0]}}</td>
-                        <td>{{total[1]}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <br>
-                  <h6>{{env.ageTotals}}</h6>
-                  <table class="table table-hover">
-                    <tbody class="table-body">
-                      <tr *ngFor="let total of showAgeTotals">
-                        <td>{{total[0]}}</td>
-                        <td>{{total[1]}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row justify-content-center">
-            <button id="boton_detalles" class="borderedButton">Ver información
-              detallada</button>
-          </div>
-        </div>
+       </div>
+    </div>
+  </div><br><br>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+      <h4>Top 10</h4>
+        <table class="table table-hover">
+           <thead class="table-header">
+             <tr>
+               <th scope="col">Estado</th>
+               <th scope="col">Número</th>
+             </tr>
+           </thead>
+           <tbody class="table-body">
+             <ng-container *ngIf="updatedResolution == env.placeholderStateResolution; else municipal">
+               <tr *ngFor="let state of top10States">
+                 <td>{{getStateName(state[0])}}</td>
+                 <td>{{state[1]}}</td>
+               </tr>
+             </ng-container>
+             <ng-template #municipal>
+               <tr *ngFor="let mun of top10Municipalities">
+                 <td>{{getStateName(mun[0])}} - {{getMunicipalityName(mun[1])}}</td>
+                 <td>{{mun[2]}}</td>
+               </tr>
+             </ng-template>
+           </tbody>
+         </table>
       </div>
-      <div class="col-lg-8 map-section">
+      <div class="col-md-3 offset-md-1">
+         <h4>Totales</h4>
+         <div class="table-container">
+           <br>
+           <h6>{{env.ageTotals}}</h6>
+           <table class="table table-hover">
+             <tbody class="table-body">
+               <tr *ngFor="let total of showAgeTotals">
+                 <td>{{total[0]}}</td>
+                 <td>{{total[1]}}</td>
+               </tr>
+             </tbody>
+           </table>
+         </div>
+      </div>
+      <div class="col-md-3 offset-md-1">
+         <div class="table-container">
+           <br>
+           <br>
+           <h6>{{env.genderTotals}}</h6>
+           <table class="table table-hover">
+             <tbody class="table-body">
+               <tr *ngFor="let total of showGenderTotals">
+                 <td>{{total[0]}}</td>
+                 <td>{{total[1]}}</td>
+               </tr>
+             </tbody>
+           </table>
 
-        <div class="row row-map">
-          <app-map [updatedResolution]="updatedResolution" [dataByMunToDisplayInMap]="dataByMunToDisplayInMap" [selectedCVEState]="selectedCVEState" [selectedCVEMun]="selectedCVEMun" [statesAndMunList]="statesAndMunList" [selectedYear]="selectedYear" [selectedMetropoly]="selectedMetropoly">
-          </app-map>
-        </div>
+         </div>
       </div>
     </div>
   </div>
