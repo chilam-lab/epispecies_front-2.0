@@ -76,24 +76,22 @@
           </mat-select>
         </div>
         <div class="col-md-2 d-flex justify-content-center my-2">
-          <mat-select [(ngModel)]="selectedYear" class="bootstrap-style-mat-select">
-            <mat-option [value]="selectedYear" selected>{{selectedYear}}</mat-option>
-            <ng-container *ngFor="let year of yearsList">
-              <mat-option [value]="year">{{year}}</mat-option>
-            </ng-container>
-          </mat-select>
+          <div class="select-with-button-container">
+            <mat-select [(ngModel)]="selectedYear" class="bootstrap-style-mat-select">
+              <mat-option [value]="selectedYear" selected>{{selectedYear}}</mat-option>
+              <ng-container *ngFor="let year of yearsList">
+                <mat-option [value]="year">{{year}}</mat-option>
+              </ng-container>
+            </mat-select>
+            <button mat-icon-button type="button" data-bs-toggle="modal" data-bs-target="#periodModal">
+              <mat-icon>date_range</mat-icon>
+            </button>
+          </div>
         </div>
         <!-- <div class="col-1 d-flex justify-content-center my-2"> -->
         <div class="col-lg-1 d-flex justify-content-center  my-2">
           <button class="updateButton" (click)="updateTheDataForTheMap()">Actualizar</button>
         </div>
-        <!-- <div class="col"> -->
-        <!-- <div class="row"> -->
-        <!--   <div class="col-12"> -->
-        <!--     <button class="updateButton" (click)="updateTheDataForTheMap()">Actualizar</button> -->
-        <!--   </div> -->
-        <!-- </div> -->
-        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -205,6 +203,11 @@
 <button #showMetroModal [hidden]="true" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#metropoli">
   Launch demo modal2
 </button>
+<button #showPeriodModal [hidden]="true" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#periodModal">
+  Launch demo modal
+</button>
+
+
 <!--- Modals --->
 <div class="modal fade" id="stateModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
@@ -288,3 +291,88 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="periodModal" tabindex="-1" aria-labelledby="periodModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="periodModalLabel">Seleccionar periodo</h5>
+        <button type="button" class="btn-close" (click)="closingPeriodModal()" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+
+      <!-- Selection Modes (Tabs) -->
+      <div class="modal-body p-0">
+        <div class="p-3 border-bottom">
+          <ul class="nav nav-pills nav-fill flex-nowrap" id="periodModeTabs">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="search-tab" data-bs-toggle="pill" data-bs-target="#search-mode" type="button" role="tab" aria-controls="search-mode" aria-selected="true">
+                Mes
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="list-tab" data-bs-toggle="pill" data-bs-target="#list-mode" type="button" role="tab" aria-controls="list-mode" aria-selected="false">
+                Estación
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="year-tab" data-bs-toggle="pill" data-bs-target="#year-mode" type="button" role="tab" aria-controls="year-mode" aria-selected="false">
+                Año
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Content Area for Modes -->
+        <div class="tab-content p-4" style="min-height: 300px; max-height: 400px; overflow-y: auto;">
+
+          <!-- Search Mode -->
+          <div class="tab-pane fade" id="search-mode" role="tabpanel" aria-labelledby="search-tab">
+            <label for="stateSearchInput" class="form-label">Escriba para buscar:</label>
+            <!-- <input class="form-control" list="datalistOptions" id="stateSearchInput" [(ngModel)]="selectedState" placeholder="Escriba el nombre del estado..."> -->
+            <datalist id="datalistOptions">
+              <ng-container *ngFor="let state of statesNameList">
+                <option>{{ state }}</option>
+              </ng-container>
+            </datalist>
+          </div>
+
+          <!-- List Mode -->
+          <div class="tab-pane fade" id="list-mode" role="tabpanel" aria-labelledby="list-tab">
+            <div class="list-group">
+              <ng-container *ngFor="let state of statesNameList">
+                <!-- <button type="button" class="list-group-item list-group-item-action" [class.active]="selectedState === state" (click)="selectedState = state"> --> -->
+                <!--   {{ state }} -->
+                <!-- </button> -->
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- Region Mode -->
+
+          <div class="tab-pane show active fade" id="year-mode" role="tabpanel" aria-labelledby="year-tab">
+            <h6 class="text-center mb-4">Seleccionar Año</h6>
+            <div class="row row-cols-4 g-3">
+              <ng-container *ngFor="let year of yearsList">
+                <div class="col">
+                  <button type="button" class="btn w-100 py-3" [class.btn-primary]="selectedYear === year" [class.btn-outline-secondary]="selectedYear !== year" (click)="selectedYear = year">
+                    {{ year }}
+                  </button>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="modal-footer">
+        <button type="button" [hidden]="true" class="btn btn-secondary" #closePeriodModal data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="verifyPeriodSelectedcModal()">Seleccionar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -4,7 +4,7 @@ import { DiseaseDbService } from '../../services/disease-db.service';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatButtonModule } from '@angular/material/button';
 import { environment, ageMap } from '../../../environments/environment'
 import { firstValueFrom } from 'rxjs';
 import { Record } from '../../models/cve_list';
@@ -19,6 +19,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
   MatFormFieldModule,
   MatInputModule,
   MatSelectModule,
+  MatButtonModule,
   ReactiveFormsModule,
   FormsModule],
   templateUrl: './main.component.html',
@@ -33,6 +34,7 @@ export class MainComponent implements OnInit {
   @ViewChild('modalState') modalStateRef!: ElementRef;
   @ViewChild('modalMun') modalMunRef!: ElementRef;
   @ViewChild('closeMetroModal') metroCloseRef!: ElementRef;
+  @ViewChild('closePeriodModal') periodCloseRef!: ElementRef;
   @ViewChild('showStateModal') showModalState!: ElementRef;
   @ViewChild('showMunModal') showModalMun!: ElementRef;
   @ViewChild('showMetroModal') showModalMetro!: ElementRef;
@@ -136,7 +138,7 @@ export class MainComponent implements OnInit {
         next: (response) => {
           this.agesList = response[0];
           this.gendersList = response[1];
-          const lastyear = response[2].pop();
+          const lastyear = response[2][response[2].length - 1];
           this.yearsList = response[2].reverse();
           this.selectedYear = lastyear;
         },
@@ -297,6 +299,9 @@ export class MainComponent implements OnInit {
 
     console.log("❄️-")
     console.log(this.selectedRegion)
+
+    console.log(this.filteredAllDataByClasses.length)
+    console.log(this.filteredAllDataByClasses)
     console.log(municipalityDataList)
     console.log(this.selectedMetropoly)
     console.log("❄️-")
@@ -516,6 +521,9 @@ export class MainComponent implements OnInit {
   showingModalsFromSelect() {
     this.selectedState = "";
     this.selectedMuncipality = "";
+    console.log("🪭")
+    console.log(this.selectedRegion)
+    console.log("🪭")
     if (this.selectedRegion == environment.placeholderState) this.showModalState.nativeElement.click();
     if (this.selectedRegion == environment.placeholderMunicipal) this.showModalMun.nativeElement.click();
     if (this.selectedRegion != this.env.placeholderMunicipal) {
@@ -568,4 +576,12 @@ export class MainComponent implements OnInit {
       .filter(id => ageMap[id as keyof typeof ageMap])
       .map(id => [ageMap[id as keyof typeof ageMap], this.filterBy(8, id, data).length]);
   }
+  closingPeriodModal(){
+    this.periodCloseRef.nativeElement.click();
+  }
+
+  verifyPeriodSelectedcModal(){
+    this.periodCloseRef.nativeElement.click();
+  }
+
 }

@@ -37,6 +37,7 @@ export class MapComponent implements OnInit {
   coloringMode: 'cases' | 'rate' = 'rate';
   currentLayerGroup: L.FeatureGroup | undefined;
   private layerControl: L.Control.Layers | undefined;
+  currentTotalPopulation = 0;
 
   ngAfterViewInit(): void {
     this.initializeMap();
@@ -62,7 +63,6 @@ export class MapComponent implements OnInit {
     }).addTo(this.map);
 
     this.updateMapLayerView("states");
-    this.getPopulationData();
 
   }
 
@@ -152,6 +152,7 @@ export class MapComponent implements OnInit {
           const cases = this.numCasesByIdRegion(feature.properties.clave);
           const pop = this.getPopulationById(feature.properties.clave);
           const rate = pop ? (cases / pop) * 100000 : 0;
+          const risk = pop ? (cases / this.currentTotalPopulation) * 100000 : 0;
           layer.bindPopup(
             `<table class="table">
                <thead>
@@ -160,6 +161,7 @@ export class MapComponent implements OnInit {
                    <th scope="col">No. Casos</th>
                    <th scope="col">Población</th>
                    <th scope="col">Tasa</th>
+                   <th scope="col">Riesgo</th>
                  </tr>
                </thead>
                <tbody>
@@ -168,6 +170,7 @@ export class MapComponent implements OnInit {
                    <td>${cases}</td>
                    <td>${pop?.toLocaleString('en-US')}</td>
                    <td>${rate.toFixed(4)}</td>
+                   <td>${risk.toFixed(4)}</td>
                  </tr>
                </tbody>
              </table>`
@@ -204,6 +207,7 @@ export class MapComponent implements OnInit {
           const cases = this.numCasesByIdRegion(feature.properties.clave);
           const pop = this.getPopulationById(feature.properties.clave);
           const rate = pop ? (cases / pop) * 100000 : 0;
+          const risk = pop ? (cases / this.currentTotalPopulation) * 100000 : 0;
           layer.bindPopup(
             `<table class="table">
               <thead>
@@ -212,6 +216,7 @@ export class MapComponent implements OnInit {
                   <th scope="col">No. Casos</th>
                   <th scope="col">Población</th>
                   <th scope="col">Tasa</th>
+                  <th scope="col">Riego</th>
                 </tr>
               </thead>
               <tbody>
@@ -220,6 +225,7 @@ export class MapComponent implements OnInit {
                   <td>${cases}</td>
                   <td>${pop?.toLocaleString('en-US')}</td>
                   <td>${rate.toFixed(4)}</td>
+                  <td>${risk.toFixed(4)}</td>
                 </tr>
               </tbody>
             </table>`
@@ -280,12 +286,8 @@ export class MapComponent implements OnInit {
     console.log("🍥🍥🍥🍥🍥🍥🍥")
     try {
       let newResolution = changes['updatedResolution']['currentValue'];
-      if (newResolution && newResolution != this.selectedResolution) {
-        this.selectedResolution = newResolution;
-      }
-    } catch (err) {
-      console.log("no resolution updates");
-    }
+      if (newResolution && newResolution != this.selectedResolution)  this.selectedResolution = newResolution;
+    } catch (err) { console.log("no resolution updates"); }
 
     try {
       let year = changes['selectedYear']['currentValue'];
@@ -294,9 +296,7 @@ export class MapComponent implements OnInit {
         this.selectedYear = numberYear;
         this.getPopulationData();
       }
-    } catch (err) {
-      console.log("no year updates");
-    }
+    } catch (err) { console.log("no year updates");}
 
     try {
       let dataToDisplayByMun = changes['dataByMunToDisplayInMap']['currentValue'];
@@ -481,11 +481,21 @@ export class MapComponent implements OnInit {
     console.log("xxxxxxxxxxxxxxx")
     console.log(this.selectedYear)
     console.log(typeof(this.selectedYear))
-    let popa = Number(this.selectedYear).toString()
-    this.diseaseDB.getDataByYearInTable(popa, environment.tablePopulationTotal)
+    let year = Number(this.selectedYear).toString()
+    this.diseaseDB.getDataByYearInTable(year, environment.tablePopulationTotal)
     .subscribe({
       next: (response) => {
+        console.log("❄️🛼")
+        console.log(response)
+        console.log(this.selectedYear)
+        console.log("❄️🛼")
         this.populationByYearList = response;
+        this.currentTotalPopulation = response.reduce((total: number, item: any[]) => {
+          return item[0] === Number(this.selectedYear) ? total + item[2] : total;
+        }, 0);
+        console.log(this.currentTotalPopulation)
+        console.log("❄️🛼")
+
       },
       error: (error) => {
         console.error('Error fetching data:', error);
@@ -497,4 +507,6 @@ export class MapComponent implements OnInit {
       }
     });
   }
+
+  calculateTotalPopulation(){}
 }

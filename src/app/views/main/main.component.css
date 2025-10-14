@@ -125,7 +125,7 @@ body {
     max-height: 800px;
   }
   mat-icon{
-    vertical-align: middle;
+    /* vertical-align: middle; */
     cursor: pointer;
   }
 
@@ -366,3 +366,9 @@ mat-option{
 /*   padding: 4px 8px; */
 /* } */
 
+.select-with-button-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 200px; /* Adjust as needed */
+}
