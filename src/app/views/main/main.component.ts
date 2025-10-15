@@ -317,6 +317,7 @@ export class MainComponent implements OnInit {
       this.dataByMunToDisplayInMap = stateMunList;
     }
     this.updatedResolution = this.selectedResolution;
+    this.updatedRegion = this.selectedRegion;
     this.selectedCVEState = Number(idSelectedState);
     this.selectedCVEMun = idSelectedMun;
     this.saveNewSelectsValues();

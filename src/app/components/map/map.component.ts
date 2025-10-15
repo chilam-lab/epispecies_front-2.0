@@ -17,6 +17,7 @@ import { getMatInputUnsupportedTypeError } from '@angular/material/input';
 export class MapComponent implements OnInit {
   private map: L.Map | undefined;
   @Input() updatedResolution: string = "";
+  @Input() updatedRegion: string = "";
   @Input() dataByMunToDisplayInMap: [number, string, string][] = [];
   @Input() selectedCVEState: number = 0;
   @Input() selectedCVEMun: string = "";
@@ -30,6 +31,7 @@ export class MapComponent implements OnInit {
   casesGeoJsonLayer: L.GeoJSON | undefined;
   rateGeoJsonLayer: L.GeoJSON | undefined;
   selectedResolution: string = environment.placeholderStateResolution;
+  selectedRegion: string = environment.placeholderCountry;
   rawDataTodisplayByMun: [number, string, string][] = [];
   highestValueInData = 0;
   highestRateInData = 0;
@@ -162,6 +164,7 @@ export class MapComponent implements OnInit {
                    <th scope="col">Población</th>
                    <th scope="col">Tasa</th>
                    <th scope="col">Riesgo</th>
+                   <th scope="col">Población nivel ${this.selectedRegion}</th>
                  </tr>
                </thead>
                <tbody>
@@ -171,6 +174,7 @@ export class MapComponent implements OnInit {
                    <td>${pop?.toLocaleString('en-US')}</td>
                    <td>${rate.toFixed(4)}</td>
                    <td>${risk.toFixed(4)}</td>
+                  <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
                  </tr>
                </tbody>
              </table>`
@@ -216,7 +220,8 @@ export class MapComponent implements OnInit {
                   <th scope="col">No. Casos</th>
                   <th scope="col">Población</th>
                   <th scope="col">Tasa</th>
-                  <th scope="col">Riego</th>
+                  <th scope="col">Riesgo</th>
+                  <th scope="col">Población nivel ${this.selectedRegion}</th>
                 </tr>
               </thead>
               <tbody>
@@ -226,6 +231,7 @@ export class MapComponent implements OnInit {
                   <td>${pop?.toLocaleString('en-US')}</td>
                   <td>${rate.toFixed(4)}</td>
                   <td>${risk.toFixed(4)}</td>
+                  <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
                 </tr>
               </tbody>
             </table>`
@@ -282,7 +288,6 @@ export class MapComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges): void {
     console.log("🍥🍥🍥🍥🍥🍥🍥")
     console.log(changes)
-
     console.log("🍥🍥🍥🍥🍥🍥🍥")
     try {
       let newResolution = changes['updatedResolution']['currentValue'];
@@ -316,19 +321,14 @@ export class MapComponent implements OnInit {
             const id = row[1];              // the ID to get population
             const population = this.getPopulationById(id);
 
-            if (typeof value === 'number' && value > maxValue) {
-              maxValue = value;
-            }
+            if (typeof value === 'number' && value > maxValue) maxValue = value;
 
             if (population && population > 0) {
               const rate = (Number(value) / population) * 100000;
-              if (rate > maxRate) {
-                maxRate = rate;
-              }
+              if (rate > maxRate) maxRate = rate;
             }
           }
         } else {
-
           const stateSums = this.dataByMunToDisplayInMap.reduce((acc, row) => {
             const stateId = row[0];
             const cases = Number(row[2]);
@@ -356,6 +356,12 @@ export class MapComponent implements OnInit {
     } catch (err) {
       console.log("no updates in the data")
     }
+
+    try {
+      let newRegion = changes['updatedRegion']['currentValue'];
+      if (newRegion && newRegion != this.selectedRegion) { this.selectedRegion = newRegion; }
+    } catch (err) { console.log("no region updates");}
+    this.calculateTotalPopulation();
 
     this.updateMapLayerView(this.selectedResolution);
   }
@@ -488,11 +494,10 @@ export class MapComponent implements OnInit {
         console.log("❄️🛼")
         console.log(response)
         console.log(this.selectedYear)
-        console.log("❄️🛼")
+        console.log(this.updatedRegion)
+        console.log("-----❄️🛼---")
+        let a = response.filter(i => i[1]== "9002")
         this.populationByYearList = response;
-        this.currentTotalPopulation = response.reduce((total: number, item: any[]) => {
-          return item[0] === Number(this.selectedYear) ? total + item[2] : total;
-        }, 0);
         console.log(this.currentTotalPopulation)
         console.log("❄️🛼")
 
@@ -508,5 +513,20 @@ export class MapComponent implements OnInit {
     });
   }
 
-  calculateTotalPopulation(){}
+  calculateTotalPopulation(){
+    let total = 1;
+    let population = this.populationByYearList;
+    if(this.selectedRegion == environment.placeholderCountry){
+      total = population.reduce((total: number, item: any[]) => {
+          return item[0] === Number(this.selectedYear) ? total + item[2] : total;
+        }, 0);
+    } else {
+      const municipalityCodes = new Set(this.rawDataTodisplayByMun.map(item => item[1]));
+      total = population
+      .filter(item => item[0] === Number(this.selectedYear) && municipalityCodes.has(item[1] as string))
+      .reduce((sum, item) => sum + (item[2] as number), 0);
+    }
+    console.log(total)
+    this.currentTotalPopulation = total;
+  }
 }
