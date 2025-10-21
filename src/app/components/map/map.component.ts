@@ -157,24 +157,30 @@ export class MapComponent implements OnInit {
           const risk = pop ? (cases / this.currentTotalPopulation) * 100000 : 0;
           layer.bindPopup(
             `<table class="table">
-               <thead>
-                 <tr>
-                   <th scope="col">Clave</th>
-                   <th scope="col">No. Casos</th>
-                   <th scope="col">Población</th>
-                   <th scope="col">Tasa</th>
-                   <th scope="col">Riesgo</th>
-                   <th scope="col">Población nivel ${this.selectedRegion}</th>
-                 </tr>
-               </thead>
                <tbody>
                  <tr>
-                   <th>${feature.properties.clave}</th>
+                   <th>Clave</th>
+                   <td>${feature.properties.clave}</td>
+                 </tr>
+                 <tr>
+                   <th>No. Casos</th>
                    <td>${cases}</td>
+                 </tr>
+                 <tr>
+                   <th>Población</th>
                    <td>${pop?.toLocaleString('en-US')}</td>
+                 </tr>
+                 <tr>
+                   <th>Tasa</th>
                    <td>${rate.toFixed(4)}</td>
+                 </tr>
+                 <tr>
+                   <th>Riesgo</th>
                    <td>${risk.toFixed(4)}</td>
-                  <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
+                 </tr>
+                 <tr>
+                   <th>Población nivel ${this.selectedRegion}</th>
+                   <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
                  </tr>
                </tbody>
              </table>`
@@ -214,27 +220,33 @@ export class MapComponent implements OnInit {
           const risk = pop ? (cases / this.currentTotalPopulation) * 100000 : 0;
           layer.bindPopup(
             `<table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Clave</th>
-                  <th scope="col">No. Casos</th>
-                  <th scope="col">Población</th>
-                  <th scope="col">Tasa</th>
-                  <th scope="col">Riesgo</th>
-                  <th scope="col">Población nivel ${this.selectedRegion}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>${feature.properties.clave}</th>
-                  <td>${cases}</td>
-                  <td>${pop?.toLocaleString('en-US')}</td>
-                  <td>${rate.toFixed(4)}</td>
-                  <td>${risk.toFixed(4)}</td>
-                  <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
-                </tr>
-              </tbody>
-            </table>`
+               <tbody>
+                 <tr>
+                   <th>Clave</th>
+                   <td>${feature.properties.clave}</td>
+                 </tr>
+                 <tr>
+                   <th>No. Casos</th>
+                   <td>${cases}</td>
+                 </tr>
+                 <tr>
+                   <th>Población</th>
+                   <td>${pop?.toLocaleString('en-US')}</td>
+                 </tr>
+                 <tr>
+                   <th>Tasa</th>
+                   <td>${rate.toFixed(4)}</td>
+                 </tr>
+                 <tr>
+                   <th>Riesgo</th>
+                   <td>${risk.toFixed(4)}</td>
+                 </tr>
+                 <tr>
+                   <th>Población nivel ${this.selectedRegion}</th>
+                   <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
+                 </tr>
+               </tbody>
+             </table>`
           );
           layer.bindTooltip(`Clave: ${feature.properties.clave} tasa: ${rate.toFixed(2)}`, { sticky: true });
         }
