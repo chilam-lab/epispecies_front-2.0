@@ -484,23 +484,11 @@ export class MapComponent implements OnInit {
     return legend;
   }
   getPopulationData(){
-    console.log("xxxxxxxxxxxxxxx")
-    console.log(this.selectedYear)
-    console.log(typeof(this.selectedYear))
     let year = Number(this.selectedYear).toString()
     this.diseaseDB.getDataByYearInTable(year, environment.tablePopulationTotal)
     .subscribe({
       next: (response) => {
-        console.log("❄️🛼")
-        console.log(response)
-        console.log(this.selectedYear)
-        console.log(this.updatedRegion)
-        console.log("-----❄️🛼---")
-        let a = response.filter(i => i[1]== "9002")
         this.populationByYearList = response;
-        console.log(this.currentTotalPopulation)
-        console.log("❄️🛼")
-
       },
       error: (error) => {
         console.error('Error fetching data:', error);
