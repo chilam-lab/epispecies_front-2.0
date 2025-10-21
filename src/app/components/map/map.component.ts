@@ -24,6 +24,8 @@ export class MapComponent implements OnInit {
   @Input() statesAndMunList: any = [];
   @Input() selectedYear: string = "";
   @Input() selectedMetropoly: string = "";
+  @Input() stateNames!: { [key: number]: string };
+  @Input() municipalityNames!: { [key: string]: string };
   constructor(private mapService: MapService, private diseaseDB: DiseaseDbService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
@@ -155,12 +157,14 @@ export class MapComponent implements OnInit {
           const pop = this.getPopulationById(feature.properties.clave);
           const rate = pop ? (cases / pop) * 100000 : 0;
           const risk = pop ? (cases / this.currentTotalPopulation) * 100000 : 0;
+          const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado"
+          const name = isStateOrMunicipality == 'Municipal' ? this.getMunicipalityName(feature.properties.clave): this.getStateName(Number(feature.properties.clave))
           layer.bindPopup(
             `<table class="table">
                <tbody>
                  <tr>
-                   <th>Clave</th>
-                   <td>${feature.properties.clave}</td>
+                   <th>${placeholder}</th>
+                   <td>${name}</td>
                  </tr>
                  <tr>
                    <th>No. Casos</th>
@@ -218,12 +222,14 @@ export class MapComponent implements OnInit {
           const pop = this.getPopulationById(feature.properties.clave);
           const rate = pop ? (cases / pop) * 100000 : 0;
           const risk = pop ? (cases / this.currentTotalPopulation) * 100000 : 0;
+          const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado"
+          const name = isStateOrMunicipality == 'Municipal' ? this.getMunicipalityName(Number(feature.properties.clave)): this.getStateName(Number(feature.properties.clave))
           layer.bindPopup(
             `<table class="table">
                <tbody>
                  <tr>
-                   <th>Clave</th>
-                   <td>${feature.properties.clave}</td>
+                   <th>${placeholder}</th>
+                   <td>${name}</td>
                  </tr>
                  <tr>
                    <th>No. Casos</th>
@@ -295,6 +301,15 @@ export class MapComponent implements OnInit {
       .reduce((sum, item) => sum + Number(item[2]), 0);
       return sum;
     }
+  }
+
+  getStateName(stateCode: number): string {
+    return this.stateNames[stateCode] || environment.UnknownState;
+  }
+
+  getMunicipalityName(code: any): string {
+    code = code.toString()
+    return this.municipalityNames[code] || environment.unknownMunicipality;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
