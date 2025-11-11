@@ -280,7 +280,8 @@ export class MainComponent implements OnInit {
     Swal.showLoading();
     //add verification for the models
     try {
-      if (this.selectedFirstClassId != this.hasChanges.selectedFirstClassId) {
+      if (this.selectedYear != this.hasChanges.selectedYear ||
+          this.selectedFirstClassId != this.hasChanges.selectedFirstClassId) {
         await this.getAllTheDataByYearAndFirstClassId();
         this.filteredAllDataByClasses = this.allDataByFirstClass;
       }
