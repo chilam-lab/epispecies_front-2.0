@@ -432,52 +432,58 @@ mat-option{
 .select-with-button {
   display: flex;
   align-items: stretch;
-  background: yellow;
   border-radius: 50px;
   overflow: hidden;
   height: 33px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   align-items: center;
+  border: 1px solid #ced4da;
 }
 
 .mat-select{
   background: transparent!important;
-  color: #223c96;
-  border: none;
+  color: #ced4da!important;
+  border: 1px;
   padding: 0 14px;
-  font-size: 18px;
   font-weight: 600;
   color: #2d2d2d;
   min-width: 14px;
   width: 100%;
   text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
+}
+
+.mat-select:hover{
+  background-color: #223b96;
+  color: white;
 }
 
 /* Remove default Material select styling */
 .mat-select:ng-deep .mat-select-trigger {
   height: 32px;
   display: flex;
-   background: transparent!important;
+  background: transparent!important;
   align-items: center;
 }
 
 /* Button styling */
 .select-with-button button {
-  background: #223c96;
   border: none;
   border-radius: 0 32px 32px 0;
   padding: 0 10px;
   min-width: 50px;
   color: #1fd18a;
   transition: background 0.3s ease;
+  font-size: 1rem;
+  border: 1px solid #ced4da;
 }
 
 .select-with-button button:hover {
-  background: khaki;
+  background: #223b96;
 }
 
 .select-with-button button mat-icon {
-  color: white;
+  color: #ced4da;
   font-size: 24px;
   width: 24px;
   height: 24px;
