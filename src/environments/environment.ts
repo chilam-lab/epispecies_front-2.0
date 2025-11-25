@@ -27,6 +27,7 @@ export const environment = {
   genderTotals: 'Casos por género',
   headerTop10: 'Top 10 de la región',
   headerTotals: 'Totales',
+  placeholderCategory:'Seleccione una categoría',
 
   modelsDictionaryTable: 'ENFERMEDADES',
   statesMunDictionaryTable: 'ESTADO_MUN',

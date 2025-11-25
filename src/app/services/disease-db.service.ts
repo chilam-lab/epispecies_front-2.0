@@ -96,6 +96,13 @@ export class DiseaseDbService {
       );
   }
 
+  getCategoriesBy(year: string): Observable<any> {
+    let fullUrl = this.apiUrl + 'categories';
+    const params = new HttpParams().set('year', year)
+    return this.http.get<any>(fullUrl, { params })
+      .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred';
     if (error.error instanceof ErrorEvent) {

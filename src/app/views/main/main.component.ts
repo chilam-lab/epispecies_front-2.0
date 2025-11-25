@@ -102,6 +102,8 @@ export class MainComponent implements OnInit {
   showGenderTotals:[string,number][]= []
   selectedSeason: string = '';
   selectedMonth: number = 0;
+  categoryList = [];
+  selectedCategory = environment.placeholderCategory;
   monthsList = [
     { value: 1, name: 'Enero' },
     { value: 2, name: 'Febrero' },
@@ -251,10 +253,7 @@ export class MainComponent implements OnInit {
       const response = await firstValueFrom(
         this.dbService.getDataByYear(this.selectedYear, this.selectedFirstClassId)
       );
-      console.log("😀");
-      console.log(response);
       this.allDataByFirstClass = response;
-      console.log("😀");
       return response;
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -314,14 +313,6 @@ export class MainComponent implements OnInit {
     idSelectedMun = (idSelectedMun.length > 0) ? Number(idSelectedMun) > 10000 ? idSelectedMun : "0" + idSelectedMun : "";
     const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
 
-    console.log("❄️-")
-    console.log(this.selectedRegion)
-
-    console.log(this.filteredAllDataByClasses.length)
-    console.log(this.filteredAllDataByClasses)
-    console.log(municipalityDataList)
-    console.log(this.selectedMetropoly)
-    console.log("❄️-")
     this.dataByMunToDisplayInMap = municipalityDataList;
     if(this.selectedRegion == environment.placeholderMetropoli){
       this.dataByMunToDisplayInMap = this.filterByMetropoli(municipalityDataList);
@@ -333,6 +324,7 @@ export class MainComponent implements OnInit {
       stateMunList = this.filterBy(0,idState[0],municipalityDataList)
       this.dataByMunToDisplayInMap = stateMunList;
     }
+    this.getCategories(this.selectedYear.toString())
     this.updatedResolution = this.selectedResolution;
     this.updatedRegion = this.selectedRegion;
     this.selectedCVEState = Number(idSelectedState);
@@ -343,6 +335,19 @@ export class MainComponent implements OnInit {
       title: 'Datos cargados correctamente.',
       icon: 'success'
     })
+  }
+
+
+  getCategories(year:string){
+  this.dbService.getCategoriesBy(year)
+      .subscribe({
+        next: (response) => {
+          this.categoryList = response;
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+        }
+      });
   }
 
   applyFilters(dataList: any[]) {

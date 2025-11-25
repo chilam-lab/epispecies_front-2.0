@@ -75,23 +75,22 @@
             <mat-option value={{env.placeholderMunResolution}} selected>{{env.placeholderMunResolution}}</mat-option>
           </mat-select>
         </div>
-       <div class="col-md-2 d-flex justify-content-center my-2">
-  <div class="select-with-button">
-    <mat-select class="mat-select" [(ngModel)]="selectedYear"
-                panelClass="custom-select-panel">
-      <mat-option [value]="selectedYear" selected>{{selectedYear}}</mat-option>
-      <ng-container *ngFor="let year of yearsList">
-        <mat-option [value]="year">{{year}}</mat-option>
-      </ng-container>
-    </mat-select>
-    <button mat-icon-button
-            type="button"
-            data-bs-toggle="modal"
-            data-bs-target="#periodModal">
-      <mat-icon>date_range</mat-icon>
-    </button>
-  </div>
-</div>
+        <div class="col-md-2 d-flex justify-content-center my-2">
+          <div class="select-with-button">
+            <mat-select class="mat-select" [(ngModel)]="selectedYear" panelClass="custom-select-panel">
+              <mat-option [value]="selectedYear" selected>{{selectedYear}}</mat-option>
+              <ng-container *ngFor="let year of yearsList">
+                <mat-option [value]="year">{{year}}</mat-option>
+              </ng-container>
+            </mat-select>
+            <button mat-icon-button
+                   type="button"
+                   data-bs-toggle="modal"
+                   data-bs-target="#periodModal">
+             <mat-icon>date_range</mat-icon>
+            </button>
+         </div>
+       </div>
         <!-- <div class="col-1 d-flex justify-content-center my-2"> -->
         <div class="col-lg-1 d-flex justify-content-center  my-2">
           <button class="updateButton" (click)="updateTheDataForTheMap()">Actualizar</button>
@@ -124,7 +123,17 @@
 
 <div class="row">
       <div class="col-md-3 justify-content-center">
-        <h2>Información detallada</h2>
+        <h2>Seleccione una covariable</h2>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-select [(ngModel)]="selectedCategory" class="bootstrap-style-mat-select">
+            <mat-option [value]="env.placeholderCategory" selected>{{env.placeholderCategory}}</mat-option>
+            <ng-container *ngFor="let category of categoryList">
+              <mat-option [value]="category">{{category}}</mat-option>
+            </ng-container>
+          </mat-select>
+        </div>
       </div>
     </div><br>
 
