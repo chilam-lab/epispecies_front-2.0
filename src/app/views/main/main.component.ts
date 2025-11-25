@@ -105,6 +105,7 @@ export class MainComponent implements OnInit {
   totalCases: number = 0;
   categoryList = [];
   selectedCategory = environment.placeholderCategory;
+  calculatedVariables = [];
   monthsList = [
     { value: 1, name: 'Enero' },
     { value: 2, name: 'Febrero' },
@@ -642,6 +643,7 @@ export class MainComponent implements OnInit {
       .subscribe({
         next: (response) => {
           console.log(response)
+          this.calculatedVariables = response;
         },
         error: (error) => {
           console.error('Error fetching data:', error);
