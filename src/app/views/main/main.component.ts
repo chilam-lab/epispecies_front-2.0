@@ -102,6 +102,7 @@ export class MainComponent implements OnInit {
   showGenderTotals:[string,number][]= []
   selectedSeason: string = '';
   selectedMonth: number = 0;
+  totalCases: number = 0;
   categoryList = [];
   selectedCategory = environment.placeholderCategory;
   monthsList = [
@@ -306,6 +307,8 @@ export class MainComponent implements OnInit {
 
     //check
 
+    this.totalCases = this.filteredAllDataByClasses.length;
+
     let idSelectedState = Object.keys(this.stateNames).find(key => this.stateNames[+key] === this.selectedState) || 0;
     let munListByState = this.statesAndMunList.filter(x=> x[0]==idSelectedState)
     let idSelectedMun = munListByState.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
@@ -336,7 +339,6 @@ export class MainComponent implements OnInit {
       icon: 'success'
     })
   }
-
 
   getCategories(year:string){
   this.dbService.getCategoriesBy(year)
@@ -608,5 +610,51 @@ export class MainComponent implements OnInit {
   }
 
   selectedPeriod(season: string){
+  }
+
+  selectACategory(){
+    if(this.selectedCategory != environment.placeholderCategory){
+
+      console.log()
+      console.log("selectedCategory: " +this.selectedCategory);
+      console.log("selectedCategory: "+this.selectedCategory)
+      console.log("selectedYear: "+ this.selectedYear.toString())
+      console.log("selectedFirstClassId: "+this.selectedFirstClassId)
+      console.log("selectedSecondClassId: "+this.selectedSecondClassId)
+      console.log("selectedThirdClassId: "+this.selectedThirdClassId)
+      console.log("selectedMetropoly: "+ this.selectedMetropoly)
+      console.log("selectedState: " +this.selectedState)
+      console.log("selectedSecondClassId: "+this.selectedAge)
+      console.log("selectedGender: "+this.selectedGender)
+
+
+      this.dbService.getCalcVariablesBy(
+        this.selectedCategory,
+        this.selectedYear?.toString() || '',
+        this.selectedFirstClassId || '',
+        this.selectedSecondClassId || '',
+        this.selectedThirdClassId || '',
+        this.selectedMetropoly || '',
+        this.selectedState || '',
+        this.selectedAge || '',
+        this.selectedGender || ''
+      )
+      .subscribe({
+        next: (response) => {
+          console.log(response)
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+        }
+      });
+    } else {
+      Swal.fire({
+        timer: 1100,
+        title: 'Por favor seleccione un modelo antes',
+        icon: 'error'
+      })
+      return;
+
+    }
   }
 }

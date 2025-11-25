@@ -26,6 +26,7 @@ export class MapComponent implements OnInit {
   @Input() selectedMetropoly: string = "";
   @Input() stateNames!: { [key: number]: string };
   @Input() municipalityNames!: { [key: string]: string };
+  @Input() totalCases: number = 0;
   constructor(private mapService: MapService, private diseaseDB: DiseaseDbService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
@@ -164,15 +165,23 @@ export class MapComponent implements OnInit {
                <tbody>
                  <tr>
                    <th>${placeholder}</th>
-                   <td>${name}</td>
+                   <th>${name}</th>
                  </tr>
                  <tr>
                    <th>No. Casos</th>
                    <td>${cases}</td>
                  </tr>
                  <tr>
+                   <th>No. Casos en el ${this.selectedRegion}</th>
+                   <td>${this.totalCases}</td>
+                 </tr>
+                 <tr>
                    <th>Población</th>
                    <td>${pop?.toLocaleString('en-US')}</td>
+                 </tr>
+                 <tr>
+                   <th>Población en el ${this.selectedRegion}</th>
+                   <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
                    <th>Tasa</th>
@@ -181,10 +190,6 @@ export class MapComponent implements OnInit {
                  <tr>
                    <th>Riesgo</th>
                    <td>${risk.toFixed(4)}</td>
-                 </tr>
-                 <tr>
-                   <th>Población nivel ${this.selectedRegion}</th>
-                   <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
                  </tr>
                </tbody>
              </table>`
@@ -229,15 +234,24 @@ export class MapComponent implements OnInit {
                <tbody>
                  <tr>
                    <th>${placeholder}</th>
-                   <td>${name}</td>
+                   <th>${name}</th>
                  </tr>
                  <tr>
                    <th>No. Casos</th>
                    <td>${cases}</td>
                  </tr>
                  <tr>
+                   <th>No. Casos en el ${this.selectedRegion}</th>
+                   <td>${this.totalCases}</td>
+                 </tr>
+
+                 <tr>
                    <th>Población</th>
                    <td>${pop?.toLocaleString('en-US')}</td>
+                 </tr>
+                 <tr>
+                   <th>Población en el ${this.selectedRegion}</th>
+                   <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
                    <th>Tasa</th>
@@ -246,10 +260,6 @@ export class MapComponent implements OnInit {
                  <tr>
                    <th>Riesgo</th>
                    <td>${risk.toFixed(4)}</td>
-                 </tr>
-                 <tr>
-                   <th>Población nivel ${this.selectedRegion}</th>
-                   <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
                  </tr>
                </tbody>
              </table>`

@@ -112,7 +112,8 @@
             [selectedYear]="selectedYear"
             [selectedMetropoly]="selectedMetropoly"
             [stateNames]="stateNames"
-            [municipalityNames]="municipalityNames">
+            [municipalityNames]="municipalityNames"
+            [totalCases]="totalCases">
           </app-map>
         </div>
       </div>
@@ -133,6 +134,9 @@
               <mat-option [value]="category">{{category}}</mat-option>
             </ng-container>
           </mat-select>
+        </div>
+        <div class="col-lg-1 d-flex justify-content-center">
+          <button class="updateButton" (click)="selectACategory()">Seleccionar</button>
         </div>
       </div>
     </div><br>
