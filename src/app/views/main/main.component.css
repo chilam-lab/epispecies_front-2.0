@@ -514,3 +514,51 @@ mat-option{
             color: #f39c12;
             font-size: 1.3rem;
         }
+
+
+        :root {
+      --primary-red: #c41d38;
+      --primary-blue: #003087;
+      --success-green: #2e7d32;
+      --gray-light: #f8f9fa;
+      --gray-medium: #e9ecef;
+      --text-dark: #212529;
+    }
+
+.card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .card-header {
+      background: linear-gradient(135deg,#3a50a2, #6072b4);
+      color: white;
+      border-bottom: none;
+      padding: 1rem 1.5rem;
+    }
+
+
+
+    .gender-box {
+      display: flex;
+      justify-content: space-around;
+      padding: 1.5rem;
+      background: var(#f8f9fa);
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .temperature-badge {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.75);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      z-index: 1000;
+    }
