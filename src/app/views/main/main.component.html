@@ -121,79 +121,105 @@
   </div>
   <br>
   <div class="container-fluid">
+    <!-- <div class="row"> -->
+    <!--   <div class="col-md-3 justify-content-center"> -->
+    <!--     <h2>Información detallada</h2> -->
+    <!--   </div> -->
+    <!-- </div><br> -->
+    <!-- <div class="row"> -->
+    <!--   <div class="col-md-4 justify-content-center"> -->
+    <!--     <div class="info-item"> -->
+    <!--       <span *ngIf="selectedFirstClassId != env.placeholderFirstClass" class="material-symbols-outlined icon-heart">ecg_heart</span> -->
+    <!--       <span *ngIf="selectedFirstClassId != env.placeholderFirstClass" class="info-label fw-medium">{{env.selectedFirstClass}}: </span> -->
+    <!--       <span class="info-value">{{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}</span> -->
+    <!--     </div> -->
+    <!--   </div> -->
+    <!--   <div class="col-md-4 justify-content-center"> -->
+    <!--     <div class="info-item"> -->
+    <!--       <span *ngIf="selectedSecondClassId != env.placeholderSecondClass" class="material-symbols-outlined">ad_group</span> -->
+    <!--       <span *ngIf="selectedSecondClassId != env.placeholderSecondClass" class="info-label">{{env.selectedSecondClass}}: </span> -->
+    <!--       <span class="info-value">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</span> -->
+    <!--     </div> -->
+    <!--   </div> -->
+    <!--   <div class="col-md-4 justify-content-center"> -->
+    <!--     <div class="info-item"> -->
+    <!--       <span *ngIf="selectedThirdClassId != env.placeholderThirdClass" class="material-symbols-outlined">stacks</span> -->
+    <!--       <span *ngIf="selectedThirdClassId != env.placeholderThirdClass" class="info-label">{{env.selectedThirdClass}}: </span> -->
+    <!--       <span class="info-value">{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</span> -->
+    <!--     </div> -->
+    <!--   </div> -->
+    <!-- </div> -->
 
-<div class="row">
-      <div class="col-md-3 justify-content-center">
-        <h2>Seleccione una covariable</h2>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-select [(ngModel)]="selectedCategory" class="bootstrap-style-mat-select">
-            <mat-option [value]="env.placeholderCategory" selected>{{env.placeholderCategory}}</mat-option>
-            <ng-container *ngFor="let category of categoryList">
-              <mat-option [value]="category">{{category}}</mat-option>
-            </ng-container>
-          </mat-select>
-        </div>
-        <div class="col-lg-1 d-flex justify-content-center">
-          <button class="updateButton" (click)="selectACategory()">Seleccionar</button>
-        </div>
-      </div>
-    </div><br>
 
-    <div class="row">
-      <div class="col-md-3 justify-content-center">
-        <h2>Información detallada</h2>
+  <h3 class="mb-4">Información detallada</h3>
+
+
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="d-flex align-items-center gap-3" *ngIf="selectedSecondClassId != env.placeholderSecondClass">
+          <span class="material-symbols-outlined text-danger fs-2">ecg_heart</span>
+          <div>
+            <div class="text-muted small text-uppercase fw-medium">Enfermedad</div>
+            <div class="fw-bold text-danger">{{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}</div>
+          </div>
+        </div>
       </div>
-    </div><br>
-    <div class="row">
-      <div class="col-md-3 justify-content-center">
-         <h6 style="font-size: 0.85rem;">{{env.selectedFirstClass}}</h6>
-         <h6 class="h5-header">
-           {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}
-         </h6>
+      <div class="col-md-4">
+        <div class="d-flex align-items-center gap-3" *ngIf="selectedSecondClassId != env.placeholderSecondClass">
+          <span class="material-symbols-outlined text-primary fs-2">ad_group</span>
+          <div>
+            <div class="text-muted small text-uppercase fw-medium">Grupo</div>
+            <div class="fw-bold text-primary">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-3 justify-content-center">
-         <h6 *ngIf="selectedSecondClassId != env.placeholderSecondClass" style="font-size: 0.85rem;">{{env.selectedSecondClass}}</h6>
-         <h6 class="h5-header">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</h6>
-       </div>
-       <div class="col-md-3 justify-content-center">
-          <h6 *ngIf="selectedThirdClassId != env.placeholderThirdClass" style="font-size: 0.85rem;">{{env.selectedThirdClass}}</h6>
-          <h6 class="h5-header">{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</h6>
-       </div>
+      <div class="col-md-4">
+        <div class="d-flex align-items-center gap-3" *ngIf="selectedThirdClassId != env.placeholderThirdClass">
+          <span class="material-symbols-outlined text-success fs-2">stacks</span>
+          <div>
+            <div class="text-muted small text-uppercase fw-medium">Subgrupo</div>
+            <div class="fw-bold text-success">{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent px-0">
+      <li class="breadcrumb-item" *ngIf="selectedFirstClassId != env.placeholderFirstClass">
+        <div class="d-flex align-items-center gap-2">
+          <span class="material-symbols-outlined text-danger breadcrumb-icon">ecg_heart</span>
+          <span>{{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}</span>
+        </div>
+      </li>
+      <li class="breadcrumb-item" *ngIf="selectedSecondClassId != env.placeholderSecondClass">
+        <div class="d-flex align-items-center gap-2">
+          <span class="material-symbols-outlined text-primary breadcrumb-icon">ad_group</span>
+          <span>{{getDescriptionByIdInAList(selectedSecondClassId, secondClassList)}}</span>
+        </div>
+      </li>
+      <li class="breadcrumb-item" aria-current="page" *ngIf="selectedThirdClassId != env.placeholderThirdClass">
+        <div class="d-flex align-items-center gap-2">
+          <span class="material-symbols-outlined text-success breadcrumb-icon">stacks</span>
+          <span>{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</span>
+        </div>
+      </li>
+    </ol>
+</nav>
+
+
   </div><br><br>
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <table class="table table-hover table-sm">
-          <thead class="table-header">
-            <tr>
-              <th scope="col">Categoría</th>
-              <th scope="col">ncx</th>
-              <th scope="col">nx</th>
-              <th scope="col">n</th>
-              <th scope="col">nc</th>
-            </tr>
-          </thead>
-          <tbody class="table-body">
-            <tr *ngFor="let variable of calculatedVariables">
-              <td>{{variable["category"]}}</td>
-              <td>{{variable["ncx"]}}</td>
-              <td>{{variable["nx"]}}</td>
-              <td>{{variable["n"]}}</td>
-              <td>{{variable["nc"]}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
     <div class="row">
     <!-- Top 10 Estados -->
       <div class="col-lg-4 mb-4">
         <div class="card shadow-sm">
-          <div class="card-header">
-            <i class="bi bi-trophy"></i> Top 10 Estados con más casos
+          <div class="card-header d-flex align-items-center">
+            <mat-icon class="me-2"> show_chart</mat-icon>Top 10 Estados con más casos
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
@@ -228,8 +254,8 @@
       </div>
       <div class="col-lg-4 mb-4">
         <div class="card shadow-sm">
-          <div class="card-header">
-            <i class="bi bi-graph-up"></i> Total de casos por grupo de edad
+          <div class="card-header d-flex align-items-center">
+            <mat-icon class="me-2">perm_contact_calendar</mat-icon>Total de casos por grupo de edad
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
@@ -251,24 +277,67 @@
           </div>
         </div>
       </div>
+      <div class="col-lg-4 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-header d-flex align-items-center">
+          <mat-icon class="me-2">people</mat-icon>Distribución por género
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-md-4" *ngFor="let total of showGenderTotals">
+              <div class="p-3">
+                <h4 class="text-info fw-bold"> {{total[1]}}</h4>
+                <p class="mb-0"><i class="bi bi-gender-male"></i> {{total[0]}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
+  </div>
+  <div class="container">
 
     <div class="row">
-      <div class="col-md-3 offset-md-1">
-         <div class="table-container">
-           <br>
-           <br>
-           <h6>{{env.genderTotals}}</h6>
-           <table class="table table-hover">
-             <tbody class="table-body">
-               <tr *ngFor="let total of showGenderTotals">
-                 <td>{{total[0]}}</td>
-                 <td>{{total[1]}}</td>
-               </tr>
-             </tbody>
-           </table>
-
-         </div>
+      <div class="col-md-3 justify-content-center">
+        <h2>Seleccione una covariable</h2>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-select [(ngModel)]="selectedCategory" class="bootstrap-style-mat-select">
+            <mat-option [value]="env.placeholderCategory" selected>{{env.placeholderCategory}}</mat-option>
+            <ng-container *ngFor="let category of categoryList">
+              <mat-option [value]="category">{{category}}</mat-option>
+            </ng-container>
+          </mat-select>
+        </div>
+        <div class="col-lg-1 d-flex justify-content-center">
+          <button class="updateButton" (click)="selectACategory()">Seleccionar</button>
+        </div>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-hover table-sm">
+          <thead class="table-header">
+            <tr>
+              <th scope="col">Categoría</th>
+              <th scope="col">ncx</th>
+              <th scope="col">nx</th>
+              <th scope="col">n</th>
+              <th scope="col">nc</th>
+            </tr>
+          </thead>
+          <tbody class="table-body">
+            <tr *ngFor="let variable of calculatedVariables">
+              <td>{{variable["category"]}}</td>
+              <td>{{variable["ncx"]}}</td>
+              <td>{{variable["nx"]}}</td>
+              <td>{{variable["n"]}}</td>
+              <td>{{variable["nc"]}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

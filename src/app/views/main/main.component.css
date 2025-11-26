@@ -489,5 +489,28 @@ mat-option{
   height: 24px;
 }
 
+.icon-heart {
+  color: #e74c3c;
+  font-size: 1.3rem;
+}
 
+        .info-label {
+            font-weight: 600;
+            color: #7f8c8d;
+            min-width: 120px;
+        }
+        .info-value {
+            font-weight: 500;
+            color: #2980b9;
+            font-size: 1.1rem;
+        }
 
+        .icon-group {
+            color: #9b59b6;
+            font-size: 1.3rem;
+        }
+
+        .icon-subgroup {
+            color: #f39c12;
+            font-size: 1.3rem;
+        }
