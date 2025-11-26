@@ -515,16 +515,6 @@ mat-option{
             font-size: 1.3rem;
         }
 
-
-        :root {
-      --primary-red: #c41d38;
-      --primary-blue: #003087;
-      --success-green: #2e7d32;
-      --gray-light: #f8f9fa;
-      --gray-medium: #e9ecef;
-      --text-dark: #212529;
-    }
-
 .card {
       border: none;
       border-radius: 12px;
@@ -533,32 +523,24 @@ mat-option{
     }
 
     .card-header {
-      background: linear-gradient(135deg,#3a50a2, #6072b4);
+      background: #6072b4;
       color: white;
       border-bottom: none;
-      padding: 1rem 1.5rem;
+      padding: 0.5rem 1rem;
     }
 
 
 
-    .gender-box {
-      display: flex;
-      justify-content: space-around;
-      padding: 1.5rem;
-      background: var(#f8f9fa);
-      border-radius: 10px;
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
+td {
+  color:#575757;
+}
+th{
+  color: #494949;
+}
+span{
+  color:#767676;
+}
 
-    .temperature-badge {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0,0,0,0.75);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      z-index: 1000;
-    }
+.detail_info{
+  background: #f3f3f3;
+}
