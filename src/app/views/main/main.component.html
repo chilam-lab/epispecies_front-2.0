@@ -121,98 +121,32 @@
   </div>
   <br>
   <div class="container-fluid">
-    <!-- <div class="row"> -->
-    <!--   <div class="col-md-3 justify-content-center"> -->
-    <!--     <h2>Información detallada</h2> -->
-    <!--   </div> -->
-    <!-- </div><br> -->
-    <!-- <div class="row"> -->
-    <!--   <div class="col-md-4 justify-content-center"> -->
-    <!--     <div class="info-item"> -->
-    <!--       <span *ngIf="selectedFirstClassId != env.placeholderFirstClass" class="material-symbols-outlined icon-heart">ecg_heart</span> -->
-    <!--       <span *ngIf="selectedFirstClassId != env.placeholderFirstClass" class="info-label fw-medium">{{env.selectedFirstClass}}: </span> -->
-    <!--       <span class="info-value">{{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}</span> -->
-    <!--     </div> -->
-    <!--   </div> -->
-    <!--   <div class="col-md-4 justify-content-center"> -->
-    <!--     <div class="info-item"> -->
-    <!--       <span *ngIf="selectedSecondClassId != env.placeholderSecondClass" class="material-symbols-outlined">ad_group</span> -->
-    <!--       <span *ngIf="selectedSecondClassId != env.placeholderSecondClass" class="info-label">{{env.selectedSecondClass}}: </span> -->
-    <!--       <span class="info-value">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</span> -->
-    <!--     </div> -->
-    <!--   </div> -->
-    <!--   <div class="col-md-4 justify-content-center"> -->
-    <!--     <div class="info-item"> -->
-    <!--       <span *ngIf="selectedThirdClassId != env.placeholderThirdClass" class="material-symbols-outlined">stacks</span> -->
-    <!--       <span *ngIf="selectedThirdClassId != env.placeholderThirdClass" class="info-label">{{env.selectedThirdClass}}: </span> -->
-    <!--       <span class="info-value">{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</span> -->
-    <!--     </div> -->
-    <!--   </div> -->
-    <!-- </div> -->
-
-
   <h3 class="mb-4">Información detallada</h3>
 
-
-<div class="card border-0 shadow-sm mb-4">
-  <div class="card-body">
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="d-flex align-items-center gap-3" *ngIf="selectedSecondClassId != env.placeholderSecondClass">
-          <span class="material-symbols-outlined text-danger fs-2">ecg_heart</span>
-          <div>
-            <div class="text-muted small text-uppercase fw-medium">Enfermedad</div>
-            <div class="fw-bold text-danger">{{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}</div>
+  <nav aria-label="breadcrumb">
+      <ol class="breadcrumb bg-transparent px-0">
+        <li class="breadcrumb-item" *ngIf="selectedFirstClassId != env.placeholderFirstClass">
+          <div class="d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined text-danger breadcrumb-icon">ecg_heart</span>
+            <span>{{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}</span>
           </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="d-flex align-items-center gap-3" *ngIf="selectedSecondClassId != env.placeholderSecondClass">
-          <span class="material-symbols-outlined text-primary fs-2">ad_group</span>
-          <div>
-            <div class="text-muted small text-uppercase fw-medium">Grupo</div>
-            <div class="fw-bold text-primary">{{getDescriptionByIdInAList(selectedSecondClassId,secondClassList)}}</div>
+        </li>
+        <li class="breadcrumb-item" *ngIf="selectedSecondClassId != env.placeholderSecondClass">
+          <div class="d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined text-primary breadcrumb-icon">ad_group</span>
+            <span>{{getDescriptionByIdInAList(selectedSecondClassId, secondClassList)}}</span>
           </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="d-flex align-items-center gap-3" *ngIf="selectedThirdClassId != env.placeholderThirdClass">
-          <span class="material-symbols-outlined text-success fs-2">stacks</span>
-          <div>
-            <div class="text-muted small text-uppercase fw-medium">Subgrupo</div>
-            <div class="fw-bold text-success">{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</div>
+        </li>
+        <li class="breadcrumb-item" aria-current="page" *ngIf="selectedThirdClassId != env.placeholderThirdClass">
+          <div class="d-flex align-items-center gap-2">
+            <span class="material-symbols-outlined text-success breadcrumb-icon">stacks</span>
+            <span>{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</span>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        </li>
+      </ol>
+  </nav>
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb bg-transparent px-0">
-      <li class="breadcrumb-item" *ngIf="selectedFirstClassId != env.placeholderFirstClass">
-        <div class="d-flex align-items-center gap-2">
-          <span class="material-symbols-outlined text-danger breadcrumb-icon">ecg_heart</span>
-          <span>{{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}</span>
-        </div>
-      </li>
-      <li class="breadcrumb-item" *ngIf="selectedSecondClassId != env.placeholderSecondClass">
-        <div class="d-flex align-items-center gap-2">
-          <span class="material-symbols-outlined text-primary breadcrumb-icon">ad_group</span>
-          <span>{{getDescriptionByIdInAList(selectedSecondClassId, secondClassList)}}</span>
-        </div>
-      </li>
-      <li class="breadcrumb-item" aria-current="page" *ngIf="selectedThirdClassId != env.placeholderThirdClass">
-        <div class="d-flex align-items-center gap-2">
-          <span class="material-symbols-outlined text-success breadcrumb-icon">stacks</span>
-          <span>{{getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)}}</span>
-        </div>
-      </li>
-    </ol>
-</nav>
-
-
-  </div><br><br>
+  </div><br>
   <div class="container-fluid">
     <div class="row">
     <!-- Top 10 Estados -->
