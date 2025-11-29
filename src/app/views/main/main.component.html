@@ -80,7 +80,6 @@
             <mat-select class="mat-select"
                         [(ngModel)]="selectedYear"
                         panelClass="custom-select-panel">
-              <mat-option [value]="selectedYear" selected>{{selectedYear}}</mat-option>
               <ng-container *ngFor="let year of yearsList">
                 <mat-option [value]="year">{{year}}</mat-option>
               </ng-container>
