@@ -253,20 +253,50 @@
         <table class="table table-hover table-sm">
           <thead class="table-header">
             <tr>
-              <th (click)="sortTableBy('category')">Categoría
-                <span class="sort-icon">↕</span>
+              <th (click)="sortTableBy('category')">
+                Categoría
+                <span class="sort-icon">
+                  <ng-container *ngIf="currentSortColumn === 'category'">
+                    {{ currentSortOrder === 'asc' ? '↑' : '↓' }}
+                  </ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'category'">↕</ng-container>
+                </span>
               </th>
-              <th  (click)="sortTableBy('ncx')">ncx
-                <span class="sort-icon">↕</span>
+              <th (click)="sortTableBy('ncx')">
+                ncx
+                <span class="sort-icon">
+                  <ng-container *ngIf="currentSortColumn === 'ncx'">
+                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                  </ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'ncx'">↕</ng-container>
+                </span>
               </th>
-              <th (click)="sortTableBy('nx')">nx
-                <span class="sort-icon">↕</span>
+              <th (click)="sortTableBy('nx')">
+                nx
+                <span class="sort-icon">
+                  <ng-container *ngIf="currentSortColumn === 'nx'">
+                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                  </ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'nx'">↕</ng-container>
+                </span>
               </th>
-              <th  (click)="sortTableBy('n')">n
-                <span class="sort-icon">↕</span>
+              <th (click)="sortTableBy('n')">
+                n
+                <span class="sort-icon">
+                  <ng-container *ngIf="currentSortColumn === 'n'">
+                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                  </ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'n'">↕</ng-container>
+                </span>
               </th>
-              <th  (click)="sortTableBy('nc')">nc
-                <span class="sort-icon">↕</span>
+              <th (click)="sortTableBy('nc')">
+                nc
+                <span class="sort-icon">
+                  <ng-container *ngIf="currentSortColumn === 'nc'">
+                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                  </ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'nc'">↕</ng-container>
+                </span>
               </th>
             </tr>
           </thead>
