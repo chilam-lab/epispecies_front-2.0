@@ -253,11 +253,21 @@
         <table class="table table-hover table-sm">
           <thead class="table-header">
             <tr>
-              <th scope="col">Categoría</th>
-              <th scope="col">ncx</th>
-              <th scope="col">nx</th>
-              <th scope="col">n</th>
-              <th scope="col">nc</th>
+              <th (click)="sortTableBy('category')">Categoría
+                <span class="sort-icon">↕</span>
+              </th>
+              <th  (click)="sortTableBy('ncx')">ncx
+                <span class="sort-icon">↕</span>
+              </th>
+              <th (click)="sortTableBy('nx')">nx
+                <span class="sort-icon">↕</span>
+              </th>
+              <th  (click)="sortTableBy('n')">n
+                <span class="sort-icon">↕</span>
+              </th>
+              <th  (click)="sortTableBy('nc')">nc
+                <span class="sort-icon">↕</span>
+              </th>
             </tr>
           </thead>
           <tbody class="table-body">

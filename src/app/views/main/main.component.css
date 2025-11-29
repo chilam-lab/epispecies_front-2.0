@@ -544,3 +544,9 @@ span{
 .detail_info{
   background: #f3f3f3;
 }
+.table thead th:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}
+
+

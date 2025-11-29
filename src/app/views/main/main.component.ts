@@ -613,6 +613,29 @@ export class MainComponent implements OnInit {
   selectedPeriod(season: string){
   }
 
+  // sortTableBy(column:  string){
+  //   console.log(this.calculatedVariables)
+  //   const sortedData = [...data].sort((a, b) => b.ncx - a.ncx);
+  // }
+
+  sortTableBy(attribute:string, order = 'desc') {
+    this.calculatedVariables.sort((a, b) => {
+      const valueA = a[attribute];
+      const valueB = b[attribute];
+
+      // Check if values are numbers
+      if (typeof valueA === 'number' && typeof valueB === 'number') {
+        // Numeric sorting
+        return order === 'asc' ? valueA - valueB : valueB - valueA;
+      } else {
+        // String sorting
+        const comparison = String(valueA).localeCompare(String(valueB));
+        return order === 'desc' ? comparison : -comparison;
+      }
+    });
+  }
+
+
   selectACategory(){
     if(this.selectedCategory != environment.placeholderCategory){
 
