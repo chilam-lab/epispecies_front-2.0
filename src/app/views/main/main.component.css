@@ -549,4 +549,23 @@ span{
   cursor: pointer;
 }
 
+.select-with-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+}
 
+.select-with-button .mat-select {
+  flex: 1;
+  min-width: 0;
+}
+
+.select-with-button button {
+  flex-shrink: 0;
+}
+
+.bootstrap-style-mat-select,
+.select-with-button .mat-select {
+  width: 100%;
+}
