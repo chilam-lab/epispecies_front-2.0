@@ -342,9 +342,6 @@ export class MapComponent implements OnInit {
 
     try {
       let dataToDisplayByMun = changes['dataByMunToDisplayInMap']['currentValue'];
-      console.log("😵‍💫😵‍💫😵‍💫")
-      console.log(dataToDisplayByMun)
-      console.log("😵‍💫😵‍💫😵‍💫")
       if (dataToDisplayByMun.length != 0) {
         this.rawDataTodisplayByMun = dataToDisplayByMun;
 
@@ -551,7 +548,6 @@ export class MapComponent implements OnInit {
       .filter(item => item[0] === Number(this.selectedYear) && municipalityCodes.has(item[1] as string))
       .reduce((sum, item) => sum + (item[2] as number), 0);
     }
-    console.log(total)
     this.currentTotalPopulation = total;
   }
 }

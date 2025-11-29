@@ -103,21 +103,23 @@ export class DiseaseDbService {
       .pipe(catchError(this.handleError));
   }
 
-  getCalcVariablesBy(categoria:string, year: string, cve_enfermedad:string, cve_grupo:string,
+  getCalcVariablesBy(category:string, year: string, cve_enfermedad:string, cve_grupo:string,
                      cve_causa_def:string, cve_metropoli: string, cve_estado: string,
-                     edad: string, genero:string): Observable<any> {
+                     age: string, gender:string): Observable<any> {
     let fullUrl = this.apiUrl + 'calculate_variables';
     let params = new HttpParams()
-      .set('categoria', categoria)
+      .set('category', category)
       .set('year', year)
       .set('cve_enfermedad', cve_enfermedad);
 
-    // if (cve_grupo) params = params.set('cve_grupo', cve_grupo);
-    // if (cve_causa_def) params = params.set('cve_causa_def', cve_causa_def);
+    if (cve_grupo != environment.placeholderSecondClass) params = params.set('cve_grupo', cve_grupo);
+    if (cve_causa_def != environment.placeholderThirdClass) params = params.set('cve_causa_def', cve_causa_def);
     // if (cve_metropoli) params = params.set('cve_metropoli', cve_metropoli);
     // if (cve_estado) params = params.set('cve_estado', cve_estado);
-    // if (edad) params = params.set('edad', edad);
-    // if (genero) params = params.set('genero', genero);
+    if (age != environment.placeholderAge) params = params.set('age', age);
+    if (gender != environment.placeholderGender) params = params.set('gender', gender);
+    console.log(params)
+
 
     return this.http.get<any>(fullUrl, { params })
       .pipe(catchError(this.handleError));

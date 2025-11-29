@@ -189,8 +189,6 @@ export class MainComponent implements OnInit {
       this.dbService.getAllFrom(environment.municipalityTable)
       .subscribe({
         next: (response) => {
-          console.log("😱🎏")
-          console.log(response)
           this.metropolyMunList = response;
           const municipalityMap = new Map<string, string>();
 
@@ -286,8 +284,8 @@ export class MainComponent implements OnInit {
       if (this.selectedYear != this.hasChanges.selectedYear ||
           this.selectedFirstClassId != this.hasChanges.selectedFirstClassId) {
         await this.getAllTheDataByYearAndFirstClassId();
-        this.filteredAllDataByClasses = this.allDataByFirstClass;
       }
+      this.filteredAllDataByClasses = this.allDataByFirstClass;
       let filterDataBySubClasses;
       if (this.selectedSecondClassId != environment.placeholderSecondClass) {
         filterDataBySubClasses = this.filterBy(1, this.selectedSecondClassId, this.allDataByFirstClass);
@@ -307,8 +305,6 @@ export class MainComponent implements OnInit {
       let casesNumber = this.filteredAllDataByClasses.filter((record) => record[4] == region[2]).length
       municipalityDataList.push([region[0], region[2], casesNumber])
     })
-
-    //check
 
     this.totalCases = this.filteredAllDataByClasses.length;
 
@@ -467,9 +463,6 @@ export class MainComponent implements OnInit {
 
   onStateModalInputChange(e: Event) {
     this.selectedMuncipality = "";
-    console.log("🌸")
-    console.log(this.selectedState)
-    console.log("🌸")
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
     if (isAState) {
       this.updateNotificationSuccess("Datos actualizados correctamente")
@@ -521,11 +514,7 @@ export class MainComponent implements OnInit {
         title: 'Municipio seleccionado correctamente.',
         icon: 'success'
       })
-      console.log("🤣")
-      console.log(this.selectedMuncipality)
       this.modalMunRef.nativeElement.click();
-      console.log(this.selectedMuncipality)
-      console.log("🤣")
     } else {
       this.selectedState = "";
       this.selectedMuncipality = "";
@@ -538,20 +527,14 @@ export class MainComponent implements OnInit {
   }
 
   verifyDataInMetroModal() {
-      console.log("🤣-")
-      console.log(this.selectedMetropoly)
-      this.selectedState = "";
-      this.selectedMuncipality = "";
-      this.metroCloseRef.nativeElement.click();
-      console.log("🤣-")
+    this.selectedState = "";
+    this.selectedMuncipality = "";
+    this.metroCloseRef.nativeElement.click();
   }
 
   showingModalsFromSelect() {
     this.selectedState = "";
     this.selectedMuncipality = "";
-    console.log("🪭")
-    console.log(this.selectedRegion)
-    console.log("🪭")
     if (this.selectedRegion == environment.placeholderState) this.showModalState.nativeElement.click();
     if (this.selectedRegion == environment.placeholderMunicipal) this.showModalMun.nativeElement.click();
     if (this.selectedRegion != this.env.placeholderMunicipal) {
@@ -571,12 +554,9 @@ export class MainComponent implements OnInit {
   }
 
   updateMetropoly(metropoly: any){
-    console.log("🎎")
     if(metropoly.target?.value){
-      console.log(metropoly.target.value)
       this.selectedMetropoly = metropoly.target.value;
     }
-    console.log("🎎")
   }
 
   totals(){
@@ -640,7 +620,6 @@ export class MainComponent implements OnInit {
     if(this.selectedCategory != environment.placeholderCategory){
 
       console.log()
-      console.log("selectedCategory: " +this.selectedCategory);
       console.log("selectedCategory: "+this.selectedCategory)
       console.log("selectedYear: "+ this.selectedYear.toString())
       console.log("selectedFirstClassId: "+this.selectedFirstClassId)
@@ -667,6 +646,7 @@ export class MainComponent implements OnInit {
         next: (response) => {
           console.log(response)
           this.calculatedVariables = response;
+          this.sortTableBy('category')
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -684,39 +664,36 @@ export class MainComponent implements OnInit {
   }
 
   downloadCSV() {
-  const headers = ['Categoría', 'ncx', 'nx', 'n', 'nc'];
-  const keys = ['category', 'ncx', 'nx', 'n', 'nc'];
+    const headers = ['Categoría', 'ncx', 'nx', 'n', 'nc'];
+    const keys = ['category', 'ncx', 'nx', 'n', 'nc'];
 
-  // Helper function to escape CSV values
-  const escapeCSV = (value: any): string => {
-    if (value === null || value === undefined) return '';
-    const stringValue = String(value);
-    // If value contains comma, quote, or newline, wrap in quotes and escape quotes
-    if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
-      return `"${stringValue.replace(/"/g, '""')}"`;
-    }
-    return stringValue;
-  };
+    const escapeCSV = (value: any): string => {
+      if (value === null || value === undefined) return '';
+      const stringValue = String(value);
+      // If value contains comma, quote, or newline, wrap in quotes and escape quotes
+      if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+        return `"${stringValue.replace(/"/g, '""')}"`;
+      }
+      return stringValue;
+    };
 
-  // Create CSV rows
-  const csvRows = [
-    headers.join(','), // Header row
-    ...this.calculatedVariables.map(variable =>
-      keys.map(key => escapeCSV(variable[key])).join(',')
-    )
-  ];
+    const csvRows = [
+      headers.join(','), // Header row
+      ...this.calculatedVariables.map(variable =>
+        keys.map(key => escapeCSV(variable[key])).join(',')
+      )
+    ];
 
-  const csvContent = csvRows.join('\n');
+    const csvContent = csvRows.join('\n');
 
-  // Create and trigger download
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement('a');
-  const url = URL.createObjectURL(blob);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
 
-  link.href = url;
-  link.download = `calculated_variables_${new Date().toISOString().split('T')[0]}.csv`;
-  link.click();
+    link.href = url;
+    link.download = `calculated_variables_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
 
-  URL.revokeObjectURL(url);
-}
+    URL.revokeObjectURL(url);
+  }
 }
