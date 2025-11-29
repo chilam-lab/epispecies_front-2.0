@@ -188,7 +188,7 @@ export class MapComponent implements OnInit {
                    <td>${rate.toFixed(4)}</td>
                  </tr>
                  <tr>
-                   <th>Riesgo</th>
+                   <th>Razón de tasas</th>
                    <td>${risk.toFixed(4)}</td>
                  </tr>
                </tbody>
@@ -226,7 +226,7 @@ export class MapComponent implements OnInit {
           const cases = this.numCasesByIdRegion(feature.properties.clave);
           const pop = this.getPopulationById(feature.properties.clave);
           const rate = pop ? (cases / pop) * 100000 : 0;
-          const risk = pop ? (cases / this.currentTotalPopulation) * 100000 : 0;
+          const risk = pop ? (rate / (Number(this.totalCases) / Number(this.currentTotalPopulation) * 100000)) : 0;
           const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado"
           const name = isStateOrMunicipality == 'Municipal' ? this.getMunicipalityName(Number(feature.properties.clave)): this.getStateName(Number(feature.properties.clave))
           layer.bindPopup(
@@ -258,7 +258,7 @@ export class MapComponent implements OnInit {
                    <td>${rate.toFixed(4)}</td>
                  </tr>
                  <tr>
-                   <th>Riesgo</th>
+                   <th>Razón de tasas</th>
                    <td>${risk.toFixed(4)}</td>
                  </tr>
                </tbody>
