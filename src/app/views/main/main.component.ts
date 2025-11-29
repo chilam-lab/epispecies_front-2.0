@@ -616,25 +616,24 @@ export class MainComponent implements OnInit {
   }
 
   sortTableBy(attribute: string) {
-  if (this.currentSortColumn === attribute) {
-    this.currentSortOrder = this.currentSortOrder === 'asc' ? 'desc' : 'asc';
-  } else {
-    this.currentSortColumn = attribute;
-    this.currentSortOrder = 'asc';
-  }
-
-  this.calculatedVariables.sort((a, b) => {
-    const valueA = a[attribute];
-    const valueB = b[attribute];
-
-    if (typeof valueA === 'number' && typeof valueB === 'number') {
-      return this.currentSortOrder === 'desc' ? valueA - valueB : valueB - valueA;
+    if (this.currentSortColumn === attribute) {
+      this.currentSortOrder = this.currentSortOrder === 'asc' ? 'desc' : 'asc';
     } else {
-      const comparison = String(valueA).localeCompare(String(valueB));
-      return this.currentSortOrder === 'asc' ? comparison : -comparison;
+      this.currentSortColumn = attribute;
+      this.currentSortOrder = 'asc';
     }
-  });
-}
+
+    this.calculatedVariables.sort((a, b) => {
+      const valueA = a[attribute];
+      const valueB = b[attribute];
+      if (typeof valueA === 'number' && typeof valueB === 'number') {
+        return this.currentSortOrder === 'desc' ? valueA - valueB : valueB - valueA;
+      } else {
+        const comparison = String(valueA).localeCompare(String(valueB));
+        return this.currentSortOrder === 'asc' ? comparison : -comparison;
+      }
+    });
+  }
 
 
   selectACategory(){
@@ -683,4 +682,41 @@ export class MainComponent implements OnInit {
 
     }
   }
+
+  downloadCSV() {
+  const headers = ['Categoría', 'ncx', 'nx', 'n', 'nc'];
+  const keys = ['category', 'ncx', 'nx', 'n', 'nc'];
+
+  // Helper function to escape CSV values
+  const escapeCSV = (value: any): string => {
+    if (value === null || value === undefined) return '';
+    const stringValue = String(value);
+    // If value contains comma, quote, or newline, wrap in quotes and escape quotes
+    if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+      return `"${stringValue.replace(/"/g, '""')}"`;
+    }
+    return stringValue;
+  };
+
+  // Create CSV rows
+  const csvRows = [
+    headers.join(','), // Header row
+    ...this.calculatedVariables.map(variable =>
+      keys.map(key => escapeCSV(variable[key])).join(',')
+    )
+  ];
+
+  const csvContent = csvRows.join('\n');
+
+  // Create and trigger download
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+
+  link.href = url;
+  link.download = `calculated_variables_${new Date().toISOString().split('T')[0]}.csv`;
+  link.click();
+
+  URL.revokeObjectURL(url);
+}
 }
