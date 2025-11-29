@@ -157,25 +157,7 @@ body {
     font-size: 24px;
   }
 
-  .icon_circle {
-    position: absolute;
-    width: 90px;
-    height: 76px;
-    background-color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: -45px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-  }
 
-  .icon_circle mat-icon {
-    color: #7c61ff;
-    font-size: 24px;
-  }
 
 .select-row {
   padding: 0 15px;
@@ -254,38 +236,6 @@ app-map {
   font-size: 24px;
 }
 
-.icon_circle_select {
-  position: absolute;
-  width: 80px;
-  height: 66px;
-  background-color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: -45px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-}
-
-.icon_circle mat-icon {
-  color: #7c61ff;
-  font-size: 24px;
-}
-.circle_icon_select {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: #7c61ff;
-  color: white;
-  display: inline-flex;
-  margin-left: 10px;
-}
-
 .nav-link{
   font-size: xx-large;
   cursor: pointer;
@@ -305,7 +255,6 @@ app-map {
 .nav-tabs .nav-link:hover,
 .nav-tabs .nav-link:focus {
     border-bottom: 1px solid #7b61fe;
-    color: #7b61fe;
 }
 .nav-tabs .nav-link.active {
     border-bottom: 2px solid #7b61fe;
@@ -494,42 +443,40 @@ mat-option{
   font-size: 1.3rem;
 }
 
-        .info-label {
-            font-weight: 600;
-            color: #7f8c8d;
-            min-width: 120px;
-        }
-        .info-value {
-            font-weight: 500;
-            color: #2980b9;
-            font-size: 1.1rem;
-        }
+.info-label {
+    font-weight: 600;
+    color: #7f8c8d;
+    min-width: 120px;
+}
+.info-value {
+    font-weight: 500;
+    color: #2980b9;
+    font-size: 1.1rem;
+}
 
-        .icon-group {
-            color: #9b59b6;
-            font-size: 1.3rem;
-        }
+.icon-group {
+    color: #9b59b6;
+    font-size: 1.3rem;
+}
 
-        .icon-subgroup {
-            color: #f39c12;
-            font-size: 1.3rem;
-        }
+.icon-subgroup {
+    color: #f39c12;
+    font-size: 1.3rem;
+}
 
 .card {
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      overflow: hidden;
-    }
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
 
-    .card-header {
-      background: #6072b4;
-      color: white;
-      border-bottom: none;
-      padding: 0.5rem 1rem;
-    }
-
-
+.card-header {
+  background: #6072b4;
+  color: white;
+  border-bottom: none;
+  padding: 0.5rem 1rem;
+}
 
 td {
   color:#575757;
@@ -563,9 +510,19 @@ span{
 
 .select-with-button button {
   flex-shrink: 0;
+  height: 100%; /* Match the select height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.select-with-button button mat-icon {
+  margin: 0; /* Remove any default margins */
+}
+
+/* Ensure mat-select takes full width */
 .bootstrap-style-mat-select,
 .select-with-button .mat-select {
   width: 100%;
 }
+
