@@ -155,7 +155,7 @@ export class MapComponent implements OnInit {
       onEachFeature: (feature, layer) => {
         if (feature.properties) {
           const cases = this.numCasesByIdRegion(feature.properties.clave);
-          const pop = this.getPopulationById(feature.properties.clave);
+          const pop = this.getPopulationById(feature.properties.clave) ? this.getPopulationById(feature.properties.clave) : 0;
           const rate = pop ? (cases / pop) * 100000 : 0;
           const risk = pop ? (cases / this.currentTotalPopulation) * 100000 : 0;
           const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado"
@@ -224,7 +224,7 @@ export class MapComponent implements OnInit {
       onEachFeature: (feature, layer) => {
         if (feature.properties) {
           const cases = this.numCasesByIdRegion(feature.properties.clave);
-          const pop = this.getPopulationById(feature.properties.clave);
+          const pop = this.getPopulationById(feature.properties.clave) ? this.getPopulationById(feature.properties.clave) : 0 ;
           const rate = pop ? (cases / pop) * 100000 : 0;
           const risk = pop ? (rate / (Number(this.totalCases) / Number(this.currentTotalPopulation) * 100000)) : 0;
           const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado"
