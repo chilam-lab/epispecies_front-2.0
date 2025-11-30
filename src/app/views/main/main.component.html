@@ -309,11 +309,11 @@
           </thead>
           <tbody class="table-body">
             <tr *ngFor="let variable of calculatedVariables">
-              <td>{{variable["category"]}}</td>
-              <td>{{variable["ncx"]}}</td>
-              <td>{{variable["nx"]}}</td>
-              <td>{{variable["n"]}}</td>
-              <td>{{variable["nc"]}}</td>
+                  <td>{{variable["category"]}}</td>
+                  <td>{{variable["ncx"] | number:'1.0-0'}}</td>
+                  <td>{{variable["nx"] | number:'1.0-0'}}</td>
+                  <td>{{variable["n"] | number:'1.0-0'}}</td>
+                  <td>{{variable["nc"] | number:'1.0-0'}}</td>
             </tr>
           </tbody>
         </table>

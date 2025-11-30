@@ -312,23 +312,16 @@ export class MainComponent implements OnInit {
     this.totalCases = this.filteredAllDataByClasses.length;
 
     let idSelectedState = Object.keys(this.stateNames).find(key => this.stateNames[+key] === this.selectedState) || 0;
-    console.log(idSelectedState)
     let munListByState = this.statesAndMunList.filter(x=> x[0]==idSelectedState)
-    console.log(munListByState)
     let idSelectedMun = munListByState.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
-    console.log(idSelectedMun)
 
     idSelectedMun = (idSelectedMun.length > 0) ? Number(idSelectedMun) > 10000 ? idSelectedMun : "0" + idSelectedMun : "";
-    console.log(idSelectedMun)
     const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
-    console.log(idState)
 
     this.dataByMunToDisplayInMap = municipalityDataList;
-    console.log(this.dataByMunToDisplayInMap)
     if(this.selectedRegion == environment.placeholderMetropoli){
       this.dataByMunToDisplayInMap = this.filterByMetropoli(municipalityDataList);
     }
-    console.log(this.dataByMunToDisplayInMap)
     this.top10()
     this.totals()
     let stateMunList:any[];
@@ -363,10 +356,7 @@ export class MainComponent implements OnInit {
 
   applyFilters(dataList: any[]) {
     let filteredList = dataList;
-    console.log("🌈Before filters: ")
-    console.log(filteredList)
-    console.log(this.selectedAge)
-    console.log(this.selectedGender)
+    console.log("Applying filter...")
     if (this.selectedAge != environment.placeholderAge) {
       filteredList = this.filterBy(8, this.selectedAge, filteredList)//position in the list, value, list
     }
@@ -379,14 +369,6 @@ export class MainComponent implements OnInit {
         filteredList = this.filterBy(3, cve_state, filteredList);
         break;
       }
-      //LO  QUE NECESITO EN TOTALES
-      // case environment.placeholderMunicipal:{
-      //   let munListByState = this.statesAndMunList.filter(x=> x[0]==cve_state)
-      //   let cve_geo = munListByState.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
-      //   filteredList = this.filterBy(4, cve_geo, filteredList);
-      //   break;
-      // }
-      //_________________
       case environment.placeholderMunicipal: {
         filteredList = this.filterBy(3, cve_state, filteredList);
         break;

@@ -323,9 +323,7 @@ export class MapComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("🍥🍥🍥🍥🍥🍥🍥")
-    console.log(changes)
-    console.log("🍥🍥🍥🍥🍥🍥🍥")
+    console.log("Change detected")
     try {
       let newResolution = changes['updatedResolution']['currentValue'];
       if (newResolution && newResolution != this.selectedResolution)  this.selectedResolution = newResolution;
