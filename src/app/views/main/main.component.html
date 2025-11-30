@@ -147,10 +147,10 @@
   </nav><br>
     <div class="row">
     <!-- Top 10 Estados -->
-      <div class="col-lg-4 mb-4">
+      <div class="col-lg-5 mb-4">
         <div class="card shadow-sm">
           <div class="card-header d-flex align-items-center">
-            <mat-icon class="me-2"> show_chart</mat-icon>Top 10 Estados con más casos
+            <mat-icon class="me-2"> show_chart</mat-icon>Top 10 {{updatedResolution == env.placeholderStateResolution ? "Estados" : "Municipios"}} con más casos
           </div>
           <div class="card-body p-0">
             <div class="table-responsive">
@@ -160,6 +160,7 @@
                     <th class="text-center">#</th>
                     <th>Estado</th>
                     <th class="text-center">Casos</th>
+                    <th class="text-center">Tasa</th>
                   </tr>
                 </thead>
                 <tbody class="table-body">
@@ -168,6 +169,7 @@
                       <td class="text-center">{{i+1}}</td>
                       <td>{{getStateName(state[0])}}</td>
                       <td class="text-center">{{state[1]}}</td>
+                      <td class="text-center">{{state[2].toFixed(4)}}</td>
                     </tr>
                   </ng-container>
                   <ng-template #municipal>
@@ -175,6 +177,7 @@
                       <td>{{i+1}}</td>
                       <td>{{getStateName(mun[0])}} - {{getMunicipalityName(mun[1])}}</td>
                       <td>{{mun[2]}}</td>
+                      <td>{{mun[3].toFixed(4)}}</td>
                     </tr>
                   </ng-template>
                 </tbody>
@@ -183,47 +186,51 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-4 mb-4">
-        <div class="card shadow-sm">
-          <div class="card-header d-flex align-items-center">
-            <mat-icon class="me-2">perm_contact_calendar</mat-icon>Total de casos por grupo de edad
-          </div>
-          <div class="card-body p-0">
-            <div class="table-responsive">
-              <table class="table table-hover table-sm">
-                <thead class="table-light">
-                  <tr>
-                    <th class="ps-3">Edad</th>
-                    <th class="text-center">Casos</th>
-                  </tr>
-                </thead>
-                <tbody class="table-body">
-                  <tr *ngFor="let total of showAgeTotals">
-                    <td class="ps-3">{{total[0]}}</td>
-                    <td class="text-center">{{total[1]}}</td>
-                  </tr>
-                </tbody>
-              </table>
+      <div class="col-lg-7 mb-7">
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-header d-flex align-items-center">
+                <mat-icon class="me-2">perm_contact_calendar</mat-icon>Total de casos por grupo de edad
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover table-sm">
+                    <thead class="table-light">
+                      <tr>
+                        <th class="ps-3">Edad</th>
+                        <th class="text-center">Casos</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-body">
+                      <tr *ngFor="let total of showAgeTotals">
+                        <td class="ps-3">{{total[0]}}</td>
+                        <td class="text-center">{{total[1]}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-lg-4 mb-4">
-      <div class="card shadow-sm">
-        <div class="card-header d-flex align-items-center">
-          <mat-icon class="me-2">people</mat-icon>Distribución por género
-        </div>
-        <div class="card-body">
-          <div class="row text-center">
-            <div class="col-md-4" *ngFor="let total of showGenderTotals">
-              <div class="p-3">
-                <h4 class="text-info fw-bold"> {{total[1]}}</h4>
-                <p class="mb-0"><i class="bi bi-gender-male"></i> {{total[0]}}</p>
+          <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-header d-flex align-items-center">
+                <mat-icon class="me-2">people</mat-icon>Distribución por género
+              </div>
+              <div class="card-body">
+                <div class="row text-center">
+                  <div class="col-md-4" *ngFor="let total of showGenderTotals">
+                    <div class="p-3">
+                      <h4 class="text-info fw-bold"> {{total[1]}}</h4>
+                      <p class="mb-0"><i class="bi bi-gender-male"></i> {{total[0]}}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </div><br>
   </div><br>

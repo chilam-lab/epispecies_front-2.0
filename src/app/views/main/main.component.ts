@@ -38,6 +38,7 @@ export class MainComponent implements OnInit {
   @ViewChild('showStateModal') showModalState!: ElementRef;
   @ViewChild('showMunModal') showModalMun!: ElementRef;
   @ViewChild('showMetroModal') showModalMetro!: ElementRef;
+  @ViewChild(MapComponent) mapComponent!: MapComponent;
   env = environment;
   selectedFirstClassId: string = environment.placeholderFirstClass;
   selectedSecondClassId: string = environment.placeholderSecondClass;
@@ -108,6 +109,7 @@ export class MainComponent implements OnInit {
   currentSortColumn: string = '';
   currentSortOrder: 'asc' | 'desc' = 'asc';
   calculatedVariables = [];
+  populationByYearList: [number, string, number][] = [];
   monthsList = [
     { value: 1, name: 'Enero' },
     { value: 2, name: 'Febrero' },
@@ -283,6 +285,7 @@ export class MainComponent implements OnInit {
     try {
       if (this.selectedYear != this.hasChanges.selectedYear ||
           this.selectedFirstClassId != this.hasChanges.selectedFirstClassId) {
+        this.getPopulationData();
         await this.getAllTheDataByYearAndFirstClassId();
       }
       this.filteredAllDataByClasses = this.allDataByFirstClass;
@@ -405,6 +408,7 @@ export class MainComponent implements OnInit {
   }
 
   top10() {
+    // this.mapComponent.getPopulationById();
     let dataToDisplay = this.dataByMunToDisplayInMap;
     if( this.selectedRegion !== environment.placeholderMetropoli &&  this.selectedRegion !== environment.placeholderCountry &&
       this.selectedResolution == environment.placeholderMunResolution){
@@ -427,7 +431,63 @@ export class MainComponent implements OnInit {
     this.top10Municipalities = dataToDisplay
       .sort((a, b) => b[2] - a[2])
       .slice(0, 10);
+
+    this.top10States = sorted.slice(0, 10).map(item => {
+      const populationState = this.getPopulationById(item[0].toString(), "Stat");
+      const rateState = populationState ? (item[1] / populationState) * 100000 : 0;
+      return [...item, rateState];
+    });
+
+    // Add rate calculation to top 10 municipalities
+    this.top10Municipalities = dataToDisplay
+      .sort((a, b) => b[2] - a[2])
+      .slice(0, 10)
+      .map(row => {
+        const populationMun = this.getPopulationById(row[1].toString(), "Mun");
+        const rateMun = populationMun ? (row[2] / populationMun) * 100000 : 0;
+        return [...row, rateMun];
+      });
+
+    console.log("states")
+    console.log(this.top10States )
+    console.log("mun")
+    console.log(this.top10Municipalities)
   }
+
+   getPopulationById(id: string, resolution: string): number | null {
+    if (resolution === 'Mun') {
+      const item = this.populationByYearList.find(subarray => Number(subarray[1]) == Number(id));
+      return item ? item[2] : null;
+    } else {
+      const munListByState = this.dataByMunToDisplayInMap.filter(item => item[0] === Number(id));
+      const sum = munListByState.reduce((total, mun) => {
+        const municipalId = mun[1]; // Municipal ID from dataByMunToDisplayInMap
+        const popItem = this.populationByYearList.find(item => item[1] === municipalId);
+        return total + (popItem ? Number(popItem[2]) : 0);
+      }, 0);
+
+      return sum > 0 ? sum : null;
+    }
+  }
+
+  getPopulationData(){
+    let year = Number(this.selectedYear).toString()
+    this.dbService.getDataByYearInTable(year, environment.tablePopulationTotal)
+    .subscribe({
+      next: (response) => {
+        this.populationByYearList = response;
+      },
+      error: (error) => {
+        console.error('Error fetching data:', error);
+        Swal.fire({
+          timer: 1000,
+          title: 'Ocurrio un error al cargar los datos.',
+          icon: 'error'
+        })
+      }
+    });
+  }
+
 
   saveNewSelectsValues() {
     this.hasChanges.selectedFirstClassId = this.selectedFirstClassId;
