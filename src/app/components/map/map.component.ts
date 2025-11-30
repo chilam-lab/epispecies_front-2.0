@@ -194,7 +194,7 @@ export class MapComponent implements OnInit {
                </tbody>
              </table>`
           );
-          layer.bindTooltip(`Clave: ${feature.properties.clave} cases: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
+          layer.bindTooltip(`${placeholder+": "+name} Casos: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
         }
       }
     });
@@ -264,7 +264,7 @@ export class MapComponent implements OnInit {
                </tbody>
              </table>`
           );
-          layer.bindTooltip(`Clave: ${feature.properties.clave} tasa: ${rate.toFixed(2)}`, { sticky: true });
+          layer.bindTooltip(`${placeholder+": "+name} Tasa: ${rate.toFixed(2)}`, { sticky: true });
         }
       }
     }).addTo(this.map);

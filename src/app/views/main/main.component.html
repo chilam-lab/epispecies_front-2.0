@@ -414,7 +414,7 @@
       <div class="modal-body">
         <label for="exampleDataList">Seleccione una metropoli: </label><br>
         <!-- <input class="form-control" list="datalistOptions2" id="exampleDataList" [(ngModel)]="selectedMuncipality" -->
-        <select (change)="updateMetropoly($event)" >
+        <select class="w-100" (change)="updateMetropoly($event)" >
             <option value="{{env.selectedMetropoli}}" selected>{{env.selectedMetropoli}}</option>
           <ng-container *ngFor="let item of metropolyList">
             <option value="{{item[0]}}">{{item[1]}}</option>
@@ -469,7 +469,7 @@
             <h6 class="text-center mb-4">Seleccionar Mes de {{selectedYear}}</h6>
             <div class="row row-cols-3 g-3 mb-4">
               <div class="col" *ngFor="let month of monthsList">
-                <button type="button" class="btn btn-month w-100"
+                <button type="button" class="btn btn-month w-100 py-2"
                   [class.active]="selectedMonth === month.value"
                   (click)="selectedMonth = month.value">
                   {{month.name}}
@@ -492,31 +492,32 @@
             <h6 class="text-center mb-4">Seleccionar Temporada</h6>
             <div class="row row-cols-2 g-3 mb-3">
               <div class="col">
-                <button type="button" class="btn btn-season w-100" [class.active]="selectedSeason === 'primavera'" (click)="selectedSeason = 'primavera'">
+                <button type="button" class="btn btn-season w-100 py-3" [class.active]="selectedSeason === 'primavera'" (click)="selectedSeason = 'primavera'">
                   <div class="season-title">Primavera {{selectedYear}}</div>
                   <div class="season-months">(Mar - May)</div>
                 </button>
               </div>
               <div class="col">
-                <button type="button" class="btn btn-season w-100" [class.active]="selectedSeason === 'verano'" (click)="selectedSeason = 'verano'">
+                <button type="button" class="btn btn-season w-100 py-3" [class.active]="selectedSeason === 'verano'" (click)="selectedSeason = 'verano'">
                   <div class="season-title">Verano {{selectedYear}}</div>
                   <div class="season-months">(Jun - Ago)</div>
                 </button>
               </div>
               <div class="col">
-                <button type="button" class="btn btn-season w-100" [class.active]="selectedSeason === 'otoño'" (click)="selectedSeason = 'otoño'">
+                <button type="button" class="btn btn-season w-100 py-3" [class.active]="selectedSeason === 'otoño'" (click)="selectedSeason = 'otoño'">
                   <div class="season-title">Otoño {{selectedYear}}</div>
                   <div class="season-months">(Sep - Nov)</div>
                 </button>
               </div>
               <div class="col">
-                <button type="button" class="btn btn-season w-100" [class.active]="selectedSeason === 'invierno'" (click)="selectedSeason = 'invierno'">
+                <button type="button" class="btn btn-season w-100 py-3" [class.active]="selectedSeason === 'invierno'" (click)="selectedSeason = 'invierno'">
                   <div class="season-title">Invierno {{selectedYear}}</div>
                   <div class="season-months">(Dic - Feb)</div>
                 </button>
               </div>
             </div>
             <div class="mt-3">
+              <label for="yearSelect" class="form-label">Seleccionar Año:</label>
               <select [(ngModel)]="selectedYear" class="form-select">
                 <ng-container *ngFor="let year of yearsList">
                   <option [value]="year">{{year}}</option>
@@ -532,7 +533,7 @@
             <div class="row row-cols-4 g-3">
               <ng-container *ngFor="let year of yearsList">
                 <div class="col">
-                  <button type="button" class="btn w-100 py-3" [class.btn-primary]="selectedYear === year" [class.btn-outline-secondary]="selectedYear !== year" (click)="selectedYear = year">
+                  <button type="button" class="btn w-100 py-2" [class.btn-primary]="selectedYear === year" [class.btn-outline-secondary]="selectedYear !== year" (click)="selectedYear = year">
                     {{ year }}
                   </button>
                 </div>
