@@ -172,7 +172,7 @@ export class MapComponent implements OnInit {
                    <td>${cases.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
-                   <th>No. Casos en el ${this.selectedRegion}</th>
+                   <th>No. Casos nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion  : "Estado"}</th>
                    <td>${this.totalCases.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
@@ -180,7 +180,7 @@ export class MapComponent implements OnInit {
                    <td>${pop?.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
-                   <th>Población nivel ${this.selectedRegion}</th>
+                   <th>Población nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion  : "Estado"}</th>
                    <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
@@ -241,7 +241,7 @@ export class MapComponent implements OnInit {
                    <td>${cases.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
-                   <th>No. Casos nivel ${this.selectedRegion}</th>
+                   <th>No. Casos nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion  : "Estado"}</th>
                    <td>${this.totalCases.toLocaleString('en-US')}</td>
                  </tr>
 
@@ -250,7 +250,7 @@ export class MapComponent implements OnInit {
                    <td>${pop?.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
-                   <th>Población en el ${this.selectedRegion}</th>
+                   <th>Población nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion  : "Estado"}</th>
                    <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>

@@ -393,6 +393,10 @@ export class MainComponent implements OnInit {
       //   break;
       // }
       //_________________
+      case environment.placeholderMunicipal: {
+        filteredList = this.filterBy(3, cve_state, filteredList);
+        break;
+      }
       case environment.placeholderMetropoli:
         if(this.selectedMetropoly == environment.selectedMetropoli){
           filteredList = filteredList.filter((array) => array[5] !== null && array[5] !== '');
@@ -403,9 +407,6 @@ export class MainComponent implements OnInit {
     default:
       break;
     }
-
-    console.log("🌈After all filters:")
-      console.log(filteredList)
 
     return filteredList;
   }

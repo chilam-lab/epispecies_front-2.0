@@ -176,8 +176,8 @@
                     <tr *ngFor="let mun of top10Municipalities; let i = index">
                       <td>{{i+1}}</td>
                       <td>{{getStateName(mun[0])}} - {{getMunicipalityName(mun[1])}}</td>
-                      <td>{{mun[2]}}</td>
-                      <td>{{mun[3].toFixed(4)}}</td>
+                      <td class="text-center">{{mun[2]}}</td>
+                      <td class="text-center">{{mun[3].toFixed(4)}}</td>
                     </tr>
                   </ng-template>
                 </tbody>
