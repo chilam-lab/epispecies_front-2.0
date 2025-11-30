@@ -369,17 +369,11 @@ export class MainComponent implements OnInit {
     console.log(this.selectedGender)
     if (this.selectedAge != environment.placeholderAge) {
       filteredList = this.filterBy(8, this.selectedAge, filteredList)//position in the list, value, list
-      console.log("🌈After filter one:")
-      console.log(filteredList)
     }
     if (this.selectedGender != environment.placeholderGender) {
       filteredList = this.filterBy(7, this.selectedGender, filteredList)
-      console.log("🌈After all filters:")
-      console.log(filteredList)
     }
     let cve_state = this.getStateCode(this.selectedState)?.toString() ?? '';
-    console.log("METRO")
-    console.log(this.selectedMetropoly)
     switch(this.selectedRegion){
       case environment.placeholderState: {
         filteredList = this.filterBy(3, cve_state, filteredList);
@@ -667,7 +661,13 @@ export class MainComponent implements OnInit {
   totals(){
     this.showAgeTotals = [];
     this.showGenderTotals = [];
-    const data = this.filteredAllDataByClasses;
+    let cve_state = this.getStateCode(this.selectedState)?.toString() ?? '';
+    let data = this.filteredAllDataByClasses;
+    if(this.selectedRegion == environment.placeholderMunicipal){
+        let munListByState = this.statesAndMunList.filter(x=> x[0]==cve_state)
+        let cve_geo = munListByState.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
+        data = this.filterBy(4, cve_geo, data);
+    }
     const genderMap = {
       "1": environment.placeholderMan,
       "2": environment.placeholderWoman,
