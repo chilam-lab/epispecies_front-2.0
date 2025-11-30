@@ -312,16 +312,23 @@ export class MainComponent implements OnInit {
     this.totalCases = this.filteredAllDataByClasses.length;
 
     let idSelectedState = Object.keys(this.stateNames).find(key => this.stateNames[+key] === this.selectedState) || 0;
+    console.log(idSelectedState)
     let munListByState = this.statesAndMunList.filter(x=> x[0]==idSelectedState)
+    console.log(munListByState)
     let idSelectedMun = munListByState.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
+    console.log(idSelectedMun)
 
     idSelectedMun = (idSelectedMun.length > 0) ? Number(idSelectedMun) > 10000 ? idSelectedMun : "0" + idSelectedMun : "";
+    console.log(idSelectedMun)
     const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
+    console.log(idState)
 
     this.dataByMunToDisplayInMap = municipalityDataList;
+    console.log(this.dataByMunToDisplayInMap)
     if(this.selectedRegion == environment.placeholderMetropoli){
       this.dataByMunToDisplayInMap = this.filterByMetropoli(municipalityDataList);
     }
+    console.log(this.dataByMunToDisplayInMap)
     this.top10()
     this.totals()
     let stateMunList:any[];
@@ -370,6 +377,36 @@ export class MainComponent implements OnInit {
       console.log("🌈After all filters:")
       console.log(filteredList)
     }
+    let cve_state = this.getStateCode(this.selectedState)?.toString() ?? '';
+    console.log("METRO")
+    console.log(this.selectedMetropoly)
+    switch(this.selectedRegion){
+      case environment.placeholderState: {
+        filteredList = this.filterBy(3, cve_state, filteredList);
+        break;
+      }
+      //LO  QUE NECESITO EN TOTALES
+      // case environment.placeholderMunicipal:{
+      //   let munListByState = this.statesAndMunList.filter(x=> x[0]==cve_state)
+      //   let cve_geo = munListByState.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
+      //   filteredList = this.filterBy(4, cve_geo, filteredList);
+      //   break;
+      // }
+      //_________________
+      case environment.placeholderMetropoli:
+        if(this.selectedMetropoly == environment.selectedMetropoli){
+          filteredList = filteredList.filter((array) => array[5] !== null && array[5] !== '');
+        } else {
+          filteredList = this.filterBy(5, this.selectedMetropoly, filteredList);
+        }
+        break;
+    default:
+      break;
+    }
+
+    console.log("🌈After all filters:")
+      console.log(filteredList)
+
     return filteredList;
   }
 
@@ -408,7 +445,6 @@ export class MainComponent implements OnInit {
   }
 
   top10() {
-    // this.mapComponent.getPopulationById();
     let dataToDisplay = this.dataByMunToDisplayInMap;
     if( this.selectedRegion !== environment.placeholderMetropoli &&  this.selectedRegion !== environment.placeholderCountry &&
       this.selectedResolution == environment.placeholderMunResolution){
@@ -438,7 +474,6 @@ export class MainComponent implements OnInit {
       return [...item, rateState];
     });
 
-    // Add rate calculation to top 10 municipalities
     this.top10Municipalities = dataToDisplay
       .sort((a, b) => b[2] - a[2])
       .slice(0, 10)
@@ -447,11 +482,6 @@ export class MainComponent implements OnInit {
         const rateMun = populationMun ? (row[2] / populationMun) * 100000 : 0;
         return [...row, rateMun];
       });
-
-    console.log("states")
-    console.log(this.top10States )
-    console.log("mun")
-    console.log(this.top10Municipalities)
   }
 
    getPopulationById(id: string, resolution: string): number | null {
@@ -519,6 +549,20 @@ export class MainComponent implements OnInit {
   getMunicipalityName(code: any): string {
     code = code.toString()
     return this.municipalityNames[code] || environment.unknownMunicipality;
+  }
+
+  getStateCode(stateName: string): number | undefined {
+    const entry = Object.entries(this.stateNames).find(
+      ([code, name]) => name === stateName
+    );
+    return entry ? Number(entry[0]) : undefined;
+  }
+
+  getMunicipalityCode(municipalityName: string): string | undefined {
+    const entry = Object.entries(this.municipalityNames).find(
+      ([code, name]) => name === municipalityName
+    );
+    return entry ? entry[0] : undefined;
   }
 
   onStateModalInputChange(e: Event) {

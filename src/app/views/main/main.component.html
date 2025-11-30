@@ -168,7 +168,7 @@
                     <tr *ngFor="let state of top10States; let i = index">
                       <td class="text-center">{{i+1}}</td>
                       <td>{{getStateName(state[0])}}</td>
-                      <td class="text-center">{{state[1]}}</td>
+                      <td class="text-center">{{state[1].toLocaleString('en-US')}}</td>
                       <td class="text-center">{{state[2].toFixed(4)}}</td>
                     </tr>
                   </ng-container>

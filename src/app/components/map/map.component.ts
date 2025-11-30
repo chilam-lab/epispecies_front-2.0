@@ -169,18 +169,18 @@ export class MapComponent implements OnInit {
                  </tr>
                  <tr>
                    <th>No. Casos</th>
-                   <td>${cases}</td>
+                   <td>${cases.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
                    <th>No. Casos en el ${this.selectedRegion}</th>
-                   <td>${this.totalCases}</td>
+                   <td>${this.totalCases.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
                    <th>Población</th>
                    <td>${pop?.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
-                   <th>Población en el ${this.selectedRegion}</th>
+                   <th>Población nivel ${this.selectedRegion}</th>
                    <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
@@ -238,11 +238,11 @@ export class MapComponent implements OnInit {
                  </tr>
                  <tr>
                    <th>No. Casos</th>
-                   <td>${cases}</td>
+                   <td>${cases.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
-                   <th>No. Casos en el ${this.selectedRegion}</th>
-                   <td>${this.totalCases}</td>
+                   <th>No. Casos nivel ${this.selectedRegion}</th>
+                   <td>${this.totalCases.toLocaleString('en-US')}</td>
                  </tr>
 
                  <tr>
