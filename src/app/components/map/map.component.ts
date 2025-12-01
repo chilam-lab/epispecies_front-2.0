@@ -333,6 +333,7 @@ export class MapComponent implements OnInit {
       let year = changes['selectedYear']['currentValue'];
       if (year && typeof year[0] === 'number') {
         let numberYear = Number(year[0]).toString();
+        console.log("Running data with: "+ this.selectedYear)
         this.selectedYear = numberYear;
         this.getPopulationData();
       }

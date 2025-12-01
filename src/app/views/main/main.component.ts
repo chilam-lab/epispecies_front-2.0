@@ -165,9 +165,10 @@ export class MainComponent implements OnInit {
           const lastyear = response[2][response[2].length - 1];
           this.yearsList = response[2].reverse();
           this.selectedYear = lastyear;
+          console.log(this.agesList)
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
+          console.error('Error fetching age, gender and year data:', error);
         }
       });
     this.dbService.getAllFrom(environment.statesMunDictionaryTable)
@@ -384,6 +385,7 @@ export class MainComponent implements OnInit {
       break;
     }
 
+    console.log(filteredList)
     return filteredList;
   }
 
