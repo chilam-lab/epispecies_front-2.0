@@ -96,9 +96,17 @@ export class DiseaseDbService {
       );
   }
 
-  getCategoriesBy(year: string): Observable<any> {
+  getCategoriesBy(year: string, cve_metropoli:string, cve_estado: number): Observable<any> {
     let fullUrl = this.apiUrl + 'categories';
-    const params = new HttpParams().set('year', year)
+    let params = new HttpParams().set('year', year)
+    console.log(cve_metropoli)
+    console.log(cve_estado)
+
+    if (cve_metropoli && cve_metropoli == environment.selectedMetropoli) params = params.set('cve_metropoli', "all");
+    if (cve_metropoli && cve_metropoli != environment.selectedMetropoli) params = params.set('cve_metropoli', cve_metropoli);
+    if (cve_estado) params = params.set('cve_state', cve_estado);
+
+    console.log(params)
     return this.http.get<any>(fullUrl, { params })
       .pipe(catchError(this.handleError));
   }
@@ -112,10 +120,22 @@ export class DiseaseDbService {
       .set('year', year)
       .set('cve_enfermedad', cve_enfermedad);
 
+            console.log()
+      console.log("selectedCategory: "+category)
+      console.log("selectedYear: "+ year)
+      console.log("selectedFirstClassId: "+cve_enfermedad)
+      console.log("selectedSecondClassId: "+cve_grupo)
+      console.log("selectedThirdClassId: "+cve_causa_def)
+      console.log("selectedMetropoly: "+ cve_metropoli)
+      console.log("selectedState: " +cve_estado)
+      console.log("selectedSecondClassId: "+age)
+      console.log("selectedGender: "+gender)
+
     if (cve_grupo != environment.placeholderSecondClass) params = params.set('cve_grupo', cve_grupo);
     if (cve_causa_def != environment.placeholderThirdClass) params = params.set('cve_causa_def', cve_causa_def);
-    // if (cve_metropoli) params = params.set('cve_metropoli', cve_metropoli);
-    // if (cve_estado) params = params.set('cve_estado', cve_estado);
+    if (cve_metropoli && cve_metropoli == environment.selectedMetropoli) params = params.set('cve_metropoli', "all");
+    if (cve_metropoli && cve_metropoli != environment.selectedMetropoli) params = params.set('cve_metropoli', cve_metropoli);
+    if (cve_estado) params = params.set('cve_estado', cve_estado);
     if (age != environment.placeholderAge) params = params.set('age', age);
     if (gender != environment.placeholderGender) params = params.set('gender', gender);
     console.log(params)

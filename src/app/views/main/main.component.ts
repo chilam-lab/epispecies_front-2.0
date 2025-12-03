@@ -330,7 +330,7 @@ export class MainComponent implements OnInit {
       stateMunList = this.filterBy(0,idState[0],municipalityDataList)
       this.dataByMunToDisplayInMap = stateMunList;
     }
-    this.getCategories(this.selectedYear.toString())
+    this.getCategories(this.selectedYear.toString(), this.selectedMetropoly, this.selectedState)
     this.updatedResolution = this.selectedResolution;
     this.updatedRegion = this.selectedRegion;
     this.selectedCVEState = Number(idSelectedState);
@@ -343,16 +343,27 @@ export class MainComponent implements OnInit {
     })
   }
 
-  getCategories(year:string){
-  this.dbService.getCategoriesBy(year)
+  getCategories(year:string, metropoli: string, state: string){
+    console.log("about to use categories")
+    let verifiedMetropoli = "";
+    let cve_state = 0;
+
+    (this.selectedRegion == environment.placeholderMetropoli) ?
+      verifiedMetropoli = metropoli :
+      verifiedMetropoli = "";
+    (this.selectedState != "") ?
+        cve_state = Number(this.getStateCode(state)) ?? 0 :
+        cve_state = 0;
+    this.dbService.getCategoriesBy(year, verifiedMetropoli, cve_state)
       .subscribe({
         next: (response) => {
+          console.log(response)
           this.categoryList = response;
         },
         error: (error) => {
           console.error('Error fetching data:', error);
         }
-      });
+    });
   }
 
   applyFilters(dataList: any[]) {
@@ -384,8 +395,6 @@ export class MainComponent implements OnInit {
     default:
       break;
     }
-
-    console.log(filteredList)
     return filteredList;
   }
 
@@ -707,18 +716,14 @@ export class MainComponent implements OnInit {
 
   selectACategory(){
     if(this.selectedCategory != environment.placeholderCategory){
-
-      console.log()
-      console.log("selectedCategory: "+this.selectedCategory)
-      console.log("selectedYear: "+ this.selectedYear.toString())
-      console.log("selectedFirstClassId: "+this.selectedFirstClassId)
-      console.log("selectedSecondClassId: "+this.selectedSecondClassId)
-      console.log("selectedThirdClassId: "+this.selectedThirdClassId)
-      console.log("selectedMetropoly: "+ this.selectedMetropoly)
-      console.log("selectedState: " +this.selectedState)
-      console.log("selectedSecondClassId: "+this.selectedAge)
-      console.log("selectedGender: "+this.selectedGender)
-
+      let metropoli = "";
+      let cve_state = "";
+      (this.selectedRegion == environment.placeholderMetropoli) ?
+        metropoli = this.selectedMetropoly :
+        metropoli = "";
+      (this.selectedState != "") ?
+        cve_state = this.getStateCode(this.selectedState)?.toString() ?? '' :
+        cve_state = '';
 
       this.dbService.getCalcVariablesBy(
         this.selectedCategory,
@@ -726,8 +731,8 @@ export class MainComponent implements OnInit {
         this.selectedFirstClassId || '',
         this.selectedSecondClassId || '',
         this.selectedThirdClassId || '',
-        this.selectedMetropoly || '',
-        this.selectedState || '',
+        metropoli || '',
+        cve_state || '',
         this.selectedAge || '',
         this.selectedGender || ''
       )
