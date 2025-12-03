@@ -257,7 +257,15 @@
     </div><br>
     <div class="row">
       <div class="col-md-12">
-        <table class="table table-hover table-sm">
+      <ng-container *ngIf="calculatedVariables.length <= 0; else showData">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center">
+            <h4>No hay datos disponibles</h4>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #showData>
+      <table class="table table-hover table-sm">
           <thead class="table-header">
             <tr>
               <th (click)="sortTableBy('category')">
@@ -317,6 +325,7 @@
             </tr>
           </tbody>
         </table>
+      </ng-template>
       </div>
     </div>
     <div class="row">
