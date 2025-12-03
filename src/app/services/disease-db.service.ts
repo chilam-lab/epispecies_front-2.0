@@ -135,7 +135,7 @@ export class DiseaseDbService {
     if (cve_causa_def != environment.placeholderThirdClass) params = params.set('cve_causa_def', cve_causa_def);
     if (cve_metropoli && cve_metropoli == environment.selectedMetropoli) params = params.set('cve_metropoli', "all");
     if (cve_metropoli && cve_metropoli != environment.selectedMetropoli) params = params.set('cve_metropoli', cve_metropoli);
-    if (cve_estado) params = params.set('cve_estado', cve_estado);
+    if (cve_estado) params = params.set('cve_estado', Number(cve_estado));
     if (age != environment.placeholderAge) params = params.set('age', age);
     if (gender != environment.placeholderGender) params = params.set('gender', gender);
     console.log(params)

@@ -244,7 +244,7 @@
       <div class="row">
         <div class="col">
           <mat-select [(ngModel)]="selectedCategory" class="bootstrap-style-mat-select">
-            <mat-option [value]="env.placeholderCategory" selected>{{env.placeholderCategory}}</mat-option>
+            <mat-option [value]="env.placeholderCategory" disabled selected>{{env.placeholderCategory}}</mat-option>
             <ng-container *ngFor="let category of categoryList">
               <mat-option [value]="category">{{category}}</mat-option>
             </ng-container>

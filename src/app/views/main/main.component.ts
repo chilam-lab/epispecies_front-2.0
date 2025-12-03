@@ -344,6 +344,8 @@ export class MainComponent implements OnInit {
   }
 
   getCategories(year:string, metropoli: string, state: string){
+    this.selectedCategory = environment.placeholderCategory;
+    this.categoryList = [];
     console.log("about to use categories")
     let verifiedMetropoli = "";
     let cve_state = 0;
