@@ -85,6 +85,34 @@ export class DiseaseDbService {
       );
   }
 
+  getPopulationBy(year: string, cve_state:string, cve_metropoli: string,
+                  age_group: string, gender:string, cvegeo:string): Observable<number> {
+    let fullUrl = this.apiUrl + 'get_all_population';
+    let params = new HttpParams().set('year', year)
+
+    console.log("year: "+year)
+    console.log("cve_state: "+cve_state)
+    console.log("cve_metropoli: "+cve_metropoli)
+    console.log("age_group: "+age_group)
+    console.log(" environment.placeholderAge: "+ environment.placeholderAge)
+    console.log(age_group != environment.placeholderAge)
+    console.log("gender: "+gender)
+    console.log("cvegeo: "+cvegeo)
+
+    if (cvegeo) params = params.set('cvegeo', cvegeo);
+    if (cve_metropoli && cve_metropoli == environment.selectedMetropoli) params = params.set('cve_metropoli', "all");
+    if (cve_metropoli && cve_metropoli != environment.selectedMetropoli) params = params.set('cve_metropoli', cve_metropoli);
+    if (cve_state) params = params.set('cve_estado', Number(cve_state));
+    if (age_group) params = params.set('age_group', age_group);
+    if (gender == "1") params = params.set('gender', "HOMBRES");
+    if (gender == "2") params = params.set('gender', "MUJERES");
+
+    return this.http.get<any>(fullUrl, { params })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   getAllFrom(table: string): Observable<any> {
     let fullUrl = this.apiUrl + 'get_all_by_table';
     const params = new HttpParams()

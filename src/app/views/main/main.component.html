@@ -256,7 +256,7 @@
       </div>
     </div><br>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 table-responsive">
       <ng-container *ngIf="calculatedVariables.length <= 0; else showData">
         <div class="row justify-content-center">
           <div class="col-md-6 text-center">
@@ -277,40 +277,105 @@
                   <ng-container *ngIf="currentSortColumn !== 'category'">↕</ng-container>
                 </span>
               </th>
-              <th (click)="sortTableBy('ncx')">
-                ncx
+              <ng-container *ngIf="seeExtraColumnsInCategory">
+                <th class="text-center" (click)="sortTableBy('ncx')">
+                  ncx
+                  <span class="sort-icon">
+                    <ng-container *ngIf="currentSortColumn === 'ncx'">
+                      {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                    </ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'ncx'">↕</ng-container>
+                  </span>
+                </th>
+                <th class="text-center" (click)="sortTableBy('nc')">
+                  nc
+                  <span class="sort-icon">
+                    <ng-container *ngIf="currentSortColumn === 'nc'">
+                      {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                    </ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'nc'">↕</ng-container>
+                  </span>
+                </th>
+                <th class="text-center" (click)="sortTableBy('nx')">
+                  nx
+                  <span class="sort-icon">
+                    <ng-container *ngIf="currentSortColumn === 'nx'">
+                      {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                    </ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'nx'">↕</ng-container>
+                  </span>
+                </th>
+                <th class="text-center" (click)="sortTableBy('n')">
+                  n
+                  <span class="sort-icon">
+                    <ng-container *ngIf="currentSortColumn === 'n'">
+                      {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                    </ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'n'">↕</ng-container>
+                  </span>
+                </th>
+              </ng-container>
+              <th class="text-center" (click)="sortTableBy('epsilon')">
+                epsilon
                 <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'ncx'">
+                  <ng-container *ngIf="currentSortColumn === 'epsilon'">
                     {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
                   </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'ncx'">↕</ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'epsilon'">↕</ng-container>
                 </span>
               </th>
-              <th (click)="sortTableBy('nx')">
-                nx
+              <th class="text-center" (click)="sortTableBy('score')">
+                score
                 <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'nx'">
+                  <ng-container *ngIf="currentSortColumn === 'score'">
                     {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
                   </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'nx'">↕</ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'score'">↕</ng-container>
                 </span>
               </th>
-              <th (click)="sortTableBy('n')">
-                n
+              <th class="text-center" (click)="sortTableBy('log_lift')">
+                log_lift
                 <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'n'">
+                  <ng-container *ngIf="currentSortColumn === 'log_lift'">
                     {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
                   </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'n'">↕</ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'log_lift'">↕</ng-container>
                 </span>
               </th>
-              <th (click)="sortTableBy('nc')">
-                nc
+              <th class="text-center" (click)="sortTableBy('RR')">
+                RR
                 <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'nc'">
+                  <ng-container *ngIf="currentSortColumn === 'RR'">
                     {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
                   </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'nc'">↕</ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'RR'">↕</ng-container>
+                </span>
+              </th>
+              <th class="text-center" (click)="sortTableBy('SE_loglist')">
+                SE_loglist
+                <span class="sort-icon">
+                  <ng-container *ngIf="currentSortColumn === 'SE_loglist'">
+                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                  </ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'SE_loglist'">↕</ng-container>
+                </span>
+              </th>
+              <th class="text-center" (click)="sortTableBy('ICinf')">
+                ICinf
+                <span class="sort-icon">
+                  <ng-container *ngIf="currentSortColumn === 'ICinf'">
+                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                  </ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'ICinf'">↕</ng-container>
+                </span>
+              </th>
+              <th class="text-center" (click)="sortTableBy('ICsup')">
+                ICsup
+                <span class="sort-icon">
+                  <ng-container *ngIf="currentSortColumn === 'ICsup'">
+                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                  </ng-container>
+                  <ng-container *ngIf="currentSortColumn !== 'ICsup'">↕</ng-container>
                 </span>
               </th>
             </tr>
@@ -318,10 +383,19 @@
           <tbody class="table-body">
             <tr *ngFor="let variable of calculatedVariables">
                   <td>{{variable["category"]}}</td>
-                  <td>{{variable["ncx"] | number:'1.0-0'}}</td>
-                  <td>{{variable["nx"] | number:'1.0-0'}}</td>
-                  <td>{{variable["n"] | number:'1.0-0'}}</td>
-                  <td>{{variable["nc"] | number:'1.0-0'}}</td>
+                  <ng-container *ngIf="seeExtraColumnsInCategory">
+                    <td>{{variable["ncx"] | number:'1.0-0'}}</td>
+                    <td>{{variable["nc"] | number:'1.0-0'}}</td>
+                    <td>{{variable["nx"] | number:'1.0-0'}}</td>
+                    <td>{{variable["n"] | number:'1.0-0'}}</td>
+                  </ng-container>
+                  <td class="text-center">{{variable["epsilon"] }}</td>
+                  <td class="text-center">{{variable["score"] }}</td>
+                  <td class="text-center">{{variable["log_lift"] }}</td>
+                  <td class="text-center">{{variable["RR"] }}</td>
+                  <td class="text-center">{{variable["SE_loglist"] }}</td>
+                  <td class="text-center">{{variable["ICinf"] }}</td>
+                  <td class="text-center">{{variable["ICsup"] }}</td>
             </tr>
           </tbody>
         </table>
@@ -333,6 +407,7 @@
         <button class="btn btn-primary" (click)="downloadCSV()">
           <i class="bi bi-download"></i> Descargar CSV
         </button>
+        <button (click)="toggleExtraColumns()">Ver información detallada de la tabla</button>
       </div>
     </div>
   </div><br><br><br>

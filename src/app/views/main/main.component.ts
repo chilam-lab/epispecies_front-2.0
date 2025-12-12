@@ -109,7 +109,8 @@ export class MainComponent implements OnInit {
   currentSortColumn: string = '';
   currentSortOrder: 'asc' | 'desc' = 'asc';
   calculatedVariables = [];
-  populationByYearList: [number, string, number][] = [];
+  populationByYearList: number = 0;
+  seeExtraColumnsInCategory = false;
   monthsList = [
     { value: 1, name: 'Enero' },
     { value: 2, name: 'Febrero' },
@@ -286,7 +287,6 @@ export class MainComponent implements OnInit {
     try {
       if (this.selectedYear != this.hasChanges.selectedYear ||
           this.selectedFirstClassId != this.hasChanges.selectedFirstClassId) {
-        this.getPopulationData();
         await this.getAllTheDataByYearAndFirstClassId();
       }
       this.filteredAllDataByClasses = this.allDataByFirstClass;
@@ -334,6 +334,7 @@ export class MainComponent implements OnInit {
     this.updatedResolution = this.selectedResolution;
     this.updatedRegion = this.selectedRegion;
     this.selectedCVEState = Number(idSelectedState);
+    this.getPopulationById(this.selectedCVEState.toString(),this.selectedResolution)
     this.selectedCVEMun = idSelectedMun;
     this.saveNewSelectsValues();
     Swal.fire({
@@ -474,28 +475,50 @@ export class MainComponent implements OnInit {
       });
   }
 
-   getPopulationById(id: string, resolution: string): number | null {
-    if (resolution === 'Mun') {
-      const item = this.populationByYearList.find(subarray => Number(subarray[1]) == Number(id));
-      return item ? item[2] : null;
-    } else {
-      const munListByState = this.dataByMunToDisplayInMap.filter(item => item[0] === Number(id));
-      const sum = munListByState.reduce((total, mun) => {
-        const municipalId = mun[1]; // Municipal ID from dataByMunToDisplayInMap
-        const popItem = this.populationByYearList.find(item => item[1] === municipalId);
-        return total + (popItem ? Number(popItem[2]) : 0);
-      }, 0);
+  getPopulationById(id: string, resolution: string): number | null {
+    console.log(`id: ${id} resolution: ${resolution}`)
+    let cvegeo = "";
+    let cve_state = "";
+    if(resolution === 'Mun') cvegeo = id ;
+    if(resolution ==="Stat") cve_state = id;
 
-      return sum > 0 ? sum : null;
+    let verifyGender = (this.selectedGender == "1") ? "HOMBRES" : "";
+    verifyGender = (this.selectedGender == "2") ? "MUJERES": "";
+    let metropoli = "";
+    if(this.selectedRegion == environment.placeholderMetropoli){
+      metropoli = (this.selectedMetropoly == environment.selectedMetropoli) ? "all" : this.selectedMetropoly;
     }
+
+    let age = (this.selectedAge != environment.placeholderAge) ? this.selectedAge : ""
+    let result = this.getPopulationData(this.selectedYear.toString(), cve_state, metropoli, age, verifyGender, cvegeo)
+    console.log("👀")
+    console.log(result)
+    console.log("👀")
+    return 0
   }
 
-  getPopulationData(){
-    let year = Number(this.selectedYear).toString()
-    this.dbService.getDataByYearInTable(year, environment.tablePopulationTotal)
-    .subscribe({
+  getPopulationData(year: string, cve_state: string="", metropoli: string="",
+                    age: string="", gender: string="", cvegeo: string= "") {
+      console.log("year🎏: "+year)
+      console.log("cve_state🎏: "+cve_state)
+      console.log("metropoli🎏: "+metropoli)
+      console.log("age🎏: "+age)
+      console.log("gender🎏: "+gender)
+      console.log("cvegeo🎏: "+cvegeo)
+      this.dbService.getPopulationBy(
+        year,
+        cve_state || '',
+        metropoli || '',
+        age || '',
+        gender || '',
+        cvegeo || ''
+      ).subscribe({
       next: (response) => {
-        this.populationByYearList = response;
+        console.log("😱😱😱😱😱😱")
+        console.log(response)
+        console.log("😱😱😱😱😱😱")
+        return response
+        // this.populationByYearList = response;
       },
       error: (error) => {
         console.error('Error fetching data:', error);
@@ -507,7 +530,6 @@ export class MainComponent implements OnInit {
       }
     });
   }
-
 
   saveNewSelectsValues() {
     this.hasChanges.selectedFirstClassId = this.selectedFirstClassId;
@@ -760,8 +782,8 @@ export class MainComponent implements OnInit {
   }
 
   downloadCSV() {
-    const headers = ['Categoría', 'ncx', 'nx', 'n', 'nc'];
-    const keys = ['category', 'ncx', 'nx', 'n', 'nc'];
+    const headers = ['Categoría', 'ncx', 'nx', 'n', 'nc', 'epsilon', 'score', 'log_lift', 'RR', 'SE_loglist', 'ICinf', 'ICsup'];
+    const keys = ['category', 'ncx', 'nx', 'n', 'nc', 'epsilon', 'score', 'log_lift', 'RR', 'SE_loglist', 'ICinf', 'ICsup'];
 
     const escapeCSV = (value: any): string => {
       if (value === null || value === undefined) return '';
@@ -791,5 +813,9 @@ export class MainComponent implements OnInit {
     link.click();
 
     URL.revokeObjectURL(url);
+  }
+
+  toggleExtraColumns() {
+    this.seeExtraColumnsInCategory = !this.seeExtraColumnsInCategory;
   }
 }
