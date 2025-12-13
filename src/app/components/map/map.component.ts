@@ -27,6 +27,9 @@ export class MapComponent implements OnInit {
   @Input() stateNames!: { [key: number]: string };
   @Input() municipalityNames!: { [key: string]: string };
   @Input() totalCases: number = 0;
+  @Input() totalPopulationWithFilters: number = 0;
+  @Input() selectedAge: string = "";
+  @Input() selectedGender: string = "";
   constructor(private mapService: MapService, private diseaseDB: DiseaseDbService) { }
   geoJsonLayerMunicipal: any;
   geoJsonLayerStates: any;
@@ -71,7 +74,7 @@ export class MapComponent implements OnInit {
 
   }
 
-  updateMapLayerView(isStateOrMunicipality: string) {
+  async updateMapLayerView(isStateOrMunicipality: string) {
     if (!this.map) return;
 
     let geoJson;
@@ -152,10 +155,10 @@ export class MapComponent implements OnInit {
           fillOpacity: 0,
         };
       },
-      onEachFeature: (feature, layer) => {
+      onEachFeature: async (feature, layer) => {
         if (feature.properties) {
           const cases = this.numCasesByIdRegion(feature.properties.clave);
-          const pop = this.getPopulationById(feature.properties.clave) ? this.getPopulationById(feature.properties.clave) : 0;
+          const pop = (await this.getPopulationById(feature.properties.clave)) ?? 0;
           const rate = pop ? (cases / pop) * 100000 : 0;
           const risk = pop ? (cases / this.currentTotalPopulation) * 100000 : 0;
           const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado"
@@ -173,7 +176,7 @@ export class MapComponent implements OnInit {
                  </tr>
                  <tr>
                    <th>No. Casos nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion  : "Estado"}</th>
-                   <td>${this.totalCases.toLocaleString('en-US')}</td>
+                   <td>${this.totalPopulationWithFilters.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
                    <th>Población</th>
@@ -203,7 +206,7 @@ export class MapComponent implements OnInit {
     this.rateGeoJsonLayer = L.geoJSON(geoJson, {
       style: (feature: any | undefined) => {
         if (feature?.properties) {
-          const rate = this.getRateForRegion(feature.properties.clave);
+          const rate = await this.getRateForRegion(feature.properties.clave);
           const fillColor = this.getColorForValue(rate, true) || '#ffffff'; // true = rate mode
           return {
             fillColor,
@@ -221,10 +224,10 @@ export class MapComponent implements OnInit {
           fillOpacity: 0.8,
         };
       },
-      onEachFeature: (feature, layer) => {
+      onEachFeature: async (feature, layer) => {
         if (feature.properties) {
           const cases = this.numCasesByIdRegion(feature.properties.clave);
-          const pop = this.getPopulationById(feature.properties.clave) ? this.getPopulationById(feature.properties.clave) : 0 ;
+          const pop = (await this.getPopulationById(feature.properties.clave)) ?? 0;
           const rate = pop ? (cases / pop) * 100000 : 0;
           const risk = pop ? (rate / (Number(this.totalCases) / Number(this.currentTotalPopulation) * 100000)) : 0;
           const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado"
@@ -251,7 +254,7 @@ export class MapComponent implements OnInit {
                  </tr>
                  <tr>
                    <th>Población nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion  : "Estado"}</th>
-                   <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
+                   <td>${this.totalPopulationWithFilters.toLocaleString('en-US')}</td>
                  </tr>
                  <tr>
                    <th>Tasa</th>
@@ -322,7 +325,7 @@ export class MapComponent implements OnInit {
     return this.municipalityNames[code] || environment.unknownMunicipality;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  async ngOnChanges(changes: SimpleChanges): Promise<void> {
     console.log("Change detected")
     try {
       let newResolution = changes['updatedResolution']['currentValue'];
@@ -338,6 +341,12 @@ export class MapComponent implements OnInit {
         this.getPopulationData();
       }
     } catch (err) { console.log("no year updates");}
+    try {
+      let year = changes['totalPopulationWithFilters']['currentValue'];
+      console.log("🔔")
+      console.log(year)
+      console.log("🔔")
+    } catch (err) { console.log("no year updates");}
 
     try {
       let dataToDisplayByMun = changes['dataByMunToDisplayInMap']['currentValue'];
@@ -352,7 +361,7 @@ export class MapComponent implements OnInit {
           for (const row of this.rawDataTodisplayByMun) {
             const value = row[2];           // number of cases
             const id = row[1];              // the ID to get population
-            const population = this.getPopulationById(id);
+            const population = await this.getPopulationById(id) ?? 0;
 
             if (typeof value === 'number' && value > maxValue) maxValue = value;
 
@@ -372,7 +381,7 @@ export class MapComponent implements OnInit {
           let maxRateStateId: number | null = null;
 
           for (const [stateId, cases] of stateSums.entries()) {
-            const population = this.getPopulationById(stateId.toString());
+            const population = await this.getPopulationById(stateId.toString()) ?? 0;
             if (population && population > 0) { // avoid division by zero
               const rate = (cases / population) * 100000;
               if (rate > maxRate) {
@@ -426,36 +435,36 @@ export class MapComponent implements OnInit {
     return '#FFEDA0';
   }
 
-  getRateForRegion(id: string): number {
+  async getRateForRegion(id: string): Promise<number> {
     const cases = this.numCasesByIdRegion(id);
-    const population = this.getPopulationById(id);
+    const population = await this.getPopulationById(id) ?? 0
     return population && population > 0 ? (cases / population) * 100000 : 0;
   }
 
-  getValueForRegion(id: string): number {
+  async getValueForRegion(id: string): Promise<number> {
     const cases = this.numCasesByIdRegion(id);
-    const pop = this.getPopulationById(id);
+    const pop = await this.getPopulationById(id) ?? 0
     return pop && pop > 0 ? (cases / pop) * 100000 : 0;
   }
 
-  getPopulationById(id: string): number | null {
-    if (this.selectedResolution === 'Municipal') {
-      // For municipal level, find the population for the specific municipalId (item[1])
-      const item = this.populationByYearList.find(subarray => Number(subarray[1]) == Number(id));
-      return item ? item[2] : null;
-    } else {
-      const munListByState = this.dataByMunToDisplayInMap.filter(item => item[0] === Number(id));
-
-      // Sum populations from populationByYearList where municipal IDs match
-      const sum = munListByState.reduce((total, mun) => {
-        const municipalId = mun[1]; // Municipal ID from dataByMunToDisplayInMap
-        const popItem = this.populationByYearList.find(item => item[1] === municipalId);
-        return total + (popItem ? Number(popItem[2]) : 0);
-      }, 0);
-
-      return sum > 0 ? sum : null;
-    }
-  }
+  // getPopulationById(id: string): number | null {
+  //   if (this.selectedResolution === 'Municipal') {
+  //     // For municipal level, find the population for the specific municipalId (item[1])
+  //     const item = this.populationByYearList.find(subarray => Number(subarray[1]) == Number(id));
+  //     return item ? item[2] : null;
+  //   } else {
+  //     const munListByState = this.dataByMunToDisplayInMap.filter(item => item[0] === Number(id));
+  //
+  //     // Sum populations from populationByYearList where municipal IDs match
+  //     const sum = munListByState.reduce((total, mun) => {
+  //       const municipalId = mun[1]; // Municipal ID from dataByMunToDisplayInMap
+  //       const popItem = this.populationByYearList.find(item => item[1] === municipalId);
+  //       return total + (popItem ? Number(popItem[2]) : 0);
+  //     }, 0);
+  //
+  //     return sum > 0 ? sum : null;
+  //   }
+  // }
 
   createLegend(): L.Control {
     const legend = new L.Control({ position: 'bottomleft' });
@@ -548,5 +557,42 @@ export class MapComponent implements OnInit {
       .reduce((sum, item) => sum + (item[2] as number), 0);
     }
     this.currentTotalPopulation = total;
+  }
+
+  async getPopulationById(id: string): Promise<number | null>{
+    let year = this.selectedYear.toString();
+    let cve_state = "";
+    let cvegeo = "";
+
+    if (this.selectedResolution === 'Municipal') cvegeo = id ;
+    else cve_state = id;
+
+    let verifyGender = (this.selectedGender == "1") ? "HOMBRES" : "";
+    verifyGender = (this.selectedGender == "2") ? "MUJERES": "";
+
+    let age = (this.selectedAge != environment.placeholderAge) ? this.selectedAge : ""
+    try {
+      const response = await firstValueFrom(
+        this.diseaseDB.getPopulationBy(
+          year,
+          cve_state || '',
+          '',
+          age || '',
+          verifyGender || '',
+          cvegeo || ''
+        )
+      );
+
+      return response;
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      Swal.fire({
+        timer: 1000,
+        title: 'Ocurrio un error al cargar los datos.',
+        icon: 'error'
+      });
+      return 0;
+    }
   }
 }

@@ -109,8 +109,9 @@ export class MainComponent implements OnInit {
   currentSortColumn: string = '';
   currentSortOrder: 'asc' | 'desc' = 'asc';
   calculatedVariables = [];
-  populationByYearList: number = 0;
+  totalPopulationWithFilters: number = 0;
   seeExtraColumnsInCategory = false;
+
   monthsList = [
     { value: 1, name: 'Enero' },
     { value: 2, name: 'Febrero' },
@@ -334,7 +335,7 @@ export class MainComponent implements OnInit {
     this.updatedResolution = this.selectedResolution;
     this.updatedRegion = this.selectedRegion;
     this.selectedCVEState = Number(idSelectedState);
-    // await this.getPopulationById(this.selectedCVEState.toString(),this.selectedResolution)
+    this.getPopulationWithAllFilters()
     this.selectedCVEMun = idSelectedMun;
     this.saveNewSelectsValues();
     Swal.fire({
@@ -457,11 +458,6 @@ export class MainComponent implements OnInit {
     this.top10States = await Promise.all(
       top10StatesData.map(async (item) => {
         const populationState = await this.getPopulationById(item[0].toString(), "Stat");
-        console.log("🪭")
-        console.log(item[0] )
-        console.log(item[1] )
-        console.log(populationState)
-        console.log("🪭")
         const rateState = populationState ? (item[1] / populationState) * 100000 : 0;
         return [...item, rateState];
       })
@@ -496,10 +492,29 @@ export class MainComponent implements OnInit {
 
     let age = (this.selectedAge != environment.placeholderAge) ? this.selectedAge : ""
     let result = await this.getPopulationData(this.selectedYear.toString(), cve_state, metropoli, age, verifyGender, cvegeo)
-    console.log("👀")
-    console.log(result)
-    console.log("👀")
     return result
+  }
+  async getPopulationWithAllFilters(){
+    let year = this.selectedYear;
+    let gender = this.selectedGender;
+
+    let age = "";
+    let cve_state = "";
+    let metropoli = "";
+    let cvegeo = "";
+
+    if(this.selectedAge != environment.placeholderAge){
+      console.log("🛹")
+      console.log(age)
+    age = this.selectedAge;
+    }
+    if(this.selectedRegion === environment.placeholderCountry){}
+    if(this.selectedRegion === environment.placeholderState){
+      cve_state = this.selectedCVEState.toString()}
+    if(this.selectedRegion === environment.placeholderMetropoli){
+      metropoli = this.selectedMetropoly}
+
+    this.totalPopulationWithFilters = await this.getPopulationData(year, cve_state, metropoli, age, gender, cvegeo) | 0;
   }
 
   async getPopulationData(year: string, cve_state: string="", metropoli: string="",
