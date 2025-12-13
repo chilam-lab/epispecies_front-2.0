@@ -90,22 +90,15 @@ export class DiseaseDbService {
     let fullUrl = this.apiUrl + 'get_all_population';
     let params = new HttpParams().set('year', year)
 
-    console.log("year: "+year)
-    console.log("cve_state: "+cve_state)
-    console.log("cve_metropoli: "+cve_metropoli)
-    console.log("age_group: "+age_group)
-    console.log(" environment.placeholderAge: "+ environment.placeholderAge)
-    console.log(age_group != environment.placeholderAge)
-    console.log("gender: "+gender)
-    console.log("cvegeo: "+cvegeo)
-
     if (cvegeo) params = params.set('cvegeo', cvegeo);
     if (cve_metropoli && cve_metropoli == environment.selectedMetropoli) params = params.set('cve_metropoli', "all");
     if (cve_metropoli && cve_metropoli != environment.selectedMetropoli) params = params.set('cve_metropoli', cve_metropoli);
-    if (cve_state) params = params.set('cve_estado', Number(cve_state));
+    if (cve_state) params = params.set('cve_state', cve_state);
     if (age_group) params = params.set('age_group', age_group);
     if (gender == "1") params = params.set('gender', "HOMBRES");
     if (gender == "2") params = params.set('gender', "MUJERES");
+    console.log("❄️❄️❄️❄️❄️❄️PARAMS❄️❄️❄️❄️")
+    console.log(params)
 
     return this.http.get<any>(fullUrl, { params })
       .pipe(

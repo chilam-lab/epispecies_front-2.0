@@ -334,7 +334,7 @@ export class MainComponent implements OnInit {
     this.updatedResolution = this.selectedResolution;
     this.updatedRegion = this.selectedRegion;
     this.selectedCVEState = Number(idSelectedState);
-    this.getPopulationById(this.selectedCVEState.toString(),this.selectedResolution)
+    // await this.getPopulationById(this.selectedCVEState.toString(),this.selectedResolution)
     this.selectedCVEMun = idSelectedMun;
     this.saveNewSelectsValues();
     Swal.fire({
@@ -435,7 +435,7 @@ export class MainComponent implements OnInit {
     });
   }
 
-  top10() {
+  async top10() {
     let dataToDisplay = this.dataByMunToDisplayInMap;
     if( this.selectedRegion !== environment.placeholderMetropoli &&  this.selectedRegion !== environment.placeholderCountry &&
       this.selectedResolution == environment.placeholderMunResolution){
@@ -449,33 +449,38 @@ export class MainComponent implements OnInit {
       acc[first] = (acc[first] || 0) + third;
       return acc;
     }, {});
-
     const sorted = Object.entries(groupedByStates)
       .map(([key, sum]) => [parseInt(key), sum as number])
       .sort((a, b) => b[1] - a[1]);
 
-    this.top10States = sorted.slice(0, 10);
-    this.top10Municipalities = dataToDisplay
+    const top10StatesData = sorted.slice(0, 10);
+    this.top10States = await Promise.all(
+      top10StatesData.map(async (item) => {
+        const populationState = await this.getPopulationById(item[0].toString(), "Stat");
+        console.log("🪭")
+        console.log(item[0] )
+        console.log(item[1] )
+        console.log(populationState)
+        console.log("🪭")
+        const rateState = populationState ? (item[1] / populationState) * 100000 : 0;
+        return [...item, rateState];
+      })
+    );
+
+    const top10MunData = dataToDisplay
       .sort((a, b) => b[2] - a[2])
       .slice(0, 10);
 
-    this.top10States = sorted.slice(0, 10).map(item => {
-      const populationState = this.getPopulationById(item[0].toString(), "Stat");
-      const rateState = populationState ? (item[1] / populationState) * 100000 : 0;
-      return [...item, rateState];
-    });
-
-    this.top10Municipalities = dataToDisplay
-      .sort((a, b) => b[2] - a[2])
-      .slice(0, 10)
-      .map(row => {
-        const populationMun = this.getPopulationById(row[1].toString(), "Mun");
+    this.top10Municipalities = await Promise.all(
+      top10MunData.map(async (row) => {
+        const populationMun = await this.getPopulationById(row[1].toString(), "Mun");
         const rateMun = populationMun ? (row[2] / populationMun) * 100000 : 0;
         return [...row, rateMun];
-      });
+      })
+    );
   }
 
-  getPopulationById(id: string, resolution: string): number | null {
+  async getPopulationById(id: string, resolution: string): Promise<number | null>{
     console.log(`id: ${id} resolution: ${resolution}`)
     let cvegeo = "";
     let cve_state = "";
@@ -490,45 +495,42 @@ export class MainComponent implements OnInit {
     }
 
     let age = (this.selectedAge != environment.placeholderAge) ? this.selectedAge : ""
-    let result = this.getPopulationData(this.selectedYear.toString(), cve_state, metropoli, age, verifyGender, cvegeo)
+    let result = await this.getPopulationData(this.selectedYear.toString(), cve_state, metropoli, age, verifyGender, cvegeo)
     console.log("👀")
     console.log(result)
     console.log("👀")
-    return 0
+    return result
   }
 
-  getPopulationData(year: string, cve_state: string="", metropoli: string="",
-                    age: string="", gender: string="", cvegeo: string= "") {
-      console.log("year🎏: "+year)
-      console.log("cve_state🎏: "+cve_state)
-      console.log("metropoli🎏: "+metropoli)
-      console.log("age🎏: "+age)
-      console.log("gender🎏: "+gender)
-      console.log("cvegeo🎏: "+cvegeo)
-      this.dbService.getPopulationBy(
-        year,
-        cve_state || '',
-        metropoli || '',
-        age || '',
-        gender || '',
-        cvegeo || ''
-      ).subscribe({
-      next: (response) => {
-        console.log("😱😱😱😱😱😱")
-        console.log(response)
-        console.log("😱😱😱😱😱😱")
-        return response
-        // this.populationByYearList = response;
-      },
-      error: (error) => {
-        console.error('Error fetching data:', error);
-        Swal.fire({
-          timer: 1000,
-          title: 'Ocurrio un error al cargar los datos.',
-          icon: 'error'
-        })
-      }
-    });
+  async getPopulationData(year: string, cve_state: string="", metropoli: string="",
+                  age: string="", gender: string="", cvegeo: string= ""): Promise<number> {
+
+    try {
+      const response = await firstValueFrom(
+        this.dbService.getPopulationBy(
+          year,
+          cve_state || '',
+          metropoli || '',
+          age || '',
+          gender || '',
+          cvegeo || ''
+        )
+      );
+
+      console.log("😱😱😱😱😱😱=====>")
+      console.log(response)
+      console.log("😱😱😱😱😱😱")
+      return response;
+
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      Swal.fire({
+        timer: 1000,
+        title: 'Ocurrio un error al cargar los datos.',
+        icon: 'error'
+      });
+      return 0;
+    }
   }
 
   saveNewSelectsValues() {
