@@ -731,11 +731,12 @@ export class MainComponent implements OnInit {
       .filter(id => ageMap[id as keyof typeof ageMap])
       .map(id => {
         const label = ageMap[id as keyof typeof ageMap];
-        const count = label === 'Sin Especificar'
+        const count = label === 'Sin especificar'
           ? data.filter(item => item[8] == null).length
           : this.filterBy(8, id, data).length;
           return [label, count];
         });
+    console.log(this.showAgeTotals)
   }
   closingPeriodModal(){
     this.periodCloseRef.nativeElement.click();

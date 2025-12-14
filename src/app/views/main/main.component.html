@@ -49,7 +49,7 @@
           <mat-select [(ngModel)]="selectedAgeHelper" (ngModelChange)="saveSelectedage($event)" class="bootstrap-style-mat-select">
             <mat-option [value]="env.placeholderAge" selected>{{env.placeholderAge}}</mat-option>
             <ng-container *ngFor="let age of agesList">
-              <mat-option [value]="age[0] ? age + ' Años' : 'Sin especificar'" >{{age[0] ? age + " Años" : "Sin especificar" }}</mat-option>
+              <mat-option [value]="age[0] ? age[0]: 'Sin especificar'" >{{age[0] ? age + " Años" : "Sin especificar" }}</mat-option>
             </ng-container>
           </mat-select>
         </div>
