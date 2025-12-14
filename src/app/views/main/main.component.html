@@ -46,10 +46,10 @@
       <div class="row py-0 h-25 ">
         <div class="col-md-1 d-flex justify-content-left my-2">Filtrar por:</div>
         <div class="col-md-2 d-flex justify-content-center my-2">
-          <mat-select [(ngModel)]="selectedAge" class="bootstrap-style-mat-select">
+          <mat-select [(ngModel)]="selectedAgeHelper" (ngModelChange)="saveSelectedage($event)" class="bootstrap-style-mat-select">
             <mat-option [value]="env.placeholderAge" selected>{{env.placeholderAge}}</mat-option>
             <ng-container *ngFor="let age of agesList">
-              <mat-option [value]="age[0]">{{age[0] ? age + " Años" : "Sin especificar" }}</mat-option>
+              <mat-option [value]="age[0] ? age + ' Años' : 'Sin especificar'" >{{age[0] ? age + " Años" : "Sin especificar" }}</mat-option>
             </ng-container>
           </mat-select>
         </div>

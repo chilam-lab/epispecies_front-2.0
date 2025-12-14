@@ -97,8 +97,6 @@ export class DiseaseDbService {
     if (age_group) params = params.set('age_group', age_group);
     if (gender == "1") params = params.set('gender', "HOMBRES");
     if (gender == "2") params = params.set('gender', "MUJERES");
-    console.log("❄️❄️❄️❄️❄️❄️PARAMS❄️❄️❄️❄️")
-    console.log(params)
 
     return this.http.get<any>(fullUrl, { params })
       .pipe(

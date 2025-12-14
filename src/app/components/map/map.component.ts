@@ -572,15 +572,9 @@ export class MapComponent implements OnInit {
 
     if (this.selectedResolution === 'Municipal') cvegeo = id ;
     else cve_state = id;
-    console.log(gender)
 
-    let verifyGender = (this.selectedGender == "1" || this.selectedGender == "2" ) ? this.selectedGender : "";
-
-    let age = (this.selectedAge != environment.placeholderAge) ? this.selectedAge : ""
-    console.log("age: 🥐")
-    console.log(age)
-    console.log("Gender: 🥐")
-    console.log(verifyGender)
+    let verifyGender = (gender == "1" || gender == "2" ) ? gender : "";
+    let age = (this.selectedAge != environment.placeholderAge) ? this.selectedAge : "";
     try {
       const response = await firstValueFrom(
         this.diseaseDB.getPopulationBy(

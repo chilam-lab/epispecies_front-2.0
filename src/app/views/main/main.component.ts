@@ -44,6 +44,7 @@ export class MainComponent implements OnInit {
   selectedSecondClassId: string = environment.placeholderSecondClass;
   selectedThirdClassId: string = environment.placeholderThirdClass;
   selectedAge: string = environment.placeholderAge;
+  selectedAgeHelper: string = environment.placeholderAge;
   selectedGender: string = environment.placeholderGender;
   selectedYear: string = environment.placeholderYear;
   selectedRegion: string = environment.placeholderCountry;
@@ -476,6 +477,13 @@ export class MainComponent implements OnInit {
       })
     );
   }
+  saveSelectedage(age: string){
+    console.log("🍁")
+    console.log(age)
+    console.log("🍁")
+    if(age == 'Sin especificar') this.selectedAge = ""
+    else this.selectedAge = age;
+  }
 
   async getPopulationById(id: string, resolution: string): Promise<number | null>{
     console.log(`id: ${id} resolution: ${resolution}`)
@@ -531,10 +539,6 @@ export class MainComponent implements OnInit {
           cvegeo || ''
         )
       );
-
-      console.log("😱😱😱😱😱😱=====>")
-      console.log(response)
-      console.log("😱😱😱😱😱😱")
       return response;
 
     } catch (error) {
@@ -727,7 +731,7 @@ export class MainComponent implements OnInit {
       .filter(id => ageMap[id as keyof typeof ageMap])
       .map(id => {
         const label = ageMap[id as keyof typeof ageMap];
-        const count = label === 'Sin especificar'
+        const count = label === 'null'
           ? data.filter(item => item[8] == null).length
           : this.filterBy(8, id, data).length;
           return [label, count];
