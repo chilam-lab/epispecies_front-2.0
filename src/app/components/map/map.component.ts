@@ -163,6 +163,17 @@ export class MapComponent implements OnInit {
       })
     );
 
+    let maxCases = 0;
+    let maxRate = 0;
+
+    for (const data of dataCache.values()) {
+      if (data.cases > maxCases) maxCases = data.cases;
+      if (data.rate > maxRate) maxRate = data.rate;
+    }
+
+    this.highestValueInData = maxCases;
+    this.highestRateInData = maxRate;
+
     // Create the cases layer (now synchronous with cached data)
     this.casesGeoJsonLayer = L.geoJSON(geoJson, {
       style: (feature: any | undefined) => {
@@ -386,7 +397,6 @@ export class MapComponent implements OnInit {
             const id = row[1];              // the ID to get population
             const population = await this.getPopulationById(id) ?? 0;
 
-            if (typeof value === 'number' && value > maxValue) maxValue = value;
 
             if (population && population > 0) {
               const rate = (Number(value) / population) * 100000;
@@ -400,7 +410,6 @@ export class MapComponent implements OnInit {
             acc.set(stateId, (acc.get(stateId) || 0) + cases);
             return acc;
           }, new Map<number, number>());
-          maxValue = Math.max(...stateSums.values());
           let maxRateStateId: number | null = null;
 
           for (const [stateId, cases] of stateSums.entries()) {
@@ -572,15 +581,11 @@ export class MapComponent implements OnInit {
 
     if (this.selectedResolution === 'Municipal') cvegeo = Number(id).toString() ;
     else cve_state = id;
-    console.log(gender)
+    console.log(cvegeo)
 
     let verifyGender = (this.selectedGender == "1" || this.selectedGender == "2" ) ? this.selectedGender : "";
 
     let age = (this.selectedAge != environment.placeholderAge) ? this.selectedAge : ""
-    console.log("age: 🥐")
-    console.log(age)
-    console.log("Gender: 🥐")
-    console.log(verifyGender)
     try {
       const response = await firstValueFrom(
         this.diseaseDB.getPopulationBy(
