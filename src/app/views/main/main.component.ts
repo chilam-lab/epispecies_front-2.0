@@ -43,7 +43,7 @@ export class MainComponent implements OnInit {
   selectedFirstClassId: string = environment.placeholderFirstClass;
   selectedSecondClassId: string = environment.placeholderSecondClass;
   selectedThirdClassId: string = environment.placeholderThirdClass;
-  selectedAge: string = environment.placeholderAge;
+  selectedAge: any = environment.placeholderAge;
   selectedAgeHelper: string = environment.placeholderAge;
   selectedGender: string = environment.placeholderGender;
   selectedYear: string = environment.placeholderYear;
@@ -481,7 +481,7 @@ export class MainComponent implements OnInit {
     console.log("🍁")
     console.log(age)
     console.log("🍁")
-    if(age == 'Sin especificar') this.selectedAge = ""
+    if(age == 'Sin especificar') this.selectedAge = null
     else this.selectedAge = age;
   }
 
@@ -731,7 +731,7 @@ export class MainComponent implements OnInit {
       .filter(id => ageMap[id as keyof typeof ageMap])
       .map(id => {
         const label = ageMap[id as keyof typeof ageMap];
-        const count = label === 'null'
+        const count = label === 'Sin Especificar'
           ? data.filter(item => item[8] == null).length
           : this.filterBy(8, id, data).length;
           return [label, count];
