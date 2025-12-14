@@ -483,8 +483,7 @@ export class MainComponent implements OnInit {
     if(resolution === 'Mun') cvegeo = id ;
     if(resolution ==="Stat") cve_state = id;
 
-    let verifyGender = (this.selectedGender == "1") ? "HOMBRES" : "";
-    verifyGender = (this.selectedGender == "2") ? "MUJERES": "";
+    let verifyGender = (this.selectedGender == "1" || this.selectedGender == "2" ) ? this.selectedGender : "";
     let metropoli = "";
     if(this.selectedRegion == environment.placeholderMetropoli){
       metropoli = (this.selectedMetropoly == environment.selectedMetropoli) ? "all" : this.selectedMetropoly;
@@ -506,15 +505,17 @@ export class MainComponent implements OnInit {
     if(this.selectedAge != environment.placeholderAge){
       console.log("🛹")
       console.log(age)
-    age = this.selectedAge;
+      age = this.selectedAge;
     }
+    let verifyGender = (gender == "1" || gender == "2" ) ? gender : "";
+
     if(this.selectedRegion === environment.placeholderCountry){}
     if(this.selectedRegion === environment.placeholderState){
       cve_state = this.selectedCVEState.toString()}
     if(this.selectedRegion === environment.placeholderMetropoli){
       metropoli = this.selectedMetropoly}
 
-    this.totalPopulationWithFilters = await this.getPopulationData(year, cve_state, metropoli, age, gender, cvegeo) | 0;
+    this.totalPopulationWithFilters = await this.getPopulationData(year, cve_state, metropoli, age, verifyGender, cvegeo) | 0;
   }
 
   async getPopulationData(year: string, cve_state: string="", metropoli: string="",

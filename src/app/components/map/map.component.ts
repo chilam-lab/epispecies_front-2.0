@@ -71,7 +71,6 @@ export class MapComponent implements OnInit {
     }).addTo(this.map);
 
     this.updateMapLayerView("states");
-
   }
 
   async updateMapLayerView(isStateOrMunicipality: string) {
@@ -134,11 +133,42 @@ export class MapComponent implements OnInit {
       this.rateGeoJsonLayer = undefined;
     }
 
-    // Create the cases layer
+    // ✨ PRE-CALCULATE ALL DATA ONCE
+    const dataCache = new Map<string, {
+      cases: number;
+      population: number;
+      rate: number;
+      riskCases: number;
+      riskRate: number;
+      name: string;
+    }>();
+
+    const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado";
+
+    await Promise.all(
+      geoJson.features.map(async (feature: any) => {
+        if (feature.properties?.clave) {
+          const clave = feature.properties.clave;
+          const cases = this.numCasesByIdRegion(clave);
+          const population = (await this.getPopulationById(clave)) ?? 0;
+          const rate = population ? (cases / population) * 100000 : 0;
+          const riskCases = population ? (cases / this.currentTotalPopulation) * 100000 : 0;
+          const riskRate = cases ? (rate / (Number(this.totalCases) / Number(this.currentTotalPopulation) * 100000)) : 0;
+          const name = isStateOrMunicipality == 'Municipal'
+            ? this.getMunicipalityName(clave)
+            : this.getStateName(Number(clave));
+
+          dataCache.set(clave, { cases, population, rate, riskCases, riskRate, name });
+        }
+      })
+    );
+
+    // Create the cases layer (now synchronous with cached data)
     this.casesGeoJsonLayer = L.geoJSON(geoJson, {
       style: (feature: any | undefined) => {
         if (feature?.properties) {
-          const fillColor = this.getColorForValue(this.numCasesByIdRegion(feature.properties.clave)) || 'transparent';
+          const data = dataCache.get(feature.properties.clave);
+          const fillColor = this.getColorForValue(data?.cases ?? 0) || 'transparent';
           return {
             fillColor,
             weight: 0.5,
@@ -155,59 +185,56 @@ export class MapComponent implements OnInit {
           fillOpacity: 0,
         };
       },
-      onEachFeature: async (feature, layer) => {
+      onEachFeature: (feature, layer) => {
         if (feature.properties) {
-          const cases = this.numCasesByIdRegion(feature.properties.clave);
-          const pop = (await this.getPopulationById(feature.properties.clave)) ?? 0;
-          const rate = pop ? (cases / pop) * 100000 : 0;
-          const risk = pop ? (cases / this.currentTotalPopulation) * 100000 : 0;
-          const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado"
-          const name = isStateOrMunicipality == 'Municipal' ? this.getMunicipalityName(feature.properties.clave): this.getStateName(Number(feature.properties.clave))
-          layer.bindPopup(
-            `<table class="table">
-               <tbody>
-                 <tr>
-                   <th>${placeholder}</th>
-                   <th>${name}</th>
-                 </tr>
-                 <tr>
-                   <th>No. Casos</th>
-                   <td>${cases.toLocaleString('en-US')}</td>
-                 </tr>
-                 <tr>
-                   <th>No. Casos nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion  : "Estado"}</th>
-                   <td>${this.totalPopulationWithFilters.toLocaleString('en-US')}</td>
-                 </tr>
-                 <tr>
-                   <th>Población</th>
-                   <td>${pop?.toLocaleString('en-US')}</td>
-                 </tr>
-                 <tr>
-                   <th>Población nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion  : "Estado"}</th>
-                   <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
-                 </tr>
-                 <tr>
-                   <th>Tasa</th>
-                   <td>${rate.toFixed(4)}</td>
-                 </tr>
-                 <tr>
-                   <th>Razón de tasas</th>
-                   <td>${risk.toFixed(4)}</td>
-                 </tr>
-               </tbody>
-             </table>`
-          );
-          layer.bindTooltip(`${placeholder+": "+name} Casos: ${this.numCasesByIdRegion(feature.properties.clave)}`, { sticky: true });
+          const data = dataCache.get(feature.properties.clave);
+          if (data) {
+            layer.bindPopup(
+              `<table class="table">
+                 <tbody>
+                   <tr>
+                     <th>${placeholder}</th>
+                     <th>${data.name}</th>
+                   </tr>
+                   <tr>
+                     <th>No. Casos</th>
+                     <td>${data.cases.toLocaleString('en-US')}</td>
+                   </tr>
+                   <tr>
+                     <th>No. Casos nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion : "Estado"}</th>
+                     <td>${this.totalPopulationWithFilters.toLocaleString('en-US')}</td>
+                   </tr>
+                   <tr>
+                     <th>Población</th>
+                     <td>${data.population.toLocaleString('en-US')}</td>
+                   </tr>
+                   <tr>
+                     <th>Población nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion : "Estado"}</th>
+                     <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
+                   </tr>
+                   <tr>
+                     <th>Tasa</th>
+                     <td>${data.rate.toFixed(4)}</td>
+                   </tr>
+                   <tr>
+                     <th>Razón de tasas</th>
+                     <td>${data.riskCases.toFixed(4)}</td>
+                   </tr>
+                 </tbody>
+               </table>`
+            );
+            layer.bindTooltip(`${placeholder + ": " + data.name} Casos: ${data.cases}`, { sticky: true });
+          }
         }
       }
     });
 
-    // Create the rate layer
+    // Create the rate layer (now synchronous with cached data)
     this.rateGeoJsonLayer = L.geoJSON(geoJson, {
       style: (feature: any | undefined) => {
         if (feature?.properties) {
-          const rate = await this.getRateForRegion(feature.properties.clave);
-          const fillColor = this.getColorForValue(rate, true) || '#ffffff'; // true = rate mode
+          const data = dataCache.get(feature.properties.clave);
+          const fillColor = this.getColorForValue(data?.rate ?? 0, true) || '#ffffff';
           return {
             fillColor,
             weight: 0.5,
@@ -224,50 +251,46 @@ export class MapComponent implements OnInit {
           fillOpacity: 0.8,
         };
       },
-      onEachFeature: async (feature, layer) => {
+      onEachFeature: (feature, layer) => {
         if (feature.properties) {
-          const cases = this.numCasesByIdRegion(feature.properties.clave);
-          const pop = (await this.getPopulationById(feature.properties.clave)) ?? 0;
-          const rate = pop ? (cases / pop) * 100000 : 0;
-          const risk = pop ? (rate / (Number(this.totalCases) / Number(this.currentTotalPopulation) * 100000)) : 0;
-          const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado"
-          const name = isStateOrMunicipality == 'Municipal' ? this.getMunicipalityName(Number(feature.properties.clave)): this.getStateName(Number(feature.properties.clave))
-          layer.bindPopup(
-            `<table class="table">
-               <tbody>
-                 <tr>
-                   <th>${placeholder}</th>
-                   <th>${name}</th>
-                 </tr>
-                 <tr>
-                   <th>No. Casos</th>
-                   <td>${cases.toLocaleString('en-US')}</td>
-                 </tr>
-                 <tr>
-                   <th>No. Casos nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion  : "Estado"}</th>
-                   <td>${this.totalCases.toLocaleString('en-US')}</td>
-                 </tr>
-
-                 <tr>
-                   <th>Población</th>
-                   <td>${pop?.toLocaleString('en-US')}</td>
-                 </tr>
-                 <tr>
-                   <th>Población nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion  : "Estado"}</th>
-                   <td>${this.totalPopulationWithFilters.toLocaleString('en-US')}</td>
-                 </tr>
-                 <tr>
-                   <th>Tasa</th>
-                   <td>${rate.toFixed(4)}</td>
-                 </tr>
-                 <tr>
-                   <th>Razón de tasas</th>
-                   <td>${risk.toFixed(4)}</td>
-                 </tr>
-               </tbody>
-             </table>`
-          );
-          layer.bindTooltip(`${placeholder+": "+name} Tasa: ${rate.toFixed(2)}`, { sticky: true });
+          const data = dataCache.get(feature.properties.clave);
+          if (data) {
+            layer.bindPopup(
+              `<table class="table">
+                 <tbody>
+                   <tr>
+                     <th>${placeholder}</th>
+                     <th>${data.name}</th>
+                   </tr>
+                   <tr>
+                     <th>No. Casos</th>
+                     <td>${data.cases.toLocaleString('en-US')}</td>
+                   </tr>
+                   <tr>
+                     <th>No. Casos nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion : "Estado"}</th>
+                     <td>${this.totalCases.toLocaleString('en-US')}</td>
+                   </tr>
+                   <tr>
+                     <th>Población</th>
+                     <td>${data.population.toLocaleString('en-US')}</td>
+                   </tr>
+                   <tr>
+                     <th>Población nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion : "Estado"}</th>
+                     <td>${this.totalPopulationWithFilters.toLocaleString('en-US')}</td>
+                   </tr>
+                   <tr>
+                     <th>Tasa</th>
+                     <td>${data.rate.toFixed(4)}</td>
+                   </tr>
+                   <tr>
+                     <th>Razón de tasas</th>
+                     <td>${data.riskRate.toFixed(4)}</td>
+                   </tr>
+                 </tbody>
+               </table>`
+            );
+            layer.bindTooltip(`${placeholder + ": " + data.name} Tasa: ${data.rate.toFixed(2)}`, { sticky: true });
+          }
         }
       }
     }).addTo(this.map);
@@ -405,7 +428,7 @@ export class MapComponent implements OnInit {
     } catch (err) { console.log("no region updates");}
     this.calculateTotalPopulation();
 
-    this.updateMapLayerView(this.selectedResolution);
+    await this.updateMapLayerView(this.selectedResolution);
   }
 
 
@@ -446,25 +469,6 @@ export class MapComponent implements OnInit {
     const pop = await this.getPopulationById(id) ?? 0
     return pop && pop > 0 ? (cases / pop) * 100000 : 0;
   }
-
-  // getPopulationById(id: string): number | null {
-  //   if (this.selectedResolution === 'Municipal') {
-  //     // For municipal level, find the population for the specific municipalId (item[1])
-  //     const item = this.populationByYearList.find(subarray => Number(subarray[1]) == Number(id));
-  //     return item ? item[2] : null;
-  //   } else {
-  //     const munListByState = this.dataByMunToDisplayInMap.filter(item => item[0] === Number(id));
-  //
-  //     // Sum populations from populationByYearList where municipal IDs match
-  //     const sum = munListByState.reduce((total, mun) => {
-  //       const municipalId = mun[1]; // Municipal ID from dataByMunToDisplayInMap
-  //       const popItem = this.populationByYearList.find(item => item[1] === municipalId);
-  //       return total + (popItem ? Number(popItem[2]) : 0);
-  //     }, 0);
-  //
-  //     return sum > 0 ? sum : null;
-  //   }
-  // }
 
   createLegend(): L.Control {
     const legend = new L.Control({ position: 'bottomleft' });
@@ -525,6 +529,7 @@ export class MapComponent implements OnInit {
 
     return legend;
   }
+
   getPopulationData(){
     let year = Number(this.selectedYear).toString()
     this.diseaseDB.getDataByYearInTable(year, environment.tablePopulationTotal)
@@ -559,18 +564,23 @@ export class MapComponent implements OnInit {
     this.currentTotalPopulation = total;
   }
 
-  async getPopulationById(id: string): Promise<number | null>{
+  async getPopulationById(id: string): Promise<number>{
     let year = this.selectedYear.toString();
     let cve_state = "";
     let cvegeo = "";
+    let gender = this.selectedGender[0]
 
     if (this.selectedResolution === 'Municipal') cvegeo = id ;
     else cve_state = id;
+    console.log(gender)
 
-    let verifyGender = (this.selectedGender == "1") ? "HOMBRES" : "";
-    verifyGender = (this.selectedGender == "2") ? "MUJERES": "";
+    let verifyGender = (this.selectedGender == "1" || this.selectedGender == "2" ) ? this.selectedGender : "";
 
     let age = (this.selectedAge != environment.placeholderAge) ? this.selectedAge : ""
+    console.log("age: 🥐")
+    console.log(age)
+    console.log("Gender: 🥐")
+    console.log(verifyGender)
     try {
       const response = await firstValueFrom(
         this.diseaseDB.getPopulationBy(
@@ -583,7 +593,7 @@ export class MapComponent implements OnInit {
         )
       );
 
-      return response;
+      return response || 0;
 
     } catch (error) {
       console.error('Error fetching data:', error);
