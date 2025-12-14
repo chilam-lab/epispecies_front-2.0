@@ -163,6 +163,20 @@ export class MapComponent implements OnInit {
       })
     );
 
+    let maxCases = 0;
+    let maxRate = 0;
+
+    for (const data of dataCache.values()) {
+        if (data.cases > maxCases) maxCases = data.cases;
+          if (data.rate > maxRate) maxRate = data.rate;
+    }
+
+    console.log('Max cases:', maxCases);
+    console.log('Max rate:', maxRate);
+    this.highestValueInData = maxCases;
+    this.highestRateInData = maxRate;
+
+
     // Create the cases layer (now synchronous with cached data)
     this.casesGeoJsonLayer = L.geoJSON(geoJson, {
       style: (feature: any | undefined) => {
@@ -379,43 +393,43 @@ export class MapComponent implements OnInit {
         let maxValue = 0;
         let maxRate = 0;
 
-        if (this.selectedResolution === "Municipal") {
-
-          for (const row of this.rawDataTodisplayByMun) {
-            const value = row[2];           // number of cases
-            const id = row[1];              // the ID to get population
-            const population = await this.getPopulationById(id) ?? 0;
-
-            if (typeof value === 'number' && value > maxValue) maxValue = value;
-
-            if (population && population > 0) {
-              const rate = (Number(value) / population) * 100000;
-              if (rate > maxRate) maxRate = rate;
-            }
-          }
-        } else {
-          const stateSums = this.dataByMunToDisplayInMap.reduce((acc, row) => {
-            const stateId = row[0];
-            const cases = Number(row[2]);
-            acc.set(stateId, (acc.get(stateId) || 0) + cases);
-            return acc;
-          }, new Map<number, number>());
-          maxValue = Math.max(...stateSums.values());
-          let maxRateStateId: number | null = null;
-
-          for (const [stateId, cases] of stateSums.entries()) {
-            const population = await this.getPopulationById(stateId.toString()) ?? 0;
-            if (population && population > 0) { // avoid division by zero
-              const rate = (cases / population) * 100000;
-              if (rate > maxRate) {
-                maxRate = rate;
-                maxRateStateId = stateId;
-              }
-            }
-          }
-        }
-        this.highestValueInData = maxValue;
-        this.highestRateInData = maxRate;
+        // if (this.selectedResolution === "Municipal") {
+        //
+        //   for (const row of this.rawDataTodisplayByMun) {
+        //     const value = row[2];           // number of cases
+        //     const id = row[1];              // the ID to get population
+        //     const population = await this.getPopulationById(id) ?? 0;
+        //
+        //     if (typeof value === 'number' && value > maxValue) maxValue = value;
+        //
+        //     if (population && population > 0) {
+        //       const rate = (Number(value) / population) * 100000;
+        //       if (rate > maxRate) maxRate = rate;
+        //     }
+        //   }
+        // } else {
+        //   const stateSums = this.dataByMunToDisplayInMap.reduce((acc, row) => {
+        //     const stateId = row[0];
+        //     const cases = Number(row[2]);
+        //     acc.set(stateId, (acc.get(stateId) || 0) + cases);
+        //     return acc;
+        //   }, new Map<number, number>());
+        //   maxValue = Math.max(...stateSums.values());
+        //   let maxRateStateId: number | null = null;
+        //
+        //   for (const [stateId, cases] of stateSums.entries()) {
+        //     const population = await this.getPopulationById(stateId.toString()) ?? 0;
+        //     if (population && population > 0) { // avoid division by zero
+        //       const rate = (cases / population) * 100000;
+        //       if (rate > maxRate) {
+        //         maxRate = rate;
+        //         maxRateStateId = stateId;
+        //       }
+        //     }
+        //   }
+        // }
+        // this.highestValueInData = maxValue;
+        // this.highestRateInData = maxRate;
 
       }
     } catch (err) {
@@ -564,13 +578,15 @@ export class MapComponent implements OnInit {
     this.currentTotalPopulation = total;
   }
 
-  async getPopulationById(id: string): Promise<number>{
+  async getPopulationById(cve: string): Promise<number>{
+    let id = cve;
+    console.log(id)
     let year = this.selectedYear.toString();
     let cve_state = "";
-    let cvegeo = "";
+    let cvegeo = "";;
     let gender = this.selectedGender[0]
 
-    if (this.selectedResolution === 'Municipal') cvegeo = id ;
+    if (this.selectedResolution === 'Municipal') cvegeo = Number(id).toString() ;
     else cve_state = id;
 
     let verifyGender = (gender == "1" || gender == "2" ) ? gender : "";
