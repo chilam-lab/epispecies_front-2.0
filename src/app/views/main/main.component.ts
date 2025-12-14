@@ -322,17 +322,17 @@ export class MainComponent implements OnInit {
     idSelectedMun = (idSelectedMun.length > 0) ? Number(idSelectedMun) > 10000 ? idSelectedMun : "0" + idSelectedMun : "";
     const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
 
-    this.dataByMunToDisplayInMap = municipalityDataList;
+    let stateMunList:any[];
     if(this.selectedRegion == environment.placeholderMetropoli){
       this.dataByMunToDisplayInMap = this.filterByMetropoli(municipalityDataList);
+    } else if(idState){
+      stateMunList = this.filterBy(0,idState[0],municipalityDataList)
+      this.dataByMunToDisplayInMap = stateMunList;
+    } else {
+      this.dataByMunToDisplayInMap = municipalityDataList;
     }
     this.top10()
     this.totals()
-    let stateMunList:any[];
-    if(idState){
-      stateMunList = this.filterBy(0,idState[0],municipalityDataList)
-      this.dataByMunToDisplayInMap = stateMunList;
-    }
     this.getCategories(this.selectedYear.toString(), this.selectedMetropoly, this.selectedState)
     this.updatedResolution = this.selectedResolution;
     this.updatedRegion = this.selectedRegion;
