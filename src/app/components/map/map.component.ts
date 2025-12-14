@@ -372,7 +372,6 @@ export class MapComponent implements OnInit {
         let numberYear = Number(year[0]).toString();
         console.log("Running data with: "+ this.selectedYear)
         this.selectedYear = numberYear;
-        this.getPopulationData();
       }
     } catch (err) { console.log("no year updates");}
     try {
@@ -470,18 +469,6 @@ export class MapComponent implements OnInit {
     return '#FFEDA0';
   }
 
-  async getRateForRegion(id: string): Promise<number> {
-    const cases = this.numCasesByIdRegion(id);
-    const population = await this.getPopulationById(id) ?? 0
-    return population && population > 0 ? (cases / population) * 100000 : 0;
-  }
-
-  async getValueForRegion(id: string): Promise<number> {
-    const cases = this.numCasesByIdRegion(id);
-    const pop = await this.getPopulationById(id) ?? 0
-    return pop && pop > 0 ? (cases / pop) * 100000 : 0;
-  }
-
   createLegend(): L.Control {
     const legend = new L.Control({ position: 'bottomleft' });
 
@@ -540,24 +527,6 @@ export class MapComponent implements OnInit {
     };
 
     return legend;
-  }
-
-  getPopulationData(){
-    let year = Number(this.selectedYear).toString()
-    this.diseaseDB.getDataByYearInTable(year, environment.tablePopulationTotal)
-    .subscribe({
-      next: (response) => {
-        this.populationByYearList = response;
-      },
-      error: (error) => {
-        console.error('Error fetching data:', error);
-        Swal.fire({
-          timer: 1000,
-          title: 'Ocurrio un error al cargar los datos.',
-          icon: 'error'
-        })
-      }
-    });
   }
 
   async getPopulationById(id: string): Promise<number>{
