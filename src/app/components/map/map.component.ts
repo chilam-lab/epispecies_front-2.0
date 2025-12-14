@@ -152,8 +152,8 @@ export class MapComponent implements OnInit {
           const cases = this.numCasesByIdRegion(clave);
           const population = (await this.getPopulationById(clave)) ?? 0;
           const rate = population ? (cases / population) * 100000 : 0;
-          const riskCases = population ? (cases / this.currentTotalPopulation) * 100000 : 0;
-          const riskRate = cases ? (rate / (Number(this.totalCases) / Number(this.currentTotalPopulation) * 100000)) : 0;
+          const riskCases = population ? (cases / population) * 100000 : 0;
+          const riskRate = cases ? (rate / (Number(this.totalCases) / Number(this.totalPopulationWithFilters * 100000))) : 0;
           const name = isStateOrMunicipality == 'Municipal'
             ? this.getMunicipalityName(clave)
             : this.getStateName(Number(clave));
@@ -213,7 +213,7 @@ export class MapComponent implements OnInit {
                    </tr>
                    <tr>
                      <th>No. Casos nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion : "Estado"}</th>
-                     <td>${this.totalPopulationWithFilters.toLocaleString('en-US')}</td>
+                     <td>${this.totalCases.toLocaleString('en-US')}</td>
                    </tr>
                    <tr>
                      <th>Población</th>
@@ -221,7 +221,7 @@ export class MapComponent implements OnInit {
                    </tr>
                    <tr>
                      <th>Población nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion : "Estado"}</th>
-                     <td>${this.currentTotalPopulation?.toLocaleString('en-US')}</td>
+                     <td>${this.totalPopulationWithFilters.toLocaleString('en-US')}</td>
                    </tr>
                    <tr>
                      <th>Tasa</th>
@@ -397,6 +397,7 @@ export class MapComponent implements OnInit {
             const id = row[1];              // the ID to get population
             const population = await this.getPopulationById(id) ?? 0;
 
+            if (typeof value === 'number' && value > maxValue) maxValue = value;
 
             if (population && population > 0) {
               const rate = (Number(value) / population) * 100000;
@@ -410,6 +411,7 @@ export class MapComponent implements OnInit {
             acc.set(stateId, (acc.get(stateId) || 0) + cases);
             return acc;
           }, new Map<number, number>());
+          maxValue = Math.max(...stateSums.values());
           let maxRateStateId: number | null = null;
 
           for (const [stateId, cases] of stateSums.entries()) {
@@ -423,6 +425,8 @@ export class MapComponent implements OnInit {
             }
           }
         }
+        console.log("rawDataTodisplayByMun")
+        console.log(this.rawDataTodisplayByMun)
         this.highestValueInData = maxValue;
         this.highestRateInData = maxRate;
 
@@ -435,7 +439,6 @@ export class MapComponent implements OnInit {
       let newRegion = changes['updatedRegion']['currentValue'];
       if (newRegion && newRegion != this.selectedRegion) { this.selectedRegion = newRegion; }
     } catch (err) { console.log("no region updates");}
-    this.calculateTotalPopulation();
 
     await this.updateMapLayerView(this.selectedResolution);
   }
@@ -555,22 +558,6 @@ export class MapComponent implements OnInit {
         })
       }
     });
-  }
-
-  calculateTotalPopulation(){
-    let total = 1;
-    let population = this.populationByYearList;
-    if(this.selectedRegion == environment.placeholderCountry){
-      total = population.reduce((total: number, item: any[]) => {
-          return item[0] === Number(this.selectedYear) ? total + item[2] : total;
-        }, 0);
-    } else {
-      const municipalityCodes = new Set(this.rawDataTodisplayByMun.map(item => item[1]));
-      total = population
-      .filter(item => item[0] === Number(this.selectedYear) && municipalityCodes.has(item[1] as string))
-      .reduce((sum, item) => sum + (item[2] as number), 0);
-    }
-    this.currentTotalPopulation = total;
   }
 
   async getPopulationById(id: string): Promise<number>{
