@@ -167,6 +167,7 @@ export class MainComponent implements OnInit {
           const lastyear = response[2][response[2].length - 1];
           this.yearsList = response[2].reverse();
           this.selectedYear = lastyear;
+          console.log("AGE: 🎏")
           console.log(this.agesList)
         },
         error: (error) => {
@@ -503,8 +504,6 @@ export class MainComponent implements OnInit {
     let cvegeo = "";
 
     if(this.selectedAge != environment.placeholderAge){
-      console.log("🛹")
-      console.log(age)
       age = this.selectedAge;
     }
     let verifyGender = (gender == "1" || gender == "2" ) ? gender : "";
@@ -698,6 +697,10 @@ export class MainComponent implements OnInit {
     this.showGenderTotals = [];
     let cve_state = this.getStateCode(this.selectedState)?.toString() ?? '';
     let data = this.filteredAllDataByClasses;
+    console.log("👁️")
+    console.log(data)
+    console.log(data.filter(item => item[8] == null))
+    console.log("👁️")
     if(this.selectedRegion == environment.placeholderMunicipal){
         let munListByState = this.statesAndMunList.filter(x=> x[0]==cve_state)
         let cve_geo = munListByState.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
@@ -722,7 +725,13 @@ export class MainComponent implements OnInit {
 
     this.showAgeTotals = selectedAge
       .filter(id => ageMap[id as keyof typeof ageMap])
-      .map(id => [ageMap[id as keyof typeof ageMap], this.filterBy(8, id, data).length]);
+      .map(id => {
+        const label = ageMap[id as keyof typeof ageMap];
+        const count = label === 'Sin especificar'
+          ? data.filter(item => item[8] == null).length
+          : this.filterBy(8, id, data).length;
+          return [label, count];
+        });
   }
   closingPeriodModal(){
     this.periodCloseRef.nativeElement.click();
