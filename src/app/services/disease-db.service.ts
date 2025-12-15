@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { forkJoin } from 'rxjs';
@@ -12,6 +12,9 @@ import { environment } from '../../environments/environment';
 })
 export class DiseaseDbService {
   private apiUrl = environment.urlDeseaseDB;
+  private headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+  });
 
   constructor(private http: HttpClient) { }
 
@@ -102,6 +105,25 @@ export class DiseaseDbService {
       .pipe(
         catchError(this.handleError)
       );
+  }
+
+  getPopulationByCveList(year: string, cve_state:String[],
+                  age_group: string, gender:string, cvegeo:String[]): Observable<{ [key: string]: number }>{
+    let fullUrl = this.apiUrl + 'get_population_batch';
+    const body: any = { year };
+
+    if (cvegeo.length > 0) body.cvegeos = cvegeo;
+    if (cve_state.length > 0) body.cve_states = cve_state;
+    if (age_group) body.age_group = age_group;
+    if (gender == "1") body.gender = "HOMBRES";
+    if (gender == "2") body.gender = "MUJERES";
+    console.log("PARMAS🛼")
+    console.log(body)
+
+    return this.http.post<{ [key: string]: number }>(fullUrl, body, { headers: this.headers })
+    .pipe(
+      catchError(this.handleError)
+    );
   }
 
   getAllFrom(table: string): Observable<any> {

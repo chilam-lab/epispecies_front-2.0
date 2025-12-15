@@ -145,23 +145,32 @@ export class MapComponent implements OnInit {
 
     const placeholder = isStateOrMunicipality == 'Municipal' ? "Municipio" : "Estado";
 
-    await Promise.all(
-      geoJson.features.map(async (feature: any) => {
-        if (feature.properties?.clave) {
-          const clave = feature.properties.clave;
-          const cases = this.numCasesByIdRegion(clave);
-          const population = (await this.getPopulationById(clave)) ?? 0;
-          const rate = population ? (cases / population) * 100000 : 0;
-          const riskCases = population ? (cases / population) * 100000 : 0;
-          const riskRate = cases ? (rate / (Number(this.totalCases) / Number(this.totalPopulationWithFilters * 100000))) : 0;
-          const name = isStateOrMunicipality == 'Municipal'
+    const claves = geoJson.features
+    .filter((f: any) => f.properties?.clave)
+    .map((f: any) => Number(f.properties.clave).toString());
+
+    let populationById = await this.getPop(claves);
+    console.log(populationById)
+
+    geoJson.features.forEach((feature: any) => {
+      if (feature.properties?.clave) {
+        const clave = feature.properties.clave.toString();
+        const cases = this.numCasesByIdRegion(clave);
+        const population = populationById[Number(clave).toString()] ?? 0;
+
+        const rate = population ? (cases / population) * 100000 : 0;
+        const riskCases = rate;
+        const riskRate = cases && this.totalCases && this.totalPopulationWithFilters
+          ? (rate / ((Number(this.totalCases) / Number(this.totalPopulationWithFilters)) * 100000))
+          : 0;
+
+          const name = this.selectedResolution === 'Municipal'
             ? this.getMunicipalityName(clave)
             : this.getStateName(Number(clave));
 
-          dataCache.set(clave, { cases, population, rate, riskCases, riskRate, name });
-        }
-      })
-    );
+            dataCache.set(clave, { cases, population, rate, riskCases, riskRate, name });
+      }
+    });
 
     let maxCases = 0;
     let maxRate = 0;
@@ -542,5 +551,46 @@ export class MapComponent implements OnInit {
       });
       return 0;
     }
+  }
+  async getPop(claves: any){
+    console.log("🍕🍕🍕🍕🍕🍕🍕")
+    console.log(claves)
+    let populationMap: { [key: string]: number } = {};
+    if (claves.length > 0) {
+      try {
+        if (this.selectedResolution === 'Municipal') {
+          // For municipalities, pass cvegeos
+          populationMap = await firstValueFrom(
+            this.diseaseDB.getPopulationByCveList(
+              this.selectedYear.toString(),
+              [], // cve_state (empty for municipalities)
+              (this.selectedAge && this.selectedAge !== environment.placeholderAge) ? this.selectedAge : '',
+              this.selectedGender || '',
+              claves // cvegeos
+            )
+          );
+        } else {
+          // For states, pass cve_states
+          populationMap = await firstValueFrom(
+            this.diseaseDB.getPopulationByCveList(
+              this.selectedYear.toString(),
+              claves, // cve_state
+              (this.selectedAge && this.selectedAge !== environment.placeholderAge) ? this.selectedAge : '',
+              this.selectedGender || '',
+              [] // cvegeos (empty for states)
+            )
+          );
+        }
+      } catch (error) {
+        console.error('Error fetching batch population:', error);
+        Swal.fire({
+          timer: 1500,
+          title: 'Error al cargar los datos de población.',
+          icon: 'error',
+          showConfirmButton: false
+        });
+      }
+    }
+    return populationMap
   }
 }
