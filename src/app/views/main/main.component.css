@@ -189,10 +189,6 @@ app-map {
   flex-direction: column;
 }
 
-.nav-item{
-  width: 50%;
-}
-
 .head {
   font-weight: bold;
   text-align: center;

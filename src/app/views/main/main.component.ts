@@ -47,6 +47,7 @@ export class MainComponent implements OnInit {
   @ViewChild('showMetroModal') showModalMetro!: ElementRef;
   @ViewChild(MapComponent) mapComponent!: MapComponent;
   env = environment;
+  nameCat: { [key: string]: string } = nameCategories;
   selectedFirstClassId: string = environment.placeholderFirstClass;
   selectedSecondClassId: string = environment.placeholderSecondClass;
   selectedThirdClassId: string = environment.placeholderThirdClass;
@@ -102,6 +103,7 @@ export class MainComponent implements OnInit {
   selectedMonth: number = 0;
   totalCases: number = 0;
   categoryList = [];
+  categoriesId:any[] = [];
   selectedCategory = environment.placeholderCategory;
   currentSortColumn: string = '';
   currentSortOrder: 'asc' | 'desc' = 'asc';
@@ -393,6 +395,15 @@ export class MainComponent implements OnInit {
         next: (response) => {
           console.log(response)
           this.categoryList = response;
+          type NameCategoryKey = keyof typeof nameCategories;
+
+          // 2. Get the keys at runtime
+           const keys: NameCategoryKey[] = Object.keys(nameCategories) as NameCategoryKey[];
+           this.categoriesId = keys;
+          // // Example Usage:
+           for (const key of keys) {
+             console.log(`Key: ${key}, Value: ${nameCategories[key]}`);
+             }
         },
         error: (error) => {
           console.error('Error fetching data:', error);

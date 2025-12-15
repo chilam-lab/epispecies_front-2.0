@@ -48,7 +48,7 @@ export const environment = {
 
 export const nameCategories = {
   "tx90p": "Índice de días cálidos",
-  "tx10p": "Índice de días fríos (TX10p)",
+  "tx10p": "Índice de días fríos",
   "tn90p": "Índice de noches cálidas (TN90p)",
   "tn10p": "Índice de noches frías (TN10p)",
   "txx": "Máximo de la temperatura máxima diaria (TXx)",
