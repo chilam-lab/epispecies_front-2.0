@@ -413,7 +413,27 @@
         <button (click)="toggleExtraColumns()"> {{ seeExtraColumnsInCategory ? 'Ocultar' : 'Ver' }} información detallada de la tabla</button>
       </div>
     </div>
+    <div class="row">
+<div class="card">
+<p-tree
+    [value]="climateNodes"
+        [(selection)]="selectedNodes"
+            selectionMode="checkbox"
+            class="w-full md:w-[30rem]"
+            (onNodeSelect)="onSelectionChange($event)"
+                (onNodeUnselect)="onSelectionChange($event)">
+            </p-tree>
+<p-tree
+    [value]="climateNodes"
+        [(selection)]="selectedNodes"
+            selectionMode="checkbox"
+            class="w-full md:w-[30rem]">
+            </p-tree>
+            </div>
+    </div>
   </div><br><br><br>
+
+
 </body>
 
 <!-- Modals -->
@@ -515,6 +535,7 @@
     </div>
   </div>
 </div>
+
 
 
 <div class="modal fade" id="periodModal" tabindex="-1" aria-labelledby="periodModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">

@@ -1,3 +1,6 @@
+import { TreeSelectModule } from 'primeng/treeselect';
+import { TreeModule } from 'primeng/tree';
+import { CardModule } from 'primeng/card';
 import { Component, ViewChild, ElementRef, OnInit, HostListener } from '@angular/core';
 import { MapComponent } from '../../components/map/map.component';
 import { DiseaseDbService } from '../../services/disease-db.service';
@@ -12,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'; // If you use matInput
 import { MatSelectModule } from '@angular/material/select'; // If you use mat-select
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { TreeNode } from 'primeng/api';
 
 @Component({
   selector: 'app-main',
@@ -21,7 +25,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
   MatSelectModule,
   MatButtonModule,
   ReactiveFormsModule,
-  FormsModule],
+  FormsModule,
+  TreeSelectModule,
+  TreeModule,
+  CardModule],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
   standalone: true,
@@ -101,6 +108,35 @@ export class MainComponent implements OnInit {
   calculatedVariables = [];
   totalPopulationWithFilters: number = 0;
   seeExtraColumnsInCategory = false;
+  selectedNodes: any = null; // Will hold selected node keys (e.g., { '0-0': true })
+
+  climateNodes: TreeNode[] = [
+    {
+      label: 'Mean Diurnal Range (Mean of monthly (max temp - min temp))',
+      key: 'diurnal',
+      children: [] // Add leaves if needed
+    },
+    {
+      label: 'Isothermality (BIO2/BIO7) (x100)',
+      key: 'isothermality',
+      children: []
+    },
+    {
+      label: 'Annual Mean Temperature',
+      key: 'annual',
+      children: [
+        { label: '2.050-13.525 1', key: 'annual-1', leaf: true },
+        { label: '13.525-15.225 2', key: 'annual-2', leaf: true },
+        { label: '15.225-16.146 3', key: 'annual-3', leaf: true },
+        { label: '16.146-16.737 4', key: 'annual-4', leaf: true },
+        { label: '16.737-17.225 5', key: 'annual-5', leaf: true },
+        { label: '17.225-17.846 6', key: 'annual-6', leaf: true },
+        { label: '17.846-18.517 7', key: 'annual-7', leaf: true },
+        { label: '18.517-19.183 8', key: 'annual-8', leaf: true },
+        { label: '19.183-19.867 9', key: 'annual-9', leaf: true }
+      ]
+    }
+  ];
 
   monthsList = [
     { value: 1, name: 'Enero' },
@@ -225,6 +261,9 @@ export class MainComponent implements OnInit {
         }
       });
   }
+  logSelected() {
+        console.log('Selected node keys:', this.selectedNodes);
+    }
 
   onSecondClassChange(secondClassId: string) {
     this.selectedThirdClassId = environment.placeholderThirdClass;
@@ -829,5 +868,24 @@ export class MainComponent implements OnInit {
 
   toggleExtraColumns() {
     this.seeExtraColumnsInCategory = !this.seeExtraColumnsInCategory;
+  }
+  onSelectionChange(event: { node: TreeNode }) {
+    console.log('Selection changed:', this.selectedNodes);
+    console.log('Affected node:', event.node);
+    const node = event.node;
+
+    // Check if this specific node is now FULLY selected
+    if (this.selectedNodes.includes(node) && !node.partialSelected) {
+      console.log('Whole node fully selected:', node);
+      // Your logic here (e.g., treat as "all descendants selected")
+    }
+
+    // Optional: Check for partial
+    if (node.partialSelected) {
+      console.log('Node partially selected:', node);
+    }
+
+    // Full current selection is always in this.selectedNodes
+    console.log('All selected nodes:', this.selectedNodes);
   }
 }
