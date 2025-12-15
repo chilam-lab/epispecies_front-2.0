@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { environment, ageMap } from '../../../environments/environment'
+import { environment, ageMap, nameCategories } from '../../../environments/environment'
 import { firstValueFrom } from 'rxjs';
 import { Record } from '../../models/cve_list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -89,17 +89,6 @@ export class MainComponent implements OnInit {
   genderTotals = {women: [], man: [], unspecified: []}
   metropolyList: [string, string][] = [];
   metropolyMunList: [string, string, string][] = [];
-  ageTotals = {
-    age1:[],
-    age2:[],
-    age3:[],
-    age4:[],
-    age5:[],
-    age6:[],
-    age7:[],
-    age8:[],
-    age0:[],
-  }
   showAgeTotals: [string,number][]= []
   showGenderTotals:[string,number][]= []
   selectedSeason: string = '';
