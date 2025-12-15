@@ -697,10 +697,6 @@ export class MainComponent implements OnInit {
     this.showGenderTotals = [];
     let cve_state = this.getStateCode(this.selectedState)?.toString() ?? '';
     let data = this.filteredAllDataByClasses;
-    console.log("👁️")
-    console.log(data)
-    console.log(data.filter(item => item[8] == null))
-    console.log("👁️")
     if(this.selectedRegion == environment.placeholderMunicipal){
         let munListByState = this.statesAndMunList.filter(x=> x[0]==cve_state)
         let cve_geo = munListByState.find(item => item[3] === this.selectedMuncipality)?.[2] || "";
@@ -732,7 +728,6 @@ export class MainComponent implements OnInit {
           : this.filterBy(8, id, data).length;
           return [label, count];
         });
-    console.log(this.showAgeTotals)
   }
   closingPeriodModal(){
     this.periodCloseRef.nativeElement.click();
