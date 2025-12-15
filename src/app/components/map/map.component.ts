@@ -300,7 +300,7 @@ export class MapComponent implements OnInit {
                  </tbody>
                </table>`
             );
-            layer.bindTooltip(`${placeholder + ": " + data.name} Tasa: ${data.rate.toFixed(2)}`, { sticky: true });
+            layer.bindTooltip(`${feature.properties.clave} : ${placeholder + ": " + data.name} Tasa: ${data.rate.toFixed(2)}`, { sticky: true });
           }
         }
       }
@@ -385,23 +385,12 @@ export class MapComponent implements OnInit {
       let dataToDisplayByMun = changes['dataByMunToDisplayInMap']['currentValue'];
       if (dataToDisplayByMun.length != 0) {
         this.rawDataTodisplayByMun = dataToDisplayByMun;
-
         let maxValue = 0;
         let maxRate = 0;
-
         if (this.selectedResolution === "Municipal") {
-
           for (const row of this.rawDataTodisplayByMun) {
             const value = row[2];           // number of cases
             const id = row[1];              // the ID to get population
-            const population = await this.getPopulationById(id) ?? 0;
-
-            if (typeof value === 'number' && value > maxValue) maxValue = value;
-
-            if (population && population > 0) {
-              const rate = (Number(value) / population) * 100000;
-              if (rate > maxRate) maxRate = rate;
-            }
           }
         } else {
           const stateSums = this.dataByMunToDisplayInMap.reduce((acc, row) => {
@@ -410,25 +399,16 @@ export class MapComponent implements OnInit {
             acc.set(stateId, (acc.get(stateId) || 0) + cases);
             return acc;
           }, new Map<number, number>());
-          maxValue = Math.max(...stateSums.values());
-          let maxRateStateId: number | null = null;
 
-          for (const [stateId, cases] of stateSums.entries()) {
-            const population = await this.getPopulationById(stateId.toString()) ?? 0;
-            if (population && population > 0) { // avoid division by zero
-              const rate = (cases / population) * 100000;
-              if (rate > maxRate) {
-                maxRate = rate;
-                maxRateStateId = stateId;
-              }
-            }
-          }
         }
         console.log("rawDataTodisplayByMun")
         console.log(this.rawDataTodisplayByMun)
+        console.log("rawDataTodisplayByMun")
+        console.log(this.dataByMunToDisplayInMap)
         this.highestValueInData = maxValue;
         this.highestRateInData = maxRate;
 
+        await this.updateMapLayerView(this.selectedResolution);
       }
     } catch (err) {
       console.log("no updates in the data")
@@ -438,8 +418,6 @@ export class MapComponent implements OnInit {
       let newRegion = changes['updatedRegion']['currentValue'];
       if (newRegion && newRegion != this.selectedRegion) { this.selectedRegion = newRegion; }
     } catch (err) { console.log("no region updates");}
-
-    await this.updateMapLayerView(this.selectedResolution);
   }
 
 
@@ -537,7 +515,6 @@ export class MapComponent implements OnInit {
 
     if (this.selectedResolution === 'Municipal') cvegeo = Number(id).toString() ;
     else cve_state = id;
-    console.log(cvegeo)
 
     let verifyGender = (this.selectedGender == "1" || this.selectedGender == "2" ) ? this.selectedGender : "";
 
