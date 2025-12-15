@@ -76,5 +76,5 @@ export const ageMap = {
   "45-54": '45 - 54 Años',
   "55-64": '55 - 64 Años',
   "65+": 'Más de 65 Años',
-  "nan": 'Sin especificar',
+  "null": 'Sin especificar',
 }

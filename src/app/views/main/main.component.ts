@@ -478,11 +478,7 @@ export class MainComponent implements OnInit {
     );
   }
   saveSelectedage(age: string){
-    console.log("🍁")
-    console.log(age)
-    console.log("🍁")
-    if(age == 'Sin especificar') this.selectedAge = null
-    else this.selectedAge = age;
+    this.selectedAge = (age == 'Sin especificar') ? null : age;
   }
 
   async getPopulationById(id: string, resolution: string): Promise<number | null>{
@@ -725,7 +721,7 @@ export class MainComponent implements OnInit {
 
     const selectedAge = this.selectedAge === environment.placeholderAge
       ? Object.keys(ageMap)
-      : [this.selectedAge];
+      : (this.selectedAge ? [this.selectedAge]: ["null"]);
 
     this.showAgeTotals = selectedAge
       .filter(id => ageMap[id as keyof typeof ageMap])
