@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { environment, ageMap, nameCategories } from '../../../environments/environment'
+import { environment, ageMap, nameCategories, categoriesFilterList } from '../../../environments/environment'
 import { firstValueFrom } from 'rxjs';
 import { Record } from '../../models/cve_list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -403,7 +403,16 @@ export class MainComponent implements OnInit {
           // // Example Usage:
            for (const key of keys) {
              console.log(`Key: ${key}, Value: ${nameCategories[key]}`);
-             }
+              let h = response.filter((category:String) => {
+                console.log("🍪")
+                console.log(category)
+               let a = category[0].split("_")
+
+               return a[0] == key
+             })
+             categoriesFilterList[key] = h
+            }
+             console.log(categoriesFilterList)
         },
         error: (error) => {
           console.error('Error fetching data:', error);

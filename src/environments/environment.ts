@@ -56,6 +56,16 @@ export const nameCategories = {
   "dtr": "Rango diario de temperatura (Tmax-Tmin)"
 }
 
+export const categoriesFilterList = {
+    "tx90p": [],
+    "tx10p": [],
+    "tn90p": [],
+    "tn10p": [],
+    "txx": [],
+    "tnn": [],
+    "dtr": []
+}
+
 export const ageMap = {
   "0-04": '0 - 4 Años',
   "05-14": '5 - 14 Años',
