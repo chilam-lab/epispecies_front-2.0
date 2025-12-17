@@ -428,88 +428,27 @@
               {{ nameCat[category] }}
        </button>
   </ng-container>
-      <!-- <button class="nav-link active" -->
-      <!--         id="v-pills-home-tab" -->
-      <!--         data-bs-toggle="pill" -->
-      <!--         data-bs-target="#v-pills-home" -->
-      <!--         type="button" -->
-      <!--         role="tab" aria-controls="v-pills-home" aria-selected="true"> -->
-      <!--         Índice de días cálidos -->
-      <!-- </button> -->
-
     </div>
     <div class="tab-content" id="v-pills-tabContent">
-    <div class="tab-pane fade show active" id="v-pill-0" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-      <p-tree
-        [value]="categoryNodes['tx90p']"
-        [(selection)]="selectedNodes"
-        selectionMode="checkbox"
-        class="w-full md:w-[30rem]"
-        (onNodeSelect)="onSelectionChange($event)"
-        (onNodeUnselect)="onSelectionChange($event)">
-      </p-tree>
-    </div>
-    <div class="tab-pane fade" id="v-pill-1" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
-      <p-tree
-        [value]="categoryNodes['tx10p']"
-        [(selection)]="selectedNodes"
-        selectionMode="checkbox"
-        class="w-full md:w-[30rem]"
-        (onNodeSelect)="onSelectionChange($event)"
-        (onNodeUnselect)="onSelectionChange($event)">
-      </p-tree>
-    </div>
-    <div class="tab-pane fade" id="v-pill-2" role="tabpanel" aria-labelledby="v-pills-disabled-tab" tabindex="0">
-      <p-tree
-        [value]="categoryNodes['tn90p']"
-        [(selection)]="selectedNodes"
-        selectionMode="checkbox"
-        class="w-full md:w-[30rem]"
-        (onNodeSelect)="onSelectionChange($event)"
-        (onNodeUnselect)="onSelectionChange($event)">
-      </p-tree>
-    </div>
-    <div class="tab-pane fade" id="v-pill-3" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">
-      <p-tree
-        [value]="categoryNodes['tn10p']"
-        [(selection)]="selectedNodes"
-        selectionMode="checkbox"
-        class="w-full md:w-[30rem]"
-        (onNodeSelect)="onSelectionChange($event)"
-        (onNodeUnselect)="onSelectionChange($event)">
-      </p-tree>
-    </div>
-    <div class="tab-pane fade" id="v-pill-4" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
-      <p-tree
-        [value]="categoryNodes['txx']"
-        [(selection)]="selectedNodes"
-        selectionMode="checkbox"
-        class="w-full md:w-[30rem]"
-        (onNodeSelect)="onSelectionChange($event)"
-        (onNodeUnselect)="onSelectionChange($event)">
-      </p-tree>
-    </div>
-    <div class="tab-pane fade" id="v-pill-5" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
-      <p-tree
-        [value]="categoryNodes['tnn']"
-        [(selection)]="selectedNodes"
-        selectionMode="checkbox"
-        class="w-full md:w-[30rem]"
-        (onNodeSelect)="onSelectionChange($event)"
-        (onNodeUnselect)="onSelectionChange($event)">
-      </p-tree>
-    </div>
-    <div class="tab-pane fade" id="v-pill-6" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
-      <p-tree
-        [value]="categoryNodes['dtr']"
-        [(selection)]="selectedNodes"
-        selectionMode="checkbox"
-        class="w-full md:w-[30rem]"
-        (onNodeSelect)="onSelectionChange($event)"
-        (onNodeUnselect)="onSelectionChange($event)">
-      </p-tree>
-    </div>
-    </div>
+      <ng-container *ngFor="let category of categoriesId; let i = index">
+        <div  aria-labelledby="v-pills-home-tab" tabindex="0"
+            class="tab-pane fade show"
+            [class.active]="i === 0"
+            [id]="'v-pill-' + i"
+            role="tabpanel"
+            [attr.tabindex]="i">
+          <p-tree
+            [value]="categoryNodes[category]"
+            [(selection)]="selectedNodes"
+            selectionMode="checkbox"
+            class="w-full md:w-[30rem]"
+            (onNodeSelect)="onSelectionChange($event)"
+            (onNodeUnselect)="onSelectionChange($event)">
+          </p-tree>
+        </div>
+      </ng-container>
+
+</div>
     </div>
 
     </div>
