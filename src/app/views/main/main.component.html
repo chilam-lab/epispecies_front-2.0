@@ -414,40 +414,52 @@
       </div>
     </div>
     <div class="row">
-      <div class="d-flex align-items-start">
-        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-          <ng-container *ngFor="let category of categoriesId; let i = index">
-            <button class="nav-link" [class.active]="i === 0"
-              id="v-pills-home-tab"
-              data-bs-toggle="pill"
-              [attr.data-bs-target]="'#v-pill-' + i"
-              type="button" role="tab"
-              aria-controls="v-pills-home"
-              aria-selected="true">
-              {{ nameCat[category] }}
-            </button>
-          </ng-container>
-        </div>
-        <div class="tab-content" id="v-pills-tabContent">
-          <ng-container *ngFor="let category of categoriesId; let i = index">
-            <div  aria-labelledby="v-pills-home-tab" tabindex="0"
-                  class="tab-pane fade show"
-                  [class.active]="i === 0"
-                  [id]="'v-pill-' + i"
-                  role="tabpanel"
-                  [attr.tabindex]="i">
-              <p-tree
-                [value]="categoryNodes[category]"
-                [(selection)]="selectedNodes"
-                selectionMode="checkbox"
-                class="w-full md:w-[30rem]"
-                (onNodeSelect)="onSelectionChange($event)"
-                (onNodeUnselect)="onSelectionChange($event)">
-              </p-tree>
-            </div>
-          </ng-container>
+      <div class="card">
+        <div class="row">
+      <div class="col-md-8">
+        <div class="d-flex align-items-start">
+          <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <ng-container *ngFor="let category of categoriesId; let i = index">
+              <button class="nav-link" [class.active]="i === 0"
+                 id="v-pills-home-tab"
+                 data-bs-toggle="pill"
+                 [attr.data-bs-target]="'#v-pill-' + i"
+                 type="button" role="tab"
+                 aria-controls="v-pills-home"
+                 aria-selected="true">
+                 {{ nameCat[category] }}
+              </button>
+            </ng-container>
+          </div>
+          <div class="tab-content" id="v-pills-tabContent">
+            <ng-container *ngFor="let category of categoriesId; let i = index">
+              <div  aria-labelledby="v-pills-home-tab" tabindex="0"
+                     class="tab-pane fade show"
+                     [class.active]="i === 0"
+                     [id]="'v-pill-' + i"
+                     role="tabpanel"
+                     [attr.tabindex]="i">
+                 <p-tree
+                   [value]="categoryNodes[category]"
+                   [(selection)]="selectedNodes"
+                   selectionMode="checkbox"
+                   class="w-full md:w-[30rem]"
+                   (onNodeSelect)="onSelectionChange($event)"
+                   (onNodeUnselect)="onSelectionChange($event)">
+                 </p-tree>
+              </div>
+            </ng-container>
+          </div>
         </div>
       </div>
+      <div class="col-md-4">
+        <ng-container *ngFor="let node of selectedNodes">
+          {{node["label"]}}<br>
+        </ng-container>
+      </div>
+
+    </div>
+    </div>
     </div>
   </div><br><br><br>
 </body>
