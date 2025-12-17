@@ -522,3 +522,6 @@ span{
   width: 100%;
 }
 
+::ng-deep .p-ripple.p-tree-node-toggle-button {
+    display: none !important;
+  }

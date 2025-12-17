@@ -110,7 +110,6 @@ export class MainComponent implements OnInit {
   calculatedVariables = [];
   totalPopulationWithFilters: number = 0;
   seeExtraColumnsInCategory = false;
-  categoryNodes: { [key: string]: TreeNode[] }  = {};
   selectedNodes: any = null; // Will hold selected node keys (e.g., { '0-0': true })
 
   climateNodes: TreeNode[] = [
@@ -414,27 +413,23 @@ export class MainComponent implements OnInit {
              categoriesFilterList[key] = h
             }
 
-            let climateNodesByCategory: { [key: string]: TreeNode[] } = {};
-
-            // Build the object with separate arrays for each category
-            keys.forEach(key => {
-              climateNodesByCategory[key] = [{
+            let climateNodes: TreeNode[] = keys.map(key => {
+              return {
                 label: nameCategories[key],
                 key: key,
-                expanded: true,
                 children: categoriesFilterList[key].map((item, index) => {
                   return {
-                    label: item[0],
-                    key: `${key}-${index + 1}`,
+                    label: item[0], // The full string like 'dtr_02.80-07.87 °C'
+                    key: `${key}-${index + 1}`, // Generate unique key like 'dtr-1', 'dtr-2', etc.
                     leaf: true
                   }
                 })
-              }];
+              }
             });
-            this.categoryNodes = climateNodesByCategory;
+
             console.log("🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈")
             console.log(categoriesFilterList)
-            console.log(climateNodesByCategory)
+            console.log(climateNodes)
             console.log("🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈")
         },
         error: (error) => {

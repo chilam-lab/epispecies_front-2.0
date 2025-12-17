@@ -439,13 +439,76 @@
 
     </div>
     <div class="tab-content" id="v-pills-tabContent">
-    <div class="tab-pane fade show active" id="v-pill-0" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">mem</div>
-    <div class="tab-pane fade" id="v-pill-1" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">v</div>
-    <div class="tab-pane fade" id="v-pill-2" role="tabpanel" aria-labelledby="v-pills-disabled-tab" tabindex="0">r</div>
-    <div class="tab-pane fade" id="v-pill-3" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">b</div>
-    <div class="tab-pane fade" id="v-pill-4" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">g</div>
-    <div class="tab-pane fade" id="v-pill-5" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">ll</div>
-    <div class="tab-pane fade" id="v-pill-6" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">yb</div>
+    <div class="tab-pane fade show active" id="v-pill-0" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
+      <p-tree
+        [value]="categoryNodes['tx90p']"
+        [(selection)]="selectedNodes"
+        selectionMode="checkbox"
+        class="w-full md:w-[30rem]"
+        (onNodeSelect)="onSelectionChange($event)"
+        (onNodeUnselect)="onSelectionChange($event)">
+      </p-tree>
+    </div>
+    <div class="tab-pane fade" id="v-pill-1" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+      <p-tree
+        [value]="categoryNodes['tx10p']"
+        [(selection)]="selectedNodes"
+        selectionMode="checkbox"
+        class="w-full md:w-[30rem]"
+        (onNodeSelect)="onSelectionChange($event)"
+        (onNodeUnselect)="onSelectionChange($event)">
+      </p-tree>
+    </div>
+    <div class="tab-pane fade" id="v-pill-2" role="tabpanel" aria-labelledby="v-pills-disabled-tab" tabindex="0">
+      <p-tree
+        [value]="categoryNodes['tn90p']"
+        [(selection)]="selectedNodes"
+        selectionMode="checkbox"
+        class="w-full md:w-[30rem]"
+        (onNodeSelect)="onSelectionChange($event)"
+        (onNodeUnselect)="onSelectionChange($event)">
+      </p-tree>
+    </div>
+    <div class="tab-pane fade" id="v-pill-3" role="tabpanel" aria-labelledby="v-pills-messages-tab" tabindex="0">
+      <p-tree
+        [value]="categoryNodes['tn10p']"
+        [(selection)]="selectedNodes"
+        selectionMode="checkbox"
+        class="w-full md:w-[30rem]"
+        (onNodeSelect)="onSelectionChange($event)"
+        (onNodeUnselect)="onSelectionChange($event)">
+      </p-tree>
+    </div>
+    <div class="tab-pane fade" id="v-pill-4" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
+      <p-tree
+        [value]="categoryNodes['txx']"
+        [(selection)]="selectedNodes"
+        selectionMode="checkbox"
+        class="w-full md:w-[30rem]"
+        (onNodeSelect)="onSelectionChange($event)"
+        (onNodeUnselect)="onSelectionChange($event)">
+      </p-tree>
+    </div>
+    <div class="tab-pane fade" id="v-pill-5" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
+      <p-tree
+        [value]="categoryNodes['tnn']"
+        [(selection)]="selectedNodes"
+        selectionMode="checkbox"
+        class="w-full md:w-[30rem]"
+        (onNodeSelect)="onSelectionChange($event)"
+        (onNodeUnselect)="onSelectionChange($event)">
+      </p-tree>
+    </div>
+    <div class="tab-pane fade" id="v-pill-6" role="tabpanel" aria-labelledby="v-pills-settings-tab" tabindex="0">
+      <p-tree
+        [value]="categoryNodes['dtr']"
+        [(selection)]="selectedNodes"
+        selectionMode="checkbox"
+        class="w-full md:w-[30rem]"
+        (onNodeSelect)="onSelectionChange($event)"
+        (onNodeUnselect)="onSelectionChange($event)">
+      </p-tree>
+    </div>
     </div>
     </div>
 
