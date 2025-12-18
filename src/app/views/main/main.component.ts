@@ -919,7 +919,6 @@ export class MainComponent implements OnInit {
     const escapeCSV = (value: any): string => {
       if (value === null || value === undefined) return '';
       const stringValue = String(value);
-      // If value contains comma, quote, or newline, wrap in quotes and escape quotes
       if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
         return `"${stringValue.replace(/"/g, '""')}"`;
       }

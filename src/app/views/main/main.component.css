@@ -524,4 +524,24 @@ span{
 
 ::ng-deep .p-ripple.p-tree-node-toggle-button {
     display: none !important;
-  }
+}
+
+.table-scroll-wrapper {
+  max-height: 600px;      /* Adjust this to your desired fixed height (e.g., 500px, 70vh) */
+  overflow-y: auto;       /* Enables vertical scroll when content overflows */
+  overflow-x: hidden;     /* Optional: hides horizontal overflow if not needed */
+}
+
+.table-scroll-wrapper thead th {
+  position: sticky;
+  top: 0;
+  background-color: #fff;  /* Or match your .table-header background */
+  z-index: 1;              /* Ensures header stays above body rows */
+  /* Optional: add box-shadow for visual separation when scrolling */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* If your thead has a different background (e.g., from .table-header), override it here */
+/* .table-scroll-wrapper .table-header { */
+/*   background-color: #your-header-bg-color;  /* Match your existing header style */ */
+/* } */

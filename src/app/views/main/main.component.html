@@ -242,21 +242,63 @@
 
     <div class="row">
       <div class="col-md-3 justify-content-center">
-        <h2>Seleccione una covariable</h2>
-      </div>
-      <div class="row">
-        <div class="col">
-          <mat-select [(ngModel)]="selectedCategory" class="bootstrap-style-mat-select">
-            <mat-option [value]="env.placeholderCategory" disabled selected>{{env.placeholderCategory}}</mat-option>
-            <ng-container *ngFor="let category of categoryList">
-              <mat-option [value]="category">{{category}}</mat-option>
+      <h2>Seleccione una covariable</h2>
+    </div>
+    <div class="row">
+      <div class="card">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="d-flex align-items-start">
+              <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <ng-container *ngFor="let category of categoriesId; let i = index">
+                  <button class="nav-link" [class.active]="i === 0"
+                     id="v-pills-home-tab"
+                     data-bs-toggle="pill"
+                     [attr.data-bs-target]="'#v-pill-' + i"
+                     type="button" role="tab"
+                     aria-controls="v-pills-home"
+                     aria-selected="true">
+                     {{ nameCat[category] }}
+                  </button>
+                </ng-container>
+              </div>
+              <div class="tab-content" id="v-pills-tabContent">
+                <ng-container *ngFor="let category of categoriesId; let i = index">
+                  <div  aria-labelledby="v-pills-home-tab" tabindex="0"
+                         class="tab-pane fade show"
+                         [class.active]="i === 0"
+                         [id]="'v-pill-' + i"
+                         role="tabpanel"
+                         [attr.tabindex]="i">
+                     <p-tree
+                       [value]="categoryNodes[category]"
+                       [(selection)]="selectedNodes"
+                       selectionMode="checkbox"
+                       class="w-full md:w-[30rem]"
+                       (onNodeSelect)="onSelectionChange($event)"
+                       (onNodeUnselect)="onSelectionChange($event)">
+                     </p-tree>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            Selected Nodes:<br>
+            <ng-container *ngFor="let node of selectedNodes">
+              {{node["label"]}}<br>
             </ng-container>
-          </mat-select>
-        </div>
-        <div class="col-lg-1 d-flex justify-content-center">
-          <button class="updateButton" (click)="selectACategory()">Seleccionar</button>
+          </div>
+          <button (click)="clearAllSelections()">clear all</button>
         </div>
       </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-1 d-flex justify-content-center">
+        <button class="updateButton" (click)="selectACategory()">Seleccionar</button>
+      </div>
+    </div>
     </div><br>
     <div class="row">
       <div class="col-md-12 table-responsive">
@@ -268,200 +310,152 @@
         </div>
       </ng-container>
       <ng-template #showData>
-      <table class="table table-hover table-sm">
-          <thead class="table-header">
-            <tr>
-              <th (click)="sortTableBy('category')">
-                Categoría
-                <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'category'">
-                    {{ currentSortOrder === 'asc' ? '↑' : '↓' }}
-                  </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'category'">↕</ng-container>
-                </span>
-              </th>
-              <ng-container *ngIf="seeExtraColumnsInCategory">
-                <th class="text-center" (click)="sortTableBy('ncx')">
-                  ncx
+        <div class="table-scroll-wrapper">
+          <table class="table table-hover table-striped category-table">
+            <thead class="table-header">
+              <tr>
+                <th (click)="sortTableBy('category')">
+                  Categoría
                   <span class="sort-icon">
-                    <ng-container *ngIf="currentSortColumn === 'ncx'">
-                      {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                    <ng-container *ngIf="currentSortColumn === 'category'">
+                      {{ currentSortOrder === 'asc' ? '↑' : '↓' }}
                     </ng-container>
-                    <ng-container *ngIf="currentSortColumn !== 'ncx'">↕</ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'category'">↕</ng-container>
                   </span>
                 </th>
-                <th class="text-center" (click)="sortTableBy('nc')">
-                  nc
+                <ng-container *ngIf="seeExtraColumnsInCategory">
+                  <th class="text-center" (click)="sortTableBy('ncx')">
+                    ncx
+                    <span class="sort-icon">
+                      <ng-container *ngIf="currentSortColumn === 'ncx'">
+                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                      </ng-container>
+                      <ng-container *ngIf="currentSortColumn !== 'ncx'">↕</ng-container>
+                    </span>
+                  </th>
+                  <th class="text-center" (click)="sortTableBy('nc')">
+                    nc
+                    <span class="sort-icon">
+                      <ng-container *ngIf="currentSortColumn === 'nc'">
+                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                      </ng-container>
+                      <ng-container *ngIf="currentSortColumn !== 'nc'">↕</ng-container>
+                    </span>
+                  </th>
+                  <th class="text-center" (click)="sortTableBy('nx')">
+                    nx
+                    <span class="sort-icon">
+                      <ng-container *ngIf="currentSortColumn === 'nx'">
+                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                      </ng-container>
+                      <ng-container *ngIf="currentSortColumn !== 'nx'">↕</ng-container>
+                    </span>
+                  </th>
+                  <th class="text-center" (click)="sortTableBy('n')">
+                    n
+                    <span class="sort-icon">
+                      <ng-container *ngIf="currentSortColumn === 'n'">
+                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                      </ng-container>
+                      <ng-container *ngIf="currentSortColumn !== 'n'">↕</ng-container>
+                    </span>
+                  </th>
+                </ng-container>
+                <th class="text-center" (click)="sortTableBy('epsilon')">
+                  epsilon
                   <span class="sort-icon">
-                    <ng-container *ngIf="currentSortColumn === 'nc'">
+                    <ng-container *ngIf="currentSortColumn === 'epsilon'">
                       {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
                     </ng-container>
-                    <ng-container *ngIf="currentSortColumn !== 'nc'">↕</ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'epsilon'">↕</ng-container>
                   </span>
                 </th>
-                <th class="text-center" (click)="sortTableBy('nx')">
-                  nx
+                <th class="text-center" (click)="sortTableBy('score')">
+                  score
                   <span class="sort-icon">
-                    <ng-container *ngIf="currentSortColumn === 'nx'">
+                    <ng-container *ngIf="currentSortColumn === 'score'">
                       {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
                     </ng-container>
-                    <ng-container *ngIf="currentSortColumn !== 'nx'">↕</ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'score'">↕</ng-container>
                   </span>
                 </th>
-                <th class="text-center" (click)="sortTableBy('n')">
-                  n
+                <th class="text-center" (click)="sortTableBy('log_lift')">
+                  log_lift
                   <span class="sort-icon">
-                    <ng-container *ngIf="currentSortColumn === 'n'">
+                    <ng-container *ngIf="currentSortColumn === 'log_lift'">
                       {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
                     </ng-container>
-                    <ng-container *ngIf="currentSortColumn !== 'n'">↕</ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'log_lift'">↕</ng-container>
                   </span>
                 </th>
-              </ng-container>
-              <th class="text-center" (click)="sortTableBy('epsilon')">
-                epsilon
-                <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'epsilon'">
-                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                  </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'epsilon'">↕</ng-container>
-                </span>
-              </th>
-              <th class="text-center" (click)="sortTableBy('score')">
-                score
-                <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'score'">
-                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                  </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'score'">↕</ng-container>
-                </span>
-              </th>
-              <th class="text-center" (click)="sortTableBy('log_lift')">
-                log_lift
-                <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'log_lift'">
-                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                  </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'log_lift'">↕</ng-container>
-                </span>
-              </th>
-              <th class="text-center" (click)="sortTableBy('RR')">
-                RR
-                <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'RR'">
-                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                  </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'RR'">↕</ng-container>
-                </span>
-              </th>
-              <th class="text-center" (click)="sortTableBy('SE_loglist')">
-                SE_loglist
-                <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'SE_loglist'">
-                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                  </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'SE_loglist'">↕</ng-container>
-                </span>
-              </th>
-              <th class="text-center" (click)="sortTableBy('ICinf')">
-                ICinf
-                <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'ICinf'">
-                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                  </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'ICinf'">↕</ng-container>
-                </span>
-              </th>
-              <th class="text-center" (click)="sortTableBy('ICsup')">
-                ICsup
-                <span class="sort-icon">
-                  <ng-container *ngIf="currentSortColumn === 'ICsup'">
-                    {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                  </ng-container>
-                  <ng-container *ngIf="currentSortColumn !== 'ICsup'">↕</ng-container>
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="table-body">
-            <tr *ngFor="let variable of calculatedVariables">
-                  <td>{{variable["category"]}}</td>
-                  <ng-container *ngIf="seeExtraColumnsInCategory">
-                    <td>{{variable["ncx"] | number:'1.0-0'}}</td>
-                    <td>{{variable["nc"] | number:'1.0-0'}}</td>
-                    <td>{{variable["nx"] | number:'1.0-0'}}</td>
-                    <td>{{variable["n"] | number:'1.0-0'}}</td>
-                  </ng-container>
-                  <td class="text-center">{{variable["epsilon"] }}</td>
-                  <td class="text-center">{{variable["score"] }}</td>
-                  <td class="text-center">{{variable["log_lift"] }}</td>
-                  <td class="text-center">{{variable["RR"] }}</td>
-                  <td class="text-center">{{variable["SE_loglist"] }}</td>
-                  <td class="text-center">{{variable["ICinf"] }}</td>
-                  <td class="text-center">{{variable["ICsup"] }}</td>
-            </tr>
-          </tbody>
-        </table>
+                <th class="text-center" (click)="sortTableBy('RR')">
+                  RR
+                  <span class="sort-icon">
+                    <ng-container *ngIf="currentSortColumn === 'RR'">
+                      {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                    </ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'RR'">↕</ng-container>
+                  </span>
+                </th>
+                <th class="text-center" (click)="sortTableBy('SE_loglist')">
+                  SE_loglist
+                  <span class="sort-icon">
+                    <ng-container *ngIf="currentSortColumn === 'SE_loglist'">
+                      {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                    </ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'SE_loglist'">↕</ng-container>
+                  </span>
+                </th>
+                <th class="text-center" (click)="sortTableBy('ICinf')">
+                  ICinf
+                  <span class="sort-icon">
+                    <ng-container *ngIf="currentSortColumn === 'ICinf'">
+                      {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                    </ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'ICinf'">↕</ng-container>
+                  </span>
+                </th>
+                <th class="text-center" (click)="sortTableBy('ICsup')">
+                  ICsup
+                  <span class="sort-icon">
+                    <ng-container *ngIf="currentSortColumn === 'ICsup'">
+                      {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                    </ng-container>
+                    <ng-container *ngIf="currentSortColumn !== 'ICsup'">↕</ng-container>
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr *ngFor="let variable of calculatedVariables">
+                    <td>{{variable["category"]}}</td>
+                    <ng-container *ngIf="seeExtraColumnsInCategory">
+                      <td>{{variable["ncx"] | number:'1.0-0'}}</td>
+                      <td>{{variable["nc"] | number:'1.0-0'}}</td>
+                      <td>{{variable["nx"] | number:'1.0-0'}}</td>
+                      <td>{{variable["n"] | number:'1.0-0'}}</td>
+                    </ng-container>
+                    <td class="text-center">{{variable["epsilon"] }}</td>
+                    <td class="text-center">{{variable["score"] }}</td>
+                    <td class="text-center">{{variable["log_lift"] }}</td>
+                    <td class="text-center">{{variable["RR"] }}</td>
+                    <td class="text-center">{{variable["SE_loglist"] }}</td>
+                    <td class="text-center">{{variable["ICinf"] }}</td>
+                    <td class="text-center">{{variable["ICsup"] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </ng-template>
-      </div>
     </div>
-    <div class="row">
+  </div><br>
+  <div class="row">
       <div class="mb-3">
         <button class="btn btn-primary" (click)="downloadCSV()">
           <i class="bi bi-download"></i> Descargar CSV
         </button>
         <button (click)="toggleExtraColumns()"> {{ seeExtraColumnsInCategory ? 'Ocultar' : 'Ver' }} información detallada de la tabla</button>
       </div>
-    </div>
-    <div class="row">
-      <div class="card">
-        <div class="row">
-      <div class="col-md-8">
-        <div class="d-flex align-items-start">
-          <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-            <ng-container *ngFor="let category of categoriesId; let i = index">
-              <button class="nav-link" [class.active]="i === 0"
-                 id="v-pills-home-tab"
-                 data-bs-toggle="pill"
-                 [attr.data-bs-target]="'#v-pill-' + i"
-                 type="button" role="tab"
-                 aria-controls="v-pills-home"
-                 aria-selected="true">
-                 {{ nameCat[category] }}
-              </button>
-            </ng-container>
-          </div>
-          <div class="tab-content" id="v-pills-tabContent">
-            <ng-container *ngFor="let category of categoriesId; let i = index">
-              <div  aria-labelledby="v-pills-home-tab" tabindex="0"
-                     class="tab-pane fade show"
-                     [class.active]="i === 0"
-                     [id]="'v-pill-' + i"
-                     role="tabpanel"
-                     [attr.tabindex]="i">
-                 <p-tree
-                   [value]="categoryNodes[category]"
-                   [(selection)]="selectedNodes"
-                   selectionMode="checkbox"
-                   class="w-full md:w-[30rem]"
-                   (onNodeSelect)="onSelectionChange($event)"
-                   (onNodeUnselect)="onSelectionChange($event)">
-                 </p-tree>
-              </div>
-            </ng-container>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-      Selected Nodes:<br>
-        <ng-container *ngFor="let node of selectedNodes">
-          {{node["label"]}}<br>
-        </ng-container>
-      </div>
-      <button (click)="clearAllSelections()">clear all</button>
-
-    </div>
-    </div>
     </div>
   </div><br><br><br>
 </body>
