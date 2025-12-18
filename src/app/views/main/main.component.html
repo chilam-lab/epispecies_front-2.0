@@ -553,9 +553,9 @@
                        calculatedVariablesByPrefix.length >= 4
   }" class="mb-3">
           <app-lower-upper-chart [data]="data"
-          [getDescriptionByIdInAList(selectedFirstClassId, firstClassList)]="selectedFirstClassName"
-          [getDescriptionByIdInAList(selectedSecondClassId, secondClassList)]="selectedSecondClassName"
-          [getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)]="selectedThirdClassName"
+          [selectedFirstClassName]="getDescriptionByIdInAList(selectedFirstClassId, firstClassList)"
+          [selectedSecondClassName]="getDescriptionByIdInAList(selectedSecondClassId, secondClassList)"
+          [selectedThirdClassName]="getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)"
           [selectedAgeHelper]="selectedAgeHelper"
           [selectedGender]="selectedGender"
           [selectedRegion]="selectedRegion"

@@ -13,9 +13,9 @@ export class LowerUpperChartComponent implements OnInit{
   //  y aparte te tengo que mandar los nombres de, la enfermedad1, enferemedad2, enferemedad3, año, edad,genero, resolution? 😵‍💫
 
   @Input() data: any = [];
-  @Input() selectedFirstClassName: string ="";
-  @Input() selectedSecondClassName: string ="";
-  @Input() selectedThirdClassName: string ="";
+  @Input() selectedFirstClassName: any ="";
+  @Input() selectedSecondClassName: any ="";
+  @Input() selectedThirdClassName: any ="";
   @Input() selectedAgeHelper: string ="";
   @Input() selectedGender: string ="";
   @Input() selectedRegion: string ="";
