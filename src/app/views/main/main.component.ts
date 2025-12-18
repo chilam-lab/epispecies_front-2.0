@@ -931,4 +931,7 @@ export class MainComponent implements OnInit {
     // Full current selection is always in this.selectedNodes
     console.log('All selected nodes:', this.selectedNodes);
   }
+  clearAllSelections() {
+    this.selectedNodes = null;
+  }
 }

@@ -453,10 +453,12 @@
         </div>
       </div>
       <div class="col-md-4">
+      Selected Nodes:<br>
         <ng-container *ngFor="let node of selectedNodes">
           {{node["label"]}}<br>
         </ng-container>
       </div>
+      <button (click)="clearAllSelections()">clear all</button>
 
     </div>
     </div>
