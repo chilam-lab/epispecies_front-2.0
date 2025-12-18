@@ -25,7 +25,7 @@ export class LowerUpperChartComponent {
   chartOptions: Highcharts.Options = {
     chart: {
       type: 'scatter',
-      height: '100%',
+      height: 400,
     },
     title: {
       text: 'Riesgo Relativo (RR) para TXX',
@@ -55,6 +55,7 @@ export class LowerUpperChartComponent {
         max: 1.25,
         gridLineWidth: 1,
         gridLineColor: '#e0e0e0',
+        tickPositions: [0.8, 0.9, 1, 1.1, 1.2, 1.3],
         plotLines: [{
           value: 1.0,
           color: '#999999',
@@ -65,12 +66,15 @@ export class LowerUpperChartComponent {
       },
       {
         title: {
-          text: 'Riesgo Relativo (RR)'
+          text: ''
         },
         min: 0.8,
         max: 1.25,
         opposite: true,
         gridLineWidth: 0,
+        labels: {
+      enabled: false  // Add this to hide the labels
+    }
       }
     ],
     legend: {
