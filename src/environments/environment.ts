@@ -77,3 +77,5 @@ export const ageMap = {
   "65+": 'Más de 65 Años',
   "null": 'Sin especificar',
 }
+
+export const gendersDict:{ [key: number]: string } = { 1: "Hombres", 2: "Mujeres", 9: "No registrado" }
