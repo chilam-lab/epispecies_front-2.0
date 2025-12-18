@@ -107,7 +107,7 @@ export class MainComponent implements OnInit {
   selectedCategory = environment.placeholderCategory;
   currentSortColumn: string = '';
   currentSortOrder: 'asc' | 'desc' = 'asc';
-  calculatedVariables = [];
+  calculatedVariables:any = [];
   totalPopulationWithFilters: number = 0;
   seeExtraColumnsInCategory = false;
   categoryNodes: { [key: string]: TreeNode[] }  = {};
@@ -819,7 +819,7 @@ export class MainComponent implements OnInit {
       this.currentSortOrder = 'asc';
     }
 
-    this.calculatedVariables.sort((a, b) => {
+    this.calculatedVariables.sort((a:any, b:any) => {
       const valueA = a[attribute];
       const valueB = b[attribute];
       if (typeof valueA === 'number' && typeof valueB === 'number') {
@@ -832,7 +832,43 @@ export class MainComponent implements OnInit {
   }
 
 
+  getSelectedKeyTypes(): string[] {
+    const requiredKeys = ['tx90p', 'tx10p', 'tn90p', 'tn10p', 'txx', 'tnn', 'dtr'];
+    const selectedNodesArray = Object.values(this.selectedNodes);
+
+    return requiredKeys.filter(prefix =>
+      selectedNodesArray.some((node:any) => node.key?.startsWith(prefix))
+    );
+  }
+
+  getOneOfEachPrefix() {
+    const nodes = this.selectedNodes;
+    const prefixes = this.categoriesId;
+    const result: { [key: string]: string } = {};
+
+    for (const prefix of prefixes) {
+      const match = nodes.find((node: TreeNode) =>
+        node.label?.startsWith(prefix)
+      );
+      if (match?.label) {
+        result[prefix] = match.label;
+      }
+    }
+
+    return result;
+  }
+
   selectACategory(){
+    console.log("🪅")
+    console.log(this.selectedNodes)
+    console.log("🪅")
+    const selectedTypes = this.getSelectedKeyTypes();
+    const matches = this.getOneOfEachPrefix();
+    console.log(matches);
+    const matchesArray = Object.values(matches);
+    console.log(matchesArray);
+    console.log('Selected types:', selectedTypes);
+
     if(this.selectedCategory != environment.placeholderCategory){
       let metropoli = "";
       let cve_state = "";
@@ -843,8 +879,8 @@ export class MainComponent implements OnInit {
         cve_state = this.getStateCode(this.selectedState)?.toString() ?? '' :
         cve_state = '';
 
-      this.dbService.getCalcVariablesBy(
-        this.selectedCategory,
+      this.dbService.getCalcVariablesByMultiple(
+        matchesArray,
         this.selectedYear?.toString() || '',
         this.selectedFirstClassId || '',
         this.selectedSecondClassId || '',
@@ -856,8 +892,10 @@ export class MainComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          console.log(response)
-          this.calculatedVariables = response;
+          console.log("-------<><<<<<<<<<")
+          console.log(response.flat())
+          this.calculatedVariables = response.flat()
+          console.log("-------<><<<<<<<<<")
           this.sortTableBy('category')
         },
         error: (error) => {
@@ -871,7 +909,6 @@ export class MainComponent implements OnInit {
         icon: 'error'
       })
       return;
-
     }
   }
 
@@ -891,7 +928,7 @@ export class MainComponent implements OnInit {
 
     const csvRows = [
       headers.join(','), // Header row
-      ...this.calculatedVariables.map(variable =>
+      ...this.calculatedVariables.map((variable:any) =>
         keys.map(key => escapeCSV(variable[key])).join(',')
       )
     ];

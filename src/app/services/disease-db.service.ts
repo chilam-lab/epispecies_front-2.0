@@ -149,6 +149,57 @@ export class DiseaseDbService {
       .pipe(catchError(this.handleError));
   }
 
+  getCalcVariablesByMultiple(
+    categories: string[],
+    year: string,
+    cve_enfermedad: string,
+    cve_grupo: string,
+    cve_causa_def: string,
+    cve_metropoli: string,
+    cve_estado: string,
+    age: string,
+    gender: string
+  ): Observable<any[]> {
+    const fullUrl = this.apiUrl + 'calculate_variables';
+    const listOfRequests: Observable<any>[] = [];
+
+    categories.forEach(category => {
+      let params = new HttpParams()
+        .set('category', category)
+        .set('year', year)
+        .set('cve_enfermedad', cve_enfermedad);
+
+      if (cve_grupo != environment.placeholderSecondClass) {
+        params = params.set('cve_grupo', cve_grupo);
+      }
+      if (cve_causa_def != environment.placeholderThirdClass) {
+        params = params.set('cve_causa_def', cve_causa_def);
+      }
+      if (cve_metropoli && cve_metropoli == environment.selectedMetropoli) {
+        params = params.set('cve_metropoli', "all");
+      }
+      if (cve_metropoli && cve_metropoli != environment.selectedMetropoli) {
+        params = params.set('cve_metropoli', cve_metropoli);
+      }
+      if (cve_estado) {
+        params = params.set('cve_estado', Number(cve_estado));
+      }
+      if (age != environment.placeholderAge) {
+        params = params.set('age', age);
+      }
+      if (gender != environment.placeholderGender) {
+        params = params.set('gender', gender);
+      }
+
+      const request = this.http.get<any>(fullUrl, { params })
+        .pipe(catchError(this.handleError));
+      listOfRequests.push(request);
+    });
+
+    return forkJoin(listOfRequests);
+  }
+
+
   getCalcVariablesBy(category:string, year: string, cve_enfermedad:string, cve_grupo:string,
                      cve_causa_def:string, cve_metropoli: string, cve_estado: string,
                      age: string, gender:string): Observable<any> {
