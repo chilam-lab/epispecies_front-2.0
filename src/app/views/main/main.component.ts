@@ -869,7 +869,7 @@ export class MainComponent implements OnInit {
     console.log(matchesArray);
     console.log('Selected types:', selectedTypes);
 
-    if(this.selectedCategory != environment.placeholderCategory){
+    if(this.selectedNodes){
       let metropoli = "";
       let cve_state = "";
       (this.selectedRegion == environment.placeholderMetropoli) ?
