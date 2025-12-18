@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input'; // If you use matInput
 import { MatSelectModule } from '@angular/material/select'; // If you use mat-select
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
+import { LowerUpperChartComponent } from '../../components/lower-upper-chart/lower-upper-chart.component';
 
 @Component({
   selector: 'app-main',
@@ -28,7 +29,8 @@ import { TreeNode } from 'primeng/api';
   FormsModule,
   TreeSelectModule,
   TreeModule,
-  CardModule],
+  CardModule,
+  LowerUpperChartComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css',
   standalone: true,
