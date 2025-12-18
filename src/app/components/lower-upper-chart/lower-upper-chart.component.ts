@@ -13,6 +13,14 @@ export class LowerUpperChartComponent implements OnInit{
   //  y aparte te tengo que mandar los nombres de, la enfermedad1, enferemedad2, enferemedad3, año, edad,genero, resolution? 😵‍💫
 
   @Input() data: any = [];
+  @Input() selectedFirstClassName: string ="";
+  @Input() selectedSecondClassName: string ="";
+  @Input() selectedThirdClassName: string ="";
+  @Input() selectedAgeHelper: string ="";
+  @Input() selectedGender: string ="";
+  @Input() selectedRegion: string ="";
+  @Input() selectedYear: string ="";
+
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
   womenData = [
@@ -32,6 +40,13 @@ export class LowerUpperChartComponent implements OnInit{
 
   ngOnInit() {
     console.log("😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫")
+    console.log('Data on init:', this.selectedFirstClassName);
+    console.log('Data on init:', this.selectedSecondClassName);
+    console.log('Data on init:', this.selectedThirdClassName);
+    console.log('Data on init:', this.selectedAgeHelper);
+    console.log('Data on init:', this.selectedGender);
+    console.log('Data on init:', this.selectedRegion);
+    console.log('Data on init:', this.selectedYear);
     console.log('Data on init:', this.data);
     this.data?.sort((a:any, b:any) => {
       const rangeA = a.category.split('_')[1];
@@ -120,7 +135,7 @@ const round2 = (num: number) => Math.round(num * 100) / 100;
   }]
 },
       legend: {
-        enabled: true,
+        enabled: false,
         align: 'right',
         verticalAlign: 'top',
         layout: 'vertical',
