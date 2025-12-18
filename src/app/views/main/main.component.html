@@ -246,6 +246,156 @@
     </div>
     <div class="row">
       <div class="card">
+
+
+
+
+
+  <div class="row">
+    <!-- Left Sidebar -->
+    <div class="col-md-2 sidebar">
+      <h2 class="sidebar-title">Índices Climáticos</h2>
+      <div class="nav flex-column">
+        <button class="nav-link active" id="v-pills-dias-calidos-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#v-pills-dias-calidos"
+                type="button">
+          Índice de días cálidos
+        </button>
+        <button class="nav-link" id="v-pills-dias-frios-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#v-pills-dias-frios"
+                type="button">
+          Índice de días fríos
+        </button>
+        <button class="nav-link" id="v-pills-noches-calidas-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#v-pills-noches-calidas"
+                type="button">
+          Índice de noches cálidas
+        </button>
+        <button class="nav-link" id="v-pills-noches-frias-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#v-pills-noches-frias"
+                type="button">
+          Índice de noches frías
+        </button>
+        <button class="nav-link" id="v-pills-tmax-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#v-pills-tmax"
+                type="button">
+          Máximo de la temperatura máxima diaria
+        </button>
+        <button class="nav-link" id="v-pills-tmin-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#v-pills-tmin"
+                type="button">
+          Mínimo de la temperatura mínima diaria
+        </button>
+        <button class="nav-link" id="v-pills-rango-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#v-pills-rango"
+                type="button">
+          Rango diario de temperatura (Tmax-Tmin)
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="col-md-7 main-content">
+      <div class="tab-content" id="v-pills-tabContent">
+        <!-- Días Cálidos Tab -->
+        <div class="tab-pane fade show active"
+             id="v-pills-dias-calidos"
+             role="tabpanel">
+          <h3 class="content-title">Índice de días cálidos</h3>
+          <div class="nodes-list">
+            <div class="form-check node-item">
+              <input class="form-check-input" type="checkbox" id="node1">
+              <label class="form-check-label" for="node1">
+                tx90p_10.84-13.79 %
+              </label>
+            </div>
+            <div class="form-check node-item">
+              <input class="form-check-input" type="checkbox" id="node2">
+              <label class="form-check-label" for="node2">
+                tx90p_19.49-21.36 %
+              </label>
+            </div>
+            <div class="form-check node-item">
+              <input class="form-check-input" type="checkbox" id="node3">
+              <label class="form-check-label" for="node3">
+                tx90p_21.36-23.73 %
+              </label>
+            </div>
+            <div class="form-check node-item">
+              <input class="form-check-input" type="checkbox" id="node4">
+              <label class="form-check-label" for="node4">
+                tx90p_13.79-16.12 %
+              </label>
+            </div>
+            <div class="form-check node-item">
+              <input class="form-check-input" type="checkbox" id="node5">
+              <label class="form-check-label" for="node5">
+                tx90p_17.95-19.49 %
+              </label>
+            </div>
+            <div class="form-check node-item">
+              <input class="form-check-input" type="checkbox" id="node6">
+              <label class="form-check-label" for="node6">
+                tx90p_03.55-07.92 %
+              </label>
+            </div>
+            <div class="form-check node-item">
+              <input class="form-check-input" type="checkbox" id="node7">
+              <label class="form-check-label" for="node7">
+                tx90p_23.73-35.02 %
+              </label>
+            </div>
+            <div class="form-check node-item">
+              <input class="form-check-input" type="checkbox" id="node8">
+              <label class="form-check-label" for="node8">
+                tx90p_07.92-09.34 %
+              </label>
+            </div>
+            <div class="form-check node-item">
+              <input class="form-check-input" type="checkbox" id="node9">
+              <label class="form-check-label" for="node9">
+                tx90p_09.34-10.84 %
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- Add other tab panes similarly -->
+      </div>
+    </div>
+
+    <!-- Right Sidebar - Selected Nodes -->
+    <div class="col-md-3 selected-panel">
+      <div class="selected-header">
+        <h4>Selected Nodes:</h4>
+        <button class="btn-clear">clear all</button>
+      </div>
+      <div class="selected-content">
+        <p class="text-muted">No nodes selected</p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="row">
           <div class="col-md-8">
             <div class="d-flex align-items-start">

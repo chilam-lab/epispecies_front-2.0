@@ -542,5 +542,133 @@ span{
 
 /* If your thead has a different background (e.g., from .table-header), override it here */
 /* .table-scroll-wrapper .table-header { */
-/*   background-color: #your-header-bg-color;  /* Match your existing header style */ */
+/*   background-color: #your-header-bg-color;  /* Match your existing header style */
 /* } */
+
+
+.sidebar {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  min-height: 100vh;
+  border-right: 1px solid #dee2e6;
+  border-radius: 20px;
+}
+
+.sidebar-title {
+  color: #0066cc;
+  font-size: 24px;
+  font-weight: 600;
+  padding: 0 20px 20px 20px;
+  margin: 0;
+}
+
+.sidebar .nav-link {
+  background: transparent;
+  border: none;
+  color: #333;
+  padding: 12px 20px;
+  text-align: left;
+  border-radius: 0;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #e9ecef;
+}
+
+.sidebar .nav-link.active {
+  background-color: #d4e9f7;
+  border-left-color: #0066cc;
+  color: #0066cc;
+  font-weight: 500;
+}
+
+/* Main Content */
+.main-content {
+  padding: 30px 40px;
+  background-color: #fff;
+}
+
+.content-title {
+  color: #0066cc;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.nodes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.node-item {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e9ecef;
+  margin: 0;
+}
+
+.node-item:last-child {
+  border-bottom: none;
+}
+
+.node-item .form-check-input {
+  margin-top: 0.25em;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.node-item .form-check-label {
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Right Panel - Selected Nodes */
+.selected-panel {
+  background-color: #f8f9fa;
+  padding: 30px 20px;
+  min-height: 100vh;
+  border-left: 1px solid #dee2e6;
+}
+
+.selected-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.selected-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.btn-clear {
+  background: transparent;
+  border: none;
+  color: #6c757d;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: color 0.2s;
+}
+
+.btn-clear:hover {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+.selected-content {
+  padding: 20px 0;
+}
+
+.selected-content .text-muted {
+  color: #6c757d;
+  font-size: 14px;
+}
