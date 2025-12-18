@@ -549,7 +549,7 @@ span{
 .sidebar {
   background-color: #f8f9fa;
   padding: 20px 0;
-  height: 80vh;
+  height: 60vh;
   border-right: 1px solid #dee2e6;
   border-radius: 20px;
   display: flex;
@@ -566,7 +566,7 @@ span{
 }
 
 .sidebar .nav {
-  overflow-y: auto;
+  overflow-y: scroll;
   flex: 1;
 }
 
@@ -596,7 +596,7 @@ span{
 .main-content {
   padding: 30px 40px;
   background-color: #fff;
-  height: 80vh;
+  height: 60vh;
   overflow-y: auto;
 }
 
@@ -641,7 +641,7 @@ span{
 .selected-panel {
   background-color: #f8f9fa;
   padding: 30px 20px;
-  height: 80vh;
+  height: 60vh;
   border-left: 1px solid #dee2e6;
   display: flex;
   flex-direction: column;
@@ -726,7 +726,6 @@ span{
 }
 
 .node-item-bootstrap::before {
-  content: '{';
   position: absolute;
   left: 8px;
   color: #0066cc;
@@ -739,24 +738,4 @@ span{
 }
 
 /* Scrollbar styling for main content */
-.main-content::-webkit-scrollbar,
-.sidebar .nav::-webkit-scrollbar {
-  width: 6px;
-}
 
-.main-content::-webkit-scrollbar-track,
-.sidebar .nav::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.main-content::-webkit-scrollbar-thumb,
-.sidebar .nav::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 10px;
-}
-
-.main-content::-webkit-scrollbar-thumb:hover,
-.sidebar .nav::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
-}

@@ -253,7 +253,7 @@
 
   <div class="row">
     <!-- Left Sidebar -->
-    <div class="col-md-4 sidebar">
+    <div class="col-md-3 sidebar">
       <h2 class="sidebar-title">Índices Climáticos</h2>
       <div class="nav flex-column">
         <ng-container *ngFor="let category of categoriesId; let i = index">
@@ -271,7 +271,7 @@
     </div>
 
     <!-- Main Content Area -->
-    <div class="col-md-5 main-content">
+    <div class="col-md-6 main-content">
       <div class="tab-content" id="v-pills-tabContent">
                 <ng-container *ngFor="let category of categoriesId; let i = index">
                   <div  aria-labelledby="v-pills-home-tab" tabindex="0"
@@ -298,7 +298,7 @@
     <div class="col-md-3 selected-panel">
       <div class="selected-header">
         <h4>Selected Nodes:</h4>
-        <button class="btn-clear">clear all</button>
+        <button (click)="clearAllSelections()" class="btn-clear">Eliminar todos</button>
       </div>
       <div class="selected-content">
         <div class="d-flex flex-column gap-3">
@@ -361,12 +361,12 @@
               <!-- </div> -->
             </div>
           </div>
-          <div class="col-md-4">
-            Selected Nodes:<br>
-            <ng-container *ngFor="let node of selectedNodes">
-              {{node["label"]}}<br>
-            </ng-container>
-          </div>
+          <!-- <div class="col-md-4"> -->
+          <!--   Selected Nodes:<br> -->
+          <!--   <ng-container *ngFor="let node of selectedNodes"> -->
+          <!--     {{node["label"]}}<br> -->
+          <!--   </ng-container> -->
+          <!-- </div> -->
           <button (click)="clearAllSelections()">clear all</button>
         </div>
       </div>
