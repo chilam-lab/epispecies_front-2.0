@@ -537,14 +537,20 @@
         </div>
       </div>
       <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-link p-0" (click)="toggleExtraColumns()"> {{ seeExtraColumnsInCategory ? 'Ocultar' : 'Ver' }} información detallada de la tabla</button>
+        <button type="button" class="btn btn-link p-0" (click)="toggleExtraColumns()">
+          {{ seeExtraColumnsInCategory ? 'Ocultar' : 'Ver' }} información detallada de la tabla
+        </button>
       </div>
     </div>
   </div>
  <div class="container">
   <div class="row">
   <div class="col-md-12">
-  <app-lower-upper-chart></app-lower-upper-chart>
+    <ng-container *ngFor="let data of calculatedVariablesByPrefix">
+      <app-lower-upper-chart [data]="data"></app-lower-upper-chart><br>
+    </ng-container>
+      <app-lower-upper-chart></app-lower-upper-chart>
+
   </div>
   </div>
   </div><br><br><br>

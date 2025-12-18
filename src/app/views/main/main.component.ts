@@ -110,6 +110,7 @@ export class MainComponent implements OnInit {
   currentSortColumn: string = '';
   currentSortOrder: 'asc' | 'desc' = 'asc';
   calculatedVariables:any = [];
+  calculatedVariablesByPrefix:any = [];
   totalPopulationWithFilters: number = 0;
   seeExtraColumnsInCategory = false;
   categoryNodes: { [key: string]: TreeNode[] }  = {};
@@ -896,6 +897,7 @@ export class MainComponent implements OnInit {
         next: (response) => {
           console.log("-------<><<<<<<<<<")
           console.log(response.flat())
+          this.calculatedVariablesByPrefix = response
           this.calculatedVariables = response.flat()
           console.log("-------<><<<<<<<<<")
           this.sortTableBy('category')

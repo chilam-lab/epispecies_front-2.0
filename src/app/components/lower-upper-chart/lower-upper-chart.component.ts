@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import { HighchartsChartComponent, ChartConstructorType } from 'highcharts-angular';
 
 @Component({
@@ -7,19 +7,24 @@ import { HighchartsChartComponent, ChartConstructorType } from 'highcharts-angul
   templateUrl: './lower-upper-chart.component.html',
   styleUrl: './lower-upper-chart.component.css'
 })
-export class LowerUpperChartComponent {
+export class LowerUpperChartComponent implements OnInit{
 
+    //  x: "categoria", y: "el punto", low: 0.87, high: 0.99 },
+  //  te tengo que mandar categoria, el punto, low, high
+  //  y aparte te tengo que mandar los nombres de, la enfermedad1, enferemedad2, enferemedad3, año, edad,genero, resolution? 😵‍💫
+
+  @Input() data: any;
   womenData = [
-    { x: 25, y: 0.93, low: 0.87, high: 0.99 },
-    { x: 28, y: 0.90, low: 0.84, high: 0.96 },
-    { x: 30, y: 0.92, low: 0.87, high: 0.97 },
-    { x: 31, y: 0.89, low: 0.84, high: 0.94 },
-    { x: 32, y: 1.18, low: 1.11, high: 1.25 },
-    { x: 33, y: 1.15, low: 1.08, high: 1.22 },
-    { x: 34, y: 1.06, low: 1.00, high: 1.12 },
-    { x: 37, y: 0.98, low: 0.92, high: 1.04 },
-    { x: 39, y: 1.02, low: 0.96, high: 1.08 },
-    { x: 42, y: 1.03, low: 0.96, high: 1.10 }
+    { category: "Rango 25", RR: 0.93, ICinf: 0.87, ICsup: 0.99 },
+    { category: "Rango 28", RR: 0.90, ICinf: 0.84, ICsup: 0.96 },
+    { category: "Rango 30", RR: 0.92, ICinf: 0.87, ICsup: 0.97 },
+    { category: "Rango 31", RR: 0.89, ICinf: 0.84, ICsup: 0.94 },
+    { category: "Rango 32", RR: 1.18, ICinf: 1.11, ICsup: 1.25 },
+    { category: "Rango 33", RR: 1.15, ICinf: 1.08, ICsup: 1.22 },
+    { category: "Rango 34", RR: 1.06, ICinf: 1.00, ICsup: 1.12 },
+    { category: "Rango 37", RR: 0.98, ICinf: 0.92, ICsup: 1.04 },
+    { category: "Rango 39", RR: 1.02, ICinf: 0.96, ICsup: 1.08 },
+    { category: "Rango 42", RR: 1.03, ICinf: 0.96, ICsup: 1.10 }
   ];
 
   chartOptions: Highcharts.Options = {
@@ -38,13 +43,13 @@ export class LowerUpperChartComponent {
       text: 'Enfermedades respiratorias | Años: 2000vs2019'
     },
     xAxis: {
+      type: 'category',
       title: {
         text: 'Temperatura'
       },
-      min: 24,
-      max: 43,
       gridLineWidth: 1,
-      gridLineColor: '#e0e0e0'
+      gridLineColor: '#e0e0e0',
+      categories: this.womenData.map(d => d.category)
     },
     yAxis: [
       {
@@ -109,8 +114,13 @@ export class LowerUpperChartComponent {
         name: 'MUJERES',
         type: 'scatter',
         yAxis: 1,
-        data: this.womenData.map(d => ({ x: d.x, y: d.y, low: d.low, high: d.high })),
-          color: '#2f4f4f',
+        data: this.womenData.map(d => ({
+          name: d.category, // Use name instead of x for categories
+          y: d.RR,
+          low: d.ICinf,
+          high: d.ICsup
+        })),
+        color: '#2f4f4f',
         marker: {
           symbol: 'circle'
         }
@@ -119,7 +129,7 @@ export class LowerUpperChartComponent {
         name: 'MUJERES',
         type: 'errorbar',
         yAxis: 1,
-        data: this.womenData.map(d => [d.x, d.low, d.high]),
+        data: this.womenData.map((d, index) => [index, d.ICinf, d.ICsup]),
           color: '#2f4f4f',
         linkedTo: ':previous',
         showInLegend: false,
@@ -127,4 +137,10 @@ export class LowerUpperChartComponent {
       } as any
     ],
   };
+
+  ngOnInit() {
+    console.log("😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫😵‍💫")
+    console.log('Data on init:', this.data);
+  }
+
 }
