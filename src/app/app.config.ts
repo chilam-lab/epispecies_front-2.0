@@ -11,7 +11,6 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideHttpClient(),
     provideAnimations(),
-    provideHighcharts(),
     providePrimeNG({
       theme: {
         preset: Aura,
@@ -19,6 +18,20 @@ export const appConfig: ApplicationConfig = {
             darkModeSelector: false
         }
       }
-    })
+    }),
+    provideHighcharts({
+      // Optional: Define the Highcharts instance dynamically
+      instance: () => import('highcharts'),
+
+      // Include Highcharts additional modules
+      modules: () => {
+        return [
+          import('highcharts/esm/modules/accessibility'),
+          import('highcharts/esm/modules/exporting'),
+          import('highcharts/highcharts-more'),  // <-- Add this for error bars
+          import('highcharts/esm/themes/sunset'),
+        ];
+      },
+    }),
   ]
 };
