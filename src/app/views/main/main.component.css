@@ -739,3 +739,52 @@ span{
 
 /* Scrollbar styling for main content */
 
+/* Center and style the section title */
+.section-title {
+  text-align: center;
+  margin: 40px 0 30px 0;  /* Space above and below */
+  padding: 20px;
+  background-color: #f8f9fa;  /* Light gray background for separation */
+  border-bottom: 3px solid #007bff;  /* Blue underline to match common scientific style */
+  border-radius: 8px;
+}
+
+.section-title h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px 0;
+}
+
+.section-title .subtitle {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Optional: layout for the two charts */
+.charts-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;          /* Space between charts */
+  flex-wrap: wrap;    /* Responsive: stack on small screens */
+  margin: 30px 0;
+}
+
+.charts-container img {
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 6px;
+}
+
+/* If you prefer charts one below the other instead of side-by-side */
+@media (max-width: 900px) {
+  .charts-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}

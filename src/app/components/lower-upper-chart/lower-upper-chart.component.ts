@@ -10,9 +10,6 @@ import { environment, gendersDict, nameCategories } from '../../../environments/
   styleUrl: './lower-upper-chart.component.css'
 })
 export class LowerUpperChartComponent implements OnInit{
-
-  //  y aparte te tengo que mandar los nombres de, la enfermedad1, enferemedad2, enferemedad3, año, edad,genero, resolution? 😵‍💫
-
   @Input() data: any = [];
   @Input() selectedFirstClassName: any ="";
   @Input() selectedSecondClassName: any ="";
@@ -36,8 +33,6 @@ export class LowerUpperChartComponent implements OnInit{
     { category: "Rango_39", RR: 1.02, ICinf: 0.96, ICsup: 1.08 },
     { category: "Rango_42", RR: 1.03, ICinf: 0.96, ICsup: 1.10 }
   ];
-
-
 
   ngOnInit() {
     this.data?.sort((a:any, b:any) => {
@@ -183,5 +178,4 @@ export class LowerUpperChartComponent implements OnInit{
       ],
     };
   }
-
 }
