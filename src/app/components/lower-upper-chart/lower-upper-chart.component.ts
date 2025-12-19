@@ -45,6 +45,8 @@ export class LowerUpperChartComponent implements OnInit{
 
     const chartData = this.data.length > 0 ? this.data : this.womenData;
     const prefix = chartData[0].category.split('_')[0];
+    const title = `Riesgo Relativo (RR) para ${prefix.toUpperCase()}`;
+
     const categoryName = nameCategories[prefix as keyof typeof nameCategories] || 'Categoría desconocida'
 
     const round2 = (num: number) => Math.round(num * 100) / 100;
@@ -88,7 +90,7 @@ export class LowerUpperChartComponent implements OnInit{
         backgroundColor: '#f8fbff'
       },
       title: {
-        text: 'Riesgo Relativo (RR) para TXX',
+        text: title,
         style: {
           fontSize: '16px',
           fontWeight: 'bold'
