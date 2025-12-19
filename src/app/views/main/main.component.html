@@ -307,7 +307,7 @@
               </div>
               <div class="selected-content">
                 <div class="d-flex flex-column gap-3">
-                  <div class="node-item-bootstrap d-flex justify-content-between align-items-center" *ngFor="let node of selectedNodes">
+                  <div class="node-item-bootstrap d-flex justify-content-between align-items-center" *ngFor="let node of selectedNodesFiltered">
                     {{node["label"]}}
                     <!-- <span class="material-symbols-outlined close-btn ms-auto" (click)="removeOneNode(node)" >close</span> -->
                   </div>

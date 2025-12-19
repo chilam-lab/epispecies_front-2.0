@@ -958,6 +958,19 @@ export class MainComponent implements OnInit {
     // Full current selection is always in this.selectedNodes
     console.log('All selected nodes:', this.selectedNodes);
     this.selectedNodesFiltered = this.selectedNodes;
+
+
+
+     const parentNodes = this.selectedNodes.filter((node:any) =>
+    node.children && node.children.length > 0
+  );
+
+  console.log('Selected parent nodes🌸:', parentNodes);
+  this.selectedNodesFiltered = parentNodes;
+
+  // If you want just the keys
+  const parentKeys = parentNodes.map((node:any) => node.key);
+  console.log('Selected parent keys🎏:', parentKeys);
   }
 
   clearAllSelections() {

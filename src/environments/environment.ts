@@ -47,13 +47,13 @@ export const environment = {
 }
 
 export const nameCategories = {
-  "tx90p": "Índice de días cálidos",
-  "tx10p": "Índice de días fríos",
-  "tn90p": "Índice de noches cálidas",
-  "tn10p": "Índice de noches frías",
-  "txx": "Máximo de la temperatura máxima diaria",
-  "tnn": "Mínimo de la temperatura mínima diaria",
-  "dtr": "Rango diario de temperatura (Tmax-Tmin)"
+  "tx90p": "Índice de días cálidos (TX90p)",
+  "tx10p": "Índice de días fríos (TX10p)",
+  "tn90p": "Índice de noches cálidas (TN90p)",
+  "tn10p": "Índice de noches frías (TN10p)",
+  "txx": "Máximo de la temperatura máxima diaria (TXx)",
+  "tnn": "Mínimo de la temperatura mínima diaria (TNn)",
+  "dtr": "Rango diario de temperatura (Tmax-Tmin) (DTR)"
 }
 
 export const categoriesFilterList = {
