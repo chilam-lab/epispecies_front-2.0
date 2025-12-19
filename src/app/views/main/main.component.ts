@@ -368,6 +368,7 @@ export class MainComponent implements OnInit {
     }
     this.top10()
     this.totals()
+    this.clearAllSelections()
     this.getCategories(this.selectedYear.toString(), this.selectedMetropoly, this.selectedState)
     this.updatedResolution = this.selectedResolution;
     this.updatedRegion = this.selectedRegion;
@@ -855,7 +856,6 @@ export class MainComponent implements OnInit {
   }
 
   selectACategory(){
-    const selectedTypes = this.getSelectedKeyTypes();
     const matches = this.getOneOfEachPrefix();
     const matchesArray = Object.values(matches);
 
@@ -940,54 +940,41 @@ export class MainComponent implements OnInit {
   }
 
   onSelectionChange(event: { node: TreeNode }) {
-    console.log('Selection changed:', this.selectedNodes);
-    console.log('Affected node:', event.node);
-    const node = event.node;
 
-    // Check if this specific node is now FULLY selected
-    if (this.selectedNodes.includes(node) && !node.partialSelected) {
-      console.log('Whole node fully selected:', node);
-      // Your logic here (e.g., treat as "all descendants selected")
-    }
-
-    // Optional: Check for partial
-    if (node.partialSelected) {
-      console.log('Node partially selected:', node);
-    }
-
-    // Full current selection is always in this.selectedNodes
-    console.log('All selected nodes:', this.selectedNodes);
-    this.selectedNodesFiltered = this.selectedNodes;
+    this.updateSelectedNodesFiltered();
+  }
 
 
-
-     const parentNodes = this.selectedNodes.filter((node:any) =>
-    node.children && node.children.length > 0
-  );
-
-  console.log('Selected parent nodes🌸:', parentNodes);
-  this.selectedNodesFiltered = parentNodes;
-
-  // If you want just the keys
-  const parentKeys = parentNodes.map((node:any) => node.key);
-  console.log('Selected parent keys🎏:', parentKeys);
+  updateSelectedNodesFiltered() {
+    const parentNodes = (this.selectedNodes || []).filter((node: any) =>
+      node.children && node.children.length > 0
+    );
+    this.selectedNodesFiltered = parentNodes;
   }
 
   clearAllSelections() {
     this.selectedNodes = null;
+    this.updateSelectedNodesFiltered();
   }
 
-  removeOneNode(nodeToRemove: TreeNode): void {
-    // Option 1: Remove by reference (works if the exact object reference is in the array)
-    const index = this.selectedNodes.indexOf(nodeToRemove);
+  selectAllParents() {
+    this.selectedNodes = [];
 
-    // Option 2: Remove by key (safer if objects might be recreated)
-    // const index = this.selectedNodes.findIndex(n => n.key === nodeToRemove.key);
+    this.categoriesId.forEach(category => {
+      const nodes = this.categoryNodes[category];
+      if (nodes && nodes.length > 0) {
+        nodes.forEach(node => {
+          if (node.children && node.children.length > 0) {
+            this.selectedNodes.push(node);
 
-    if (index !== -1) {
-      this.selectedNodes.splice(index, 1);
-      // Optional: trigger change detection if needed (usually not required with default strategy)
-      // this.selectedNodes = [...this.selectedNodes];
-    }
+            node.children.forEach(child => {
+              this.selectedNodes.push(child);
+            });
+          }
+        });
+      }
+    });
+
+    this.updateSelectedNodesFiltered();
   }
 }
