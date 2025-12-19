@@ -791,22 +791,35 @@ span{
 .close-btn {
   cursor: pointer;
 }
-.sidebar-header {
-  padding: 0.75rem 1rem !important;
-}
-
-.sidebar-header .material-symbols-outlined {
-  font-size: 22px;
-  color: #0d6efd;
-}
-
-.sidebar-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #0d6efd;
-}
 
 .card hr {
   margin: 0;
   opacity: 0.15;
+}
+
+.sidebar-header {
+  padding: 0.75rem 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+}
+
+.sidebar-header .material-symbols-outlined {
+  font-size: 32px;
+  line-height: 1;
+  color: #0d6efd;
+  /* Add this to make the icon perfectly center itself */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;  /* Optional: locks the height to match font-size */
+}
+
+.sidebar-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0d6efd;
+  line-height: 1;     /* Change from 1.2 to 1 for tighter vertical fit */
+  margin: 0 !important;
+  /* Remove any padding-top if you had it */
 }
