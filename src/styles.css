@@ -77,6 +77,12 @@ header {
   background-size: 3em;
   width: 5em;
 }
+#logoSecti {
+  background-color: rgba(195,195,195,.75);
+  background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVbFcX2Se36vBp8KYjSo5yjN3XDPDvCBLoKPQbW-vKpsBWamU4Eqy-wZVfvGfVs3EUyw0&usqp=CAU);
+  background-size: 12em;
+  width: 12em;
+}
 
 .button-2 {
   white-space: nowrap;
@@ -214,88 +220,109 @@ header {
     margin-top: 1rem;
   }
 }
-h1 {
-  --bgGradientMain: linear-gradient(65deg, rgba(var(--mainColor-RGB),.4) 10%, rgba(var(--mainColor-RGB),0) 100%);
-  /* background-image: */
-  /*     var(--bgGradientMain), */
-  /*     linear-gradient(135deg, rgba(102, 126, 234, 0.6) 0%, rgba(118, 75, 162, 0.6) 100%), */
-  /*     radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 20%); */
-  background-position: 20% center, center, center;
-  background-size: cover, cover, 33%;
-  background-blend-mode: normal, screen, normal;
-  background-repeat: no-repeat;
-  height: 150px;
-  margin: .75rem;
-  text-indent: -9999px;
-  width: calc(100% - 1.5rem);
+
+.banner {
   position: relative;
+  height: 220px; /* Adjust as needed */
+  /* background: linear-gradient(135deg, #ff9ac1 0%, #d29aff 50%, #a68eff 100%); */
+  background-image: url(https://i0.wp.com/www.atmosfera.unam.mx/wp-content/uploads/2023/04/epispecies-2048x1152-1.jpg?w=2048&ssl=1);
   overflow: hidden;
+  color: white;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-h1::before {
-  content: attr(data-title);
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #6072b4;
-  font-size: 4rem;
-  font-weight: 700;
-  text-indent: 0;
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-  letter-spacing: 2px;
-  white-space: nowrap;
-}
-
-h1::after {
-  content: attr(data-subtitle);
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #c6c6c6;
-  font-size: 1.1rem;
-  font-weight: 400;
-  text-indent: 0;
-  text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  max-width: 90%;
   text-align: center;
 }
 
-@media (max-width: 768px) {
-  h1 {
-    height: 180px;
-  }
-  h1::before {
-    font-size: 2.5rem;
-    top: 40%;
-  }
-  h1::after {
-    font-size: 0.85rem;
-    top: 68%;
-    max-width: 85%;
-  }
+/* Subtle scientific overlay using CSS only */
+.banner::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  /* background: */
+  /* radial-gradient(circle at 20% 80%, rgba(255,255,255,0.15) 0%, transparent 20%), */
+  /* radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 15%), */
+  /* radial-gradient(circle at 50% 50%, rgba(200,200,255,0.08) 0%, transparent 25%); */
+  /* https://i0.wp.com/www.atmosfera.unam.mx/wp-content/uploads/2023/04/epispecies-2048x1152-1.jpg?w=2048&ssl=1 */
+
+  background-image: url(https://i0.wp.com/www.atmosfera.unam.mx/wp-content/uploads/2023/04/epispecies-2048x1152-1.jpg?w=2048&ssl=1);
+  pointer-events: none;
+  z-index: 1;
 }
 
-@media (max-width: 480px) {
-  h1 {
-    height: 160px;
-  }
-  h1::before {
-    font-size: 1.8rem;
-    top: 38%;
-  }
-  h1::after {
-    font-size: 0.7rem;
-    top: 65%;
-    max-width: 90%;
-    white-space: normal;
-    line-height: 1.3;
-  }
+/* Floating particles / nodes */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
 }
+
+.particle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.particle::after {
+  content: attr(data-num);
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  color: white;
+  font-weight: bold;
+}
+
+/* Thin connecting lines */
+.lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.line {
+  position: absolute;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  transform-origin: left;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.main-title {
+  font-size: 2rem;
+  font-weight: 900;
+  text-shadow: 3px 3px 10px rgba(0,0,0,0.6);
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  font-size: 2rem;
+  margin-top: 1rem;
+  max-width: 800px;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.5);
+}
+
+.icon-container {
+  font-size: 7rem;
+  margin-bottom: 1.5rem;
+  color: white;
+  filter: drop-shadow(0 0 15px rgba(255,255,255,0.7));
+}
+
+/* Optional: use your own icon image instead */
+
+.custom-icon {
+  background-color: rgba(195,195,195,.75);
+  background-image: url("assets/img/logoEPI.png");
+  background-size: 2em;
+  width: 2em;
+}
+

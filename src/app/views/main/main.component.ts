@@ -902,8 +902,8 @@ export class MainComponent implements OnInit {
   }
 
   downloadCSV() {
-    const headers = ['Categoría', 'ncx', 'nx', 'n', 'nc', 'epsilon', 'score', 'log_lift', 'RR', 'SE_loglist', 'ICinf', 'ICsup'];
-    const keys = ['category', 'ncx', 'nx', 'n', 'nc', 'epsilon', 'score', 'log_lift', 'RR', 'SE_loglist', 'ICinf', 'ICsup'];
+    const headers = ['Categoría', 'ncx', 'nx', 'n', 'nc', 'epsilon', 'score', 'log_lift', 'RR', 'SE_loglift', 'ICinf', 'ICsup'];
+    const keys = ['category', 'ncx', 'nx', 'n', 'nc', 'epsilon', 'score', 'log_lift', 'RR', 'SE_loglift', 'ICinf', 'ICsup'];
 
     const escapeCSV = (value: any): string => {
       if (value === null || value === undefined) return '';

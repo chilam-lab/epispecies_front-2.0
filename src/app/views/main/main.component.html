@@ -424,13 +424,13 @@
                         <ng-container *ngIf="currentSortColumn !== 'RR'">↕</ng-container>
                       </span>
                     </th>
-                    <th class="text-center" (click)="sortTableBy('SE_loglist')">
-                      SE_loglist
+                    <th class="text-center" (click)="sortTableBy('SE_loglift')">
+                      SE_loglift
                       <span class="sort-icon">
-                        <ng-container *ngIf="currentSortColumn === 'SE_loglist'">
+                        <ng-container *ngIf="currentSortColumn === 'SE_loglift'">
                           {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
                         </ng-container>
-                        <ng-container *ngIf="currentSortColumn !== 'SE_loglist'">↕</ng-container>
+                        <ng-container *ngIf="currentSortColumn !== 'SE_loglift'">↕</ng-container>
                       </span>
                     </th>
                     <th class="text-center" (click)="sortTableBy('ICinf')">
@@ -466,7 +466,7 @@
                     <td class="text-center">{{variable["score"] }}</td>
                     <td class="text-center">{{variable["log_lift"] }}</td>
                     <td class="text-center">{{variable["RR"] }}</td>
-                    <td class="text-center">{{variable["SE_loglist"] }}</td>
+                    <td class="text-center">{{variable["SE_loglift"] }}</td>
                     <td class="text-center">{{variable["ICinf"] }}</td>
                     <td class="text-center">{{variable["ICsup"] }}</td>
                   </tr>
@@ -498,7 +498,7 @@
     <!-- Header / Title -->
     <header class="chart-header">
       <h2 class="chart-title">
-        Riesgo Relativo (RR) de {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}} por Categorías de Temperatura
+        Riesgo Relativo (RR) de {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}} por Factores Ambientales
       </h2>
       <p class="chart-subtitle" *ngIf="selectedYear || selectedAgeHelper || selectedGender">
         {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}
