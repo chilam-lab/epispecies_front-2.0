@@ -426,7 +426,8 @@ export class MainComponent implements OnInit {
                   return {
                     label: item[0],
                     key: `${key}-${index + 1}`,
-                    leaf: true
+                    leaf: true,
+                    selectable: false
                   }
                 })
               }];

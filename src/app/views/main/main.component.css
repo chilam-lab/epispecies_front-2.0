@@ -955,3 +955,12 @@ span{
   background: #6072b4;
   color: white;
 }
+
+:host ::ng-deep .p-treenode-leaf .p-checkbox {
+  display: none !important;
+}
+
+/* Optional: hide the checkbox space to align text nicely */
+:host ::ng-deep .p-treenode-leaf .p-treenode-content {
+  padding-left: 2rem; /* or adjust as needed */
+}
