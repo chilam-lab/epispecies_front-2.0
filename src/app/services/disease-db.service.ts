@@ -117,8 +117,6 @@ export class DiseaseDbService {
     if (age_group) body.age_group = age_group;
     if (gender == "1") body.gender = "HOMBRES";
     if (gender == "2") body.gender = "MUJERES";
-    console.log("PARMAS🛼")
-    console.log(body)
 
     return this.http.post<{ [key: string]: number }>(fullUrl, body, { headers: this.headers })
     .pipe(

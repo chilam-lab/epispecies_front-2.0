@@ -115,6 +115,7 @@ export class MainComponent implements OnInit {
   seeExtraColumnsInCategory = false;
   categoryNodes: { [key: string]: TreeNode[] }  = {};
   selectedNodes: any = null; // Will hold selected node keys (e.g., { '0-0': true })
+  selectedNodesFiltered: any = null; // Will hold selected node keys (e.g., { '0-0': true })
 
   climateNodes: TreeNode[] = [
     {
@@ -199,8 +200,6 @@ export class MainComponent implements OnInit {
           const lastyear = response[2][response[2].length - 1];
           this.yearsList = response[2].reverse();
           this.selectedYear = lastyear;
-          console.log("AGE: 🎏")
-          console.log(this.agesList)
         },
         error: (error) => {
           console.error('Error fetching age, gender and year data:', error);
@@ -268,8 +267,8 @@ export class MainComponent implements OnInit {
       });
   }
   logSelected() {
-        console.log('Selected node keys:', this.selectedNodes);
-    }
+    console.log('Selected node keys:', this.selectedNodes);
+  }
 
   onSecondClassChange(secondClassId: string) {
     this.selectedThirdClassId = environment.placeholderThirdClass;
@@ -384,7 +383,6 @@ export class MainComponent implements OnInit {
   getCategories(year:string, metropoli: string, state: string){
     this.selectedCategory = environment.placeholderCategory;
     this.categoryList = [];
-    console.log("about to use categories")
     let verifiedMetropoli = "";
     let cve_state = 0;
 
@@ -397,7 +395,6 @@ export class MainComponent implements OnInit {
     this.dbService.getCategoriesBy(year, verifiedMetropoli, cve_state)
       .subscribe({
         next: (response) => {
-          console.log(response)
           this.categoryList = response;
           type NameCategoryKey = keyof typeof nameCategories;
 
@@ -406,10 +403,7 @@ export class MainComponent implements OnInit {
            this.categoriesId = keys;
           // // Example Usage:
            for (const key of keys) {
-             console.log(`Key: ${key}, Value: ${nameCategories[key]}`);
               let h = response.filter((category:String) => {
-                console.log("🍪")
-                console.log(category)
                let a = category[0].split("_")
 
                return a[0] == key
@@ -435,10 +429,6 @@ export class MainComponent implements OnInit {
               }];
             });
             this.categoryNodes = climateNodesByCategory;
-            console.log("🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈")
-            console.log(categoriesFilterList)
-            console.log(climateNodesByCategory)
-            console.log("🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈🌈")
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -556,7 +546,6 @@ export class MainComponent implements OnInit {
   }
 
   async getPopulationById(id: string, resolution: string): Promise<number | null>{
-    console.log(`id: ${id} resolution: ${resolution}`)
     let cvegeo = "";
     let cve_state = "";
     if(resolution === 'Mun') cvegeo = id ;
@@ -862,15 +851,9 @@ export class MainComponent implements OnInit {
   }
 
   selectACategory(){
-    console.log("🪅")
-    console.log(this.selectedNodes)
-    console.log("🪅")
     const selectedTypes = this.getSelectedKeyTypes();
     const matches = this.getOneOfEachPrefix();
-    console.log(matches);
     const matchesArray = Object.values(matches);
-    console.log(matchesArray);
-    console.log('Selected types:', selectedTypes);
 
     if(this.selectedNodes){
       let metropoli = "";
@@ -895,15 +878,13 @@ export class MainComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          console.log("-------<><<<<<<<<<")
-          console.log(response.flat())
           this.calculatedVariablesByPrefix = response
           this.calculatedVariables = response.flat()
-          console.log("-------<><<<<<<<<<")
           this.sortTableBy('category')
+          this.updateNotificationSuccess("Datos actualizados correctamente");
         },
         error: (error) => {
-          console.error('Error fetching data:', error);
+          this.updateNotificationError("No se encontraron datos para las categorias seleccionadas")
         }
       });
     } else {
@@ -952,6 +933,7 @@ export class MainComponent implements OnInit {
   toggleExtraColumns() {
     this.seeExtraColumnsInCategory = !this.seeExtraColumnsInCategory;
   }
+
   onSelectionChange(event: { node: TreeNode }) {
     console.log('Selection changed:', this.selectedNodes);
     console.log('Affected node:', event.node);
@@ -970,8 +952,24 @@ export class MainComponent implements OnInit {
 
     // Full current selection is always in this.selectedNodes
     console.log('All selected nodes:', this.selectedNodes);
+    this.selectedNodesFiltered = this.selectedNodes;
   }
+
   clearAllSelections() {
     this.selectedNodes = null;
+  }
+
+  removeOneNode(nodeToRemove: TreeNode): void {
+    // Option 1: Remove by reference (works if the exact object reference is in the array)
+    const index = this.selectedNodes.indexOf(nodeToRemove);
+
+    // Option 2: Remove by key (safer if objects might be recreated)
+    // const index = this.selectedNodes.findIndex(n => n.key === nodeToRemove.key);
+
+    if (index !== -1) {
+      this.selectedNodes.splice(index, 1);
+      // Optional: trigger change detection if needed (usually not required with default strategy)
+      // this.selectedNodes = [...this.selectedNodes];
+    }
   }
 }

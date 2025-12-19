@@ -150,7 +150,6 @@ export class MapComponent implements OnInit {
     .map((f: any) => Number(f.properties.clave).toString());
 
     let populationById = await this.getPop(claves);
-    console.log(populationById)
 
     geoJson.features.forEach((feature: any) => {
       if (feature.properties?.clave) {
@@ -385,9 +384,6 @@ export class MapComponent implements OnInit {
     } catch (err) { console.log("no year updates");}
     try {
       let year = changes['totalPopulationWithFilters']['currentValue'];
-      console.log("🔔")
-      console.log(year)
-      console.log("🔔")
     } catch (err) { console.log("no year updates");}
 
     try {
@@ -410,10 +406,6 @@ export class MapComponent implements OnInit {
           }, new Map<number, number>());
 
         }
-        console.log("rawDataTodisplayByMun")
-        console.log(this.rawDataTodisplayByMun)
-        console.log("rawDataTodisplayByMun")
-        console.log(this.dataByMunToDisplayInMap)
         this.highestValueInData = maxValue;
         this.highestRateInData = maxRate;
 
@@ -553,8 +545,6 @@ export class MapComponent implements OnInit {
     }
   }
   async getPop(claves: any){
-    console.log("🍕🍕🍕🍕🍕🍕🍕")
-    console.log(claves)
     let populationMap: { [key: string]: number } = {};
     if (claves.length > 0) {
       try {
