@@ -251,6 +251,9 @@
             <span class="material-symbols-outlined text-info breadcrumb-icon"
               style="font-size: 36px;">partly_cloudy_day</span>
             <span style="font-size: 22px; font-weight: 600;">Variables Climáticas</span>
+            <!-- <div class="selected-header"> -->
+            <!--     <button (click)="selectAll()" class="btn-clear">Seleccionar todas</button> -->
+            <!--   </div> -->
           </div>
 
           <hr class="m-0">
@@ -306,7 +309,7 @@
                 <div class="d-flex flex-column gap-3">
                   <div class="node-item-bootstrap d-flex justify-content-between align-items-center" *ngFor="let node of selectedNodes">
                     {{node["label"]}}
-                    <span class="material-symbols-outlined close-btn ms-auto" (click)="removeOneNode(node)" >close</span>
+                    <!-- <span class="material-symbols-outlined close-btn ms-auto" (click)="removeOneNode(node)" >close</span> -->
                   </div>
                 </div>
               </div>
