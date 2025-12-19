@@ -823,3 +823,8 @@ span{
   margin: 0 !important;
   /* Remove any padding-top if you had it */
 }
+
+.p-tree {
+  --p-tree-background: transparent;
+}
+
