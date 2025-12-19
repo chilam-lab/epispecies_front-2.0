@@ -116,6 +116,8 @@ export class MainComponent implements OnInit {
   categoryNodes: { [key: string]: TreeNode[] }  = {};
   selectedNodes: any = null; // Will hold selected node keys (e.g., { '0-0': true })
   selectedNodesFiltered: any = null; // Will hold selected node keys (e.g., { '0-0': true })
+  seeInformationAfterSelected = false;
+  seeCategoriesAfterSelected = false;
 
   climateNodes: TreeNode[] = [
     {
@@ -373,6 +375,7 @@ export class MainComponent implements OnInit {
     this.getPopulationWithAllFilters()
     this.selectedCVEMun = idSelectedMun;
     this.saveNewSelectsValues();
+    this.seeInformationAfterSelected = true;
     Swal.fire({
       timer: 1100,
       title: 'Datos cargados correctamente.',
@@ -881,6 +884,7 @@ export class MainComponent implements OnInit {
           this.calculatedVariablesByPrefix = response
           this.calculatedVariables = response.flat()
           this.sortTableBy('category')
+          this.seeCategoriesAfterSelected = true;
           this.updateNotificationSuccess("Datos actualizados correctamente");
         },
         error: (error) => {

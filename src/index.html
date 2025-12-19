@@ -10,46 +10,46 @@
   </head>
   <body>
     <div class="container-fluid">
-        <header class="row">
-            <div class="col-12">
-                <div class="d-flex flex-wrap align-items-center justify-content-between">
-                    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                    <div id="header-logos" class="mb-2 mb-md-0">
-                        <a class="logo" id="logoUNAM" href="https://www.unam.mx" target="_blank">Universidad Nacional Autónoma de México - UNAM</a>
-                        <a class="logo" id="logoCIC" href="http://www.cic-ctic.unam.mx" target="_blank">Coordinación de la Investigación Científica</a>
-                        <a class="logo" id="logoC3" href="https://www.c3.unam.mx" target="_blank">Centro de Ciencias de la Complejidad</a>
-                        <a class="logo" id="logoPINCC" href="https://www.pincc.unam.mx/" target="_blank">Programa de Investigación en Cambio Climatico</a>
-                        <a class="logo" id="logoCambio" href="https://www.atmosfera.unam.mx/">Instituto de Ciencias de la Atmósfera y Cambio Climático</a>
-                        <a class="logo" id="logoChilam" href="https://chilam.c3.unam.mx">Chilam – Laboratorio para la simulación de Sistemas Complejos Adaptativos</a>
-                    </div>
-                    <a target="_blank" href="https://chilam.c3.unam.mx/proyectos/epi-species" class="button-2">Más información sobre EPI-SPECIES</a>
-                </div>
+      <header class="row">
+        <div class="col-12">
+          <div class="d-flex flex-wrap align-items-center justify-content-between">
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+            <div id="header-logos" class="mb-2 mb-md-0">
+              <a class="logo" id="logoUNAM" href="https://www.unam.mx" target="_blank">Universidad Nacional Autónoma de México - UNAM</a>
+              <a class="logo" id="logoCIC" href="http://www.cic-ctic.unam.mx" target="_blank">Coordinación de la Investigación Científica</a>
+              <a class="logo" id="logoC3" href="https://www.c3.unam.mx" target="_blank">Centro de Ciencias de la Complejidad</a>
+              <a class="logo" id="logoPINCC" href="https://www.pincc.unam.mx/" target="_blank">Programa de Investigación en Cambio Climatico</a>
+              <a class="logo" id="logoCambio" href="https://www.atmosfera.unam.mx/">Instituto de Ciencias de la Atmósfera y Cambio Climático</a>
+              <a class="logo" id="logoChilam" href="https://chilam.c3.unam.mx">Chilam – Laboratorio para la simulación de Sistemas Complejos Adaptativos</a>
             </div>
-        </header><br>
-
-        <div class="row">
-            <div class="col-12 p-0">
-                <h1 id="epi-species"
-                data-title="EPI-SPECIES"
-                data-subtitle="Plataforma Universitaria de Eco-epidemiología Espacial y Cambio Climático">
-                EPI-SPECIES
-            </h1>
-            </div>
+            <a target="_blank" href="https://chilam.c3.unam.mx/proyectos/epi-species" class="button-2">Más información sobre EPI-SPECIES</a>
+          </div>
         </div>
+      </header><br>
+
+      <div class="row">
+        <div class="col-12 p-0">
+          <h1 id="epi-species"
+              data-title="EPI-SPECIES"
+              data-subtitle="Plataforma Universitaria de Eco-epidemiología Espacial y Cambio Climático">
+              EPI-SPECIES
+          </h1>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.com/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const hamburger = document.getElementById('hamburgerBtn');
-        const headerLogos = document.getElementById('header-logos');
+      const hamburger = document.getElementById('hamburgerBtn');
+      const headerLogos = document.getElementById('header-logos');
 
-        hamburger.addEventListener('click', function() {
-            headerLogos.classList.toggle('show');
-        });
+      hamburger.addEventListener('click', function() {
+        headerLogos.classList.toggle('show');
+      });
     </script>
     <app-root></app-root>
   </body>

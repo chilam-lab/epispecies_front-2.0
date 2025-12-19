@@ -115,6 +115,7 @@
       </div>
     </div>
   </div>
+<ng-container *ngIf="seeInformationAfterSelected">
   <div class="container-fluid detail_info">
   <br>
     <h3 class="mb-4">Información detallada</h3>
@@ -311,7 +312,7 @@
               </div>
               <div class="row mt-2 justify-content-end ">
                 <div class="col-md-12 py-1">
-                  <button class="btn btn-info w-100" (click)="selectACategory()">Seleccionar</button>
+                  <button class="btn btn-categories w-100" (click)="selectACategory()">Seleccionar</button>
                 </div>
               </div>
             </div>
@@ -320,6 +321,7 @@
       </div>
     </div>
   </div><br><br><br>
+<ng-container *ngIf="seeCategoriesAfterSelected">
   <div class="container-fluid detail_info"><br><br><br>
     <div class="container">
       <div class="row">
@@ -534,6 +536,8 @@
     </div>
   </div>
 </section>
+</ng-container>
+</ng-container>
 </body>
 
 
