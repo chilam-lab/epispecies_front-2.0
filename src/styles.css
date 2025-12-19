@@ -1,93 +1,301 @@
 :root{
-    --mainColor: #07BBD3;
-    --secColor: #505454;
-    --emphasisColor: #f99e19;
-    --neutralColor: #808080;
-    --bgColor: #fcfcfc;
-    --mainColor-RGB: 7,187,211;
-    --secColor-RGB: 80,84,84;
-    --mainColorDark: #008ba2;
-    --mainColorLight: #63eeff;
-    --secColorDark: #282b2b;
-    --secColorLight: #7c8080;
-    --emphasisColorDark: #c06f00;
-    --emphasisColorLight: #ffcf52;
-    --neutralColorDark: #545454;
-    --neutralColorLight: #afafaf;
-    --text: 'Roboto', sans-serif;
+  --mainColor: #07BBD3;
+  --secColor: #505454;
+  --emphasisColor: #f99e19;
+  --neutralColor: #808080;
+  --bgColor: #fcfcfc;
+  --mainColor-RGB: 7,187,211;
+  --secColor-RGB: 80,84,84;
+  --mainColorDark: #008ba2;
+  --mainColorLight: #63eeff;
+  --secColorDark: #282b2b;
+  --secColorLight: #7c8080;
+  --emphasisColorDark: #c06f00;
+  --emphasisColorLight: #ffcf52;
+  --neutralColorDark: #545454;
+  --neutralColorLight: #afafaf;
+  --text: 'Roboto', sans-serif;
+  --mainColor-RGB: 102, 126, 234;
 }
 
-header{
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-header #header-logos{
-    display: flex;
-    flex-wrap: wrap;
-    height: 5rem;
-}
-header .button-2{
-    margin-right: 1.5rem;
-}
-header .logo{
-    background-position: center;
-    background-repeat: no-repeat;
-    display: block;
-    height: 100%;
-    text-indent: -9999px;
-}
-header #logoPINCC{
-    background-color: rgba(195,195,195,.25);
-    background-image: url(https://i0.wp.com/www.pincc.unam.mx/wp-content/uploads/2022/06/Logotipo-PINCC_PNG-01-160x187.png);
-    background-size:4em;
-    width: 5em;
-}
-header #logoC3{
-    background-color: rgba(195,195,195,.25);
-    background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/c3-g.svg);
-    background-size:3.5em;
-    width: 5em;
-}
-header #logoChilam{
-    background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/chilam.svg);
-    background-size:15rem;
-    width: 15.5rem;
-}
-header #logoCambio{
-    background-image: url(https://i0.wp.com/www.atmosfera.unam.mx/wp-content/uploads/2022/08/logoICAyCC-1a-1024x307-1.png?fit=1024%2C307&ssl=1);
-    background-size:15rem;
-    width: 15.5rem;
+header {
+  padding: 1rem 0;
 }
 
-header #logoCIC{
-    background-color: rgba(195,195,195,.5);
-    background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/cic-g.svg);
-    background-size:4.5em;
-    width:6em;
+#header-logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
 }
-header #logoUNAM{
-    background-color: rgba(195,195,195,.75);
-    background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/unam-g.svg);
-    background-size:3em;
-    width:5em;
+
+.logo {
+  background-position: center;
+  background-repeat: no-repeat;
+  display: block;
+  height: 5rem;
+  text-indent: -9999px;
+  flex-shrink: 0;
 }
-h1{
-    --bgGradientMain: linear-gradient(65deg, rgba(var(--mainColor-RGB),.75) 10%, rgba(var(--mainColor-RGB),0) 100%);
-    background-position: 20% center, center, center;
-    background-size: cover, cover, 33%;
-    background-blend-mode: screen;
-    background-repeat: no-repeat;
-    border-radius: .33em;
-    height: 30vmin;
-    margin: .75rem;
-    overflow: hidden;
-    text-indent: -9999px;
-    width: calc(100% - 1.5rem);
+
+#logoPINCC {
+  background-color: rgba(195,195,195,.25);
+  background-image: url(https://i0.wp.com/www.pincc.unam.mx/wp-content/uploads/2022/06/Logotipo-PINCC_PNG-01-160x187.png);
+  background-size: 4em;
+  width: 5em;
 }
-h1#epi-species{
-    background-image: var(--bgGradientMain),
-                    url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/slider/epispecies.jpg),
-url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/projects/epispecies.svg);
+
+#logoC3 {
+  background-color: rgba(195,195,195,.25);
+  background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/c3-g.svg);
+  background-size: 3.5em;
+  width: 5em;
+}
+
+#logoChilam {
+  background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/chilam.svg);
+  background-size: 15rem;
+  width: 15.5rem;
+}
+
+#logoCambio {
+  background-image: url(https://i0.wp.com/www.atmosfera.unam.mx/wp-content/uploads/2022/08/logoICAyCC-1a-1024x307-1.png?fit=1024%2C307&ssl=1);
+  background-size: 15rem;
+  width: 15.5rem;
+}
+
+#logoCIC {
+  background-color: rgba(195,195,195,.5);
+  background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/cic-g.svg);
+  background-size: 4.5em;
+  width: 6em;
+}
+
+#logoUNAM {
+  background-color: rgba(195,195,195,.75);
+  background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/unam-g.svg);
+  background-size: 3em;
+  width: 5em;
+}
+
+.button-2 {
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.button-2:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+/* Hamburger menu styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 3px 0;
+  transition: 0.3s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 853px) {
+  .hamburger {
+    display: flex;
+  }
+
+  #header-logos {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+  }
+
+  #header-logos.show {
+    display: flex;
+  }
+
+  .logo {
+    margin: 0.5rem 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    height: 4rem;
+  }
+
+  #logoPINCC {
+    background-size: 3em;
+    width: 4em;
+  }
+
+  #logoC3 {
+    background-size: 2.5em;
+    width: 4em;
+  }
+
+  #logoChilam {
+    background-size: 12rem;
+    width: 12.5rem;
+  }
+
+  #logoCambio {
+    background-size: 12rem;
+    width: 12.5rem;
+  }
+
+  #logoCIC {
+    background-size: 3.5em;
+    width: 5em;
+  }
+
+  #logoUNAM {
+    background-size: 2.5em;
+    width: 4em;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo {
+    height: 3.5rem;
+  }
+
+  #logoPINCC {
+    background-size: 2.5em;
+    width: 3.5em;
+  }
+
+  #logoC3 {
+    background-size: 2em;
+    width: 3.5em;
+  }
+
+  #logoChilam {
+    background-size: 10rem;
+    width: 10.5rem;
+  }
+
+  #logoCambio {
+    background-size: 10rem;
+    width: 10.5rem;
+  }
+
+  #logoCIC {
+    background-size: 3em;
+    width: 4em;
+  }
+
+  #logoUNAM {
+    background-size: 2em;
+    width: 3.5em;
+  }
+
+  .button-2 {
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+  }
+}
+h1 {
+  --bgGradientMain: linear-gradient(65deg, rgba(var(--mainColor-RGB),.4) 10%, rgba(var(--mainColor-RGB),0) 100%);
+  /* background-image: */
+  /*     var(--bgGradientMain), */
+  /*     linear-gradient(135deg, rgba(102, 126, 234, 0.6) 0%, rgba(118, 75, 162, 0.6) 100%), */
+  /*     radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 20%); */
+  background-position: 20% center, center, center;
+  background-size: cover, cover, 33%;
+  background-blend-mode: normal, screen, normal;
+  background-repeat: no-repeat;
+  height: 150px;
+  margin: .75rem;
+  text-indent: -9999px;
+  width: calc(100% - 1.5rem);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1::before {
+  content: attr(data-title);
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #6072b4;
+  font-size: 4rem;
+  font-weight: 700;
+  text-indent: 0;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+h1::after {
+  content: attr(data-subtitle);
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #c6c6c6;
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-indent: 0;
+  text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  max-width: 90%;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    height: 180px;
+  }
+  h1::before {
+    font-size: 2.5rem;
+    top: 40%;
+  }
+  h1::after {
+    font-size: 0.85rem;
+    top: 68%;
+    max-width: 85%;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    height: 160px;
+  }
+  h1::before {
+    font-size: 1.8rem;
+    top: 38%;
+  }
+  h1::after {
+    font-size: 0.7rem;
+    top: 65%;
+    max-width: 90%;
+    white-space: normal;
+    line-height: 1.3;
+  }
 }
