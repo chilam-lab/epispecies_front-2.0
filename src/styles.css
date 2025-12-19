@@ -1,1 +1,93 @@
-/* You can add global styles to this file, and also import other style files */
+:root{
+    --mainColor: #07BBD3;
+    --secColor: #505454;
+    --emphasisColor: #f99e19;
+    --neutralColor: #808080;
+    --bgColor: #fcfcfc;
+    --mainColor-RGB: 7,187,211;
+    --secColor-RGB: 80,84,84;
+    --mainColorDark: #008ba2;
+    --mainColorLight: #63eeff;
+    --secColorDark: #282b2b;
+    --secColorLight: #7c8080;
+    --emphasisColorDark: #c06f00;
+    --emphasisColorLight: #ffcf52;
+    --neutralColorDark: #545454;
+    --neutralColorLight: #afafaf;
+    --text: 'Roboto', sans-serif;
+}
+
+header{
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+header #header-logos{
+    display: flex;
+    flex-wrap: wrap;
+    height: 5rem;
+}
+header .button-2{
+    margin-right: 1.5rem;
+}
+header .logo{
+    background-position: center;
+    background-repeat: no-repeat;
+    display: block;
+    height: 100%;
+    text-indent: -9999px;
+}
+header #logoPINCC{
+    background-color: rgba(195,195,195,.25);
+    background-image: url(https://i0.wp.com/www.pincc.unam.mx/wp-content/uploads/2022/06/Logotipo-PINCC_PNG-01-160x187.png);
+    background-size:4em;
+    width: 5em;
+}
+header #logoC3{
+    background-color: rgba(195,195,195,.25);
+    background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/c3-g.svg);
+    background-size:3.5em;
+    width: 5em;
+}
+header #logoChilam{
+    background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/chilam.svg);
+    background-size:15rem;
+    width: 15.5rem;
+}
+header #logoCambio{
+    background-image: url(https://i0.wp.com/www.atmosfera.unam.mx/wp-content/uploads/2022/08/logoICAyCC-1a-1024x307-1.png?fit=1024%2C307&ssl=1);
+    background-size:15rem;
+    width: 15.5rem;
+}
+
+header #logoCIC{
+    background-color: rgba(195,195,195,.5);
+    background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/cic-g.svg);
+    background-size:4.5em;
+    width:6em;
+}
+header #logoUNAM{
+    background-color: rgba(195,195,195,.75);
+    background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/unam-g.svg);
+    background-size:3em;
+    width:5em;
+}
+h1{
+    --bgGradientMain: linear-gradient(65deg, rgba(var(--mainColor-RGB),.75) 10%, rgba(var(--mainColor-RGB),0) 100%);
+    background-position: 20% center, center, center;
+    background-size: cover, cover, 33%;
+    background-blend-mode: screen;
+    background-repeat: no-repeat;
+    border-radius: .33em;
+    height: 30vmin;
+    margin: .75rem;
+    overflow: hidden;
+    text-indent: -9999px;
+    width: calc(100% - 1.5rem);
+}
+h1#epi-species{
+    background-image: var(--bgGradientMain),
+                    url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/slider/epispecies.jpg),
+url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/projects/epispecies.svg);
+}
