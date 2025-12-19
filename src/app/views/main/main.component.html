@@ -246,8 +246,8 @@
   <div class="container-fluid">
 
   </div>
-  <div class="container">
 
+  <div class="container">
     <div class="row">
       <div class="col-md-3 justify-content-center">
       </div>
@@ -259,326 +259,288 @@
             <span style="font-size: 22px; font-weight: 600;">Variables Climáticas</span>
           </div>
 
-<hr class="m-0">
-  <div class="row">
-    <!-- Left Sidebar -->
-    <div class="col-md-3 sidebar">
-      <div class="nav flex-column">
-        <ng-container *ngFor="let category of categoriesId; let i = index">
-          <button class="nav-link" [class.active]="i === 0"
-                     id="v-pills-home-tab"
-                     data-bs-toggle="pill"
-                     [attr.data-bs-target]="'#v-pill-' + i"
-                     type="button" role="tab"
-                     aria-controls="v-pills-home"
-                     aria-selected="true">
-                     {{ nameCat[category] }}
-                  </button>
-        </ng-container>
-      </div>
-    </div>
-
-    <!-- Main Content Area -->
-    <div class="col-md-5 main-content">
-      <div class="tab-content" id="v-pills-tabContent" style="background-color: transparent;">
+          <hr class="m-0">
+          <div class="row">
+            <!-- Left Sidebar -->
+            <div class="col-md-3 sidebar">
+              <div class="nav flex-column">
                 <ng-container *ngFor="let category of categoriesId; let i = index">
-                  <div  aria-labelledby="v-pills-home-tab" tabindex="0"
+                  <button class="nav-link" [class.active]="i === 0"
+                             id="v-pills-home-tab"
+                             data-bs-toggle="pill"
+                             [attr.data-bs-target]="'#v-pill-' + i"
+                             type="button" role="tab"
+                             aria-controls="v-pills-home"
+                             aria-selected="true">
+                             {{ nameCat[category] }}
+                          </button>
+                </ng-container>
+              </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="col-md-5 main-content">
+              <div class="tab-content" id="v-pills-tabContent" style="background-color: transparent;">
+                <ng-container *ngFor="let category of categoriesId; let i = index">
+                  <div aria-labelledby="v-pills-home-tab" tabindex="0"
                          class="tab-pane fade show"
                          [class.active]="i === 0"
                          [id]="'v-pill-' + i"
                          role="tabpanel"
                          [attr.tabindex]="i"
                          style="background: transparent!important;">
-                     <p-tree
+                    <p-tree
                        [value]="categoryNodes[category]"
                        [(selection)]="selectedNodes"
                        selectionMode="checkbox"
                        class="w-full md:w-[30rem]"
                        (onNodeSelect)="onSelectionChange($event)"
                        (onNodeUnselect)="onSelectionChange($event)">
-                     </p-tree>
+                    </p-tree>
                   </div>
                 </ng-container>
               </div>
+            </div>
 
-    </div>
-
-    <!-- Right Sidebar - Selected Nodes -->
-    <div class="col-md-4 selected-panel">
-      <div class="selected-header">
-        <h4>Variables seleccionadas:</h4>
-        <button (click)="clearAllSelections()" class="btn-clear">Eliminar todas</button>
-      </div>
-      <div class="selected-content">
-        <div class="d-flex flex-column gap-3">
-          <div class="node-item-bootstrap d-flex justify-content-between align-items-center" *ngFor="let node of selectedNodes">
-            {{node["label"]}}
-            <span class="material-symbols-outlined close-btn ms-auto" >close</span>
+            <!-- Right Sidebar - Selected Nodes -->
+            <div class="col-md-4 selected-panel">
+              <div class="selected-header">
+                <h4>Variables seleccionadas:</h4>
+                <button (click)="clearAllSelections()" class="btn-clear">Eliminar todas</button>
+              </div>
+              <div class="selected-content">
+                <div class="d-flex flex-column gap-3">
+                  <div class="node-item-bootstrap d-flex justify-content-between align-items-center" *ngFor="let node of selectedNodes">
+                    {{node["label"]}}
+                    <span class="material-symbols-outlined close-btn ms-auto" >close</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-2 justify-content-end ">
+                <div class="col-md-12 py-1">
+                  <button class="btn btn-info w-100" (click)="selectACategory()">Seleccionar</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-          <div class="row mt-2 justify-content-end ">
-      <div class="col-md-12 py-1">
-        <button class="btn btn-info w-100" (click)="selectACategory()">Seleccionar</button>
-      </div>
     </div>
-    </div>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div class="row">
-          <div class="col-md-8">
-            <div class="d-flex align-items-start">
-              <!-- <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical"> -->
-              <!--   <ng-container *ngFor="let category of categoriesId; let i = index"> -->
-              <!--     <button class="nav-link" [class.active]="i === 0" -->
-              <!--        id="v-pills-home-tab" -->
-              <!--        data-bs-toggle="pill" -->
-              <!--        [attr.data-bs-target]="'#v-pill-' + i" -->
-              <!--        type="button" role="tab" -->
-              <!--        aria-controls="v-pills-home" -->
-              <!--        aria-selected="true"> -->
-              <!--        {{ nameCat[category] }} -->
-              <!--     </button> -->
-              <!--   </ng-container> -->
-              <!-- </div> -->
-              <!-- <div class="tab-content" id="v-pills-tabContent"> -->
-              <!--   <ng-container *ngFor="let category of categoriesId; let i = index"> -->
-              <!--     <div  aria-labelledby="v-pills-home-tab" tabindex="0" -->
-              <!--            class="tab-pane fade show" -->
-              <!--            [class.active]="i === 0" -->
-              <!--            [id]="'v-pill-' + i" -->
-              <!--            role="tabpanel" -->
-              <!--            [attr.tabindex]="i"> -->
-              <!--        <p-tree -->
-              <!--          [value]="categoryNodes[category]" -->
-              <!--          [(selection)]="selectedNodes" -->
-              <!--          selectionMode="checkbox" -->
-              <!--          class="w-full md:w-[30rem]" -->
-              <!--          (onNodeSelect)="onSelectionChange($event)" -->
-              <!--          (onNodeUnselect)="onSelectionChange($event)"> -->
-              <!--        </p-tree> -->
-              <!--     </div> -->
-              <!--   </ng-container> -->
-              <!-- </div> -->
+  </div><br><br><br>
+  <div class="container-fluid detail_info"><br><br><br>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 table-responsive">
+          <ng-container *ngIf="calculatedVariables.length <= 0; else showData">
+            <div class="row justify-content-center">
+              <div class="col-md-6 text-center">
+                <h4>No hay datos disponibles</h4>
+              </div>
             </div>
-          </div>
-          <!-- <div class="col-md-4"> -->
-          <!--   Selected Nodes:<br> -->
-          <!--   <ng-container *ngFor="let node of selectedNodes"> -->
-          <!--     {{node["label"]}}<br> -->
-          <!--   </ng-container> -->
-          <!-- </div> -->
+          </ng-container>
+          <ng-template #showData>
+            <div class="table-scroll-wrapper">
+              <table class="table table-hover table-striped category-table">
+                <thead class="table-header">
+                  <tr>
+                    <th (click)="sortTableBy('category')">
+                      Categoría
+                      <span class="sort-icon">
+                        <ng-container *ngIf="currentSortColumn === 'category'">
+                          {{ currentSortOrder === 'asc' ? '↑' : '↓' }}
+                        </ng-container>
+                        <ng-container *ngIf="currentSortColumn !== 'category'">↕</ng-container>
+                      </span>
+                    </th>
+                    <ng-container *ngIf="seeExtraColumnsInCategory">
+                      <th class="text-center" (click)="sortTableBy('ncx')">
+                        ncx
+                        <span class="sort-icon">
+                          <ng-container *ngIf="currentSortColumn === 'ncx'">
+                            {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                          </ng-container>
+                          <ng-container *ngIf="currentSortColumn !== 'ncx'">↕</ng-container>
+                        </span>
+                      </th>
+                      <th class="text-center" (click)="sortTableBy('nc')">
+                        nc
+                        <span class="sort-icon">
+                          <ng-container *ngIf="currentSortColumn === 'nc'">
+                            {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                          </ng-container>
+                          <ng-container *ngIf="currentSortColumn !== 'nc'">↕</ng-container>
+                        </span>
+                      </th>
+                      <th class="text-center" (click)="sortTableBy('nx')">
+                        nx
+                        <span class="sort-icon">
+                          <ng-container *ngIf="currentSortColumn === 'nx'">
+                            {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                          </ng-container>
+                          <ng-container *ngIf="currentSortColumn !== 'nx'">↕</ng-container>
+                        </span>
+                      </th>
+                      <th class="text-center" (click)="sortTableBy('n')">
+                        n
+                        <span class="sort-icon">
+                          <ng-container *ngIf="currentSortColumn === 'n'">
+                            {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                          </ng-container>
+                          <ng-container *ngIf="currentSortColumn !== 'n'">↕</ng-container>
+                        </span>
+                      </th>
+                    </ng-container>
+                    <th class="text-center" (click)="sortTableBy('epsilon')">
+                      epsilon
+                      <span class="sort-icon">
+                        <ng-container *ngIf="currentSortColumn === 'epsilon'">
+                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                        </ng-container>
+                        <ng-container *ngIf="currentSortColumn !== 'epsilon'">↕</ng-container>
+                      </span>
+                    </th>
+                    <th class="text-center" (click)="sortTableBy('score')">
+                      score
+                      <span class="sort-icon">
+                        <ng-container *ngIf="currentSortColumn === 'score'">
+                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                        </ng-container>
+                        <ng-container *ngIf="currentSortColumn !== 'score'">↕</ng-container>
+                      </span>
+                    </th>
+                    <th class="text-center" (click)="sortTableBy('log_lift')">
+                      log_lift
+                      <span class="sort-icon">
+                        <ng-container *ngIf="currentSortColumn === 'log_lift'">
+                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                        </ng-container>
+                        <ng-container *ngIf="currentSortColumn !== 'log_lift'">↕</ng-container>
+                      </span>
+                    </th>
+                    <th class="text-center" (click)="sortTableBy('RR')">
+                      RR
+                      <span class="sort-icon">
+                        <ng-container *ngIf="currentSortColumn === 'RR'">
+                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                        </ng-container>
+                        <ng-container *ngIf="currentSortColumn !== 'RR'">↕</ng-container>
+                      </span>
+                    </th>
+                    <th class="text-center" (click)="sortTableBy('SE_loglist')">
+                      SE_loglist
+                      <span class="sort-icon">
+                        <ng-container *ngIf="currentSortColumn === 'SE_loglist'">
+                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                        </ng-container>
+                        <ng-container *ngIf="currentSortColumn !== 'SE_loglist'">↕</ng-container>
+                      </span>
+                    </th>
+                    <th class="text-center" (click)="sortTableBy('ICinf')">
+                      ICinf
+                      <span class="sort-icon">
+                        <ng-container *ngIf="currentSortColumn === 'ICinf'">
+                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                        </ng-container>
+                        <ng-container *ngIf="currentSortColumn !== 'ICinf'">↕</ng-container>
+                      </span>
+                    </th>
+                    <th class="text-center" (click)="sortTableBy('ICsup')">
+                      ICsup
+                      <span class="sort-icon">
+                        <ng-container *ngIf="currentSortColumn === 'ICsup'">
+                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
+                        </ng-container>
+                        <ng-container *ngIf="currentSortColumn !== 'ICsup'">↕</ng-container>
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="table-body">
+                  <tr *ngFor="let variable of calculatedVariables">
+                    <td>{{variable["category"]}}</td>
+                    <ng-container *ngIf="seeExtraColumnsInCategory">
+                      <td>{{variable["ncx"] | number:'1.0-0'}}</td>
+                      <td>{{variable["nc"] | number:'1.0-0'}}</td>
+                      <td>{{variable["nx"] | number:'1.0-0'}}</td>
+                      <td>{{variable["n"] | number:'1.0-0'}}</td>
+                    </ng-container>
+                    <td class="text-center">{{variable["epsilon"] }}</td>
+                    <td class="text-center">{{variable["score"] }}</td>
+                    <td class="text-center">{{variable["log_lift"] }}</td>
+                    <td class="text-center">{{variable["RR"] }}</td>
+                    <td class="text-center">{{variable["SE_loglist"] }}</td>
+                    <td class="text-center">{{variable["ICinf"] }}</td>
+                    <td class="text-center">{{variable["ICsup"] }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-template>
         </div>
-      </div>
-    </div>
-
-
-    </div><br><br><br><br>
-    <div class="row">
-      <div class="col-md-12 table-responsive">
-        <ng-container *ngIf="calculatedVariables.length <= 0; else showData">
-          <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
-              <h4>No hay datos disponibles</h4>
-            </div>
+      </div><br>
+      <div class="row justify-content-between">
+        <div class="col-md-2">
+          <div class="mb-3">
+            <button class="btn btn-primary" (click)="downloadCSV()">
+              <i class="bi bi-download"></i> Descargar CSV
+            </button>
           </div>
-        </ng-container>
-        <ng-template #showData>
-          <div class="table-scroll-wrapper">
-            <table class="table table-hover table-striped category-table">
-              <thead class="table-header">
-                <tr>
-                  <th (click)="sortTableBy('category')">
-                    Categoría
-                    <span class="sort-icon">
-                      <ng-container *ngIf="currentSortColumn === 'category'">
-                        {{ currentSortOrder === 'asc' ? '↑' : '↓' }}
-                      </ng-container>
-                      <ng-container *ngIf="currentSortColumn !== 'category'">↕</ng-container>
-                    </span>
-                  </th>
-                  <ng-container *ngIf="seeExtraColumnsInCategory">
-                    <th class="text-center" (click)="sortTableBy('ncx')">
-                      ncx
-                      <span class="sort-icon">
-                        <ng-container *ngIf="currentSortColumn === 'ncx'">
-                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                        </ng-container>
-                        <ng-container *ngIf="currentSortColumn !== 'ncx'">↕</ng-container>
-                      </span>
-                    </th>
-                    <th class="text-center" (click)="sortTableBy('nc')">
-                      nc
-                      <span class="sort-icon">
-                        <ng-container *ngIf="currentSortColumn === 'nc'">
-                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                        </ng-container>
-                        <ng-container *ngIf="currentSortColumn !== 'nc'">↕</ng-container>
-                      </span>
-                    </th>
-                    <th class="text-center" (click)="sortTableBy('nx')">
-                      nx
-                      <span class="sort-icon">
-                        <ng-container *ngIf="currentSortColumn === 'nx'">
-                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                        </ng-container>
-                        <ng-container *ngIf="currentSortColumn !== 'nx'">↕</ng-container>
-                      </span>
-                    </th>
-                    <th class="text-center" (click)="sortTableBy('n')">
-                      n
-                      <span class="sort-icon">
-                        <ng-container *ngIf="currentSortColumn === 'n'">
-                          {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                        </ng-container>
-                        <ng-container *ngIf="currentSortColumn !== 'n'">↕</ng-container>
-                      </span>
-                    </th>
-                  </ng-container>
-                  <th class="text-center" (click)="sortTableBy('epsilon')">
-                    epsilon
-                    <span class="sort-icon">
-                      <ng-container *ngIf="currentSortColumn === 'epsilon'">
-                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                      </ng-container>
-                      <ng-container *ngIf="currentSortColumn !== 'epsilon'">↕</ng-container>
-                    </span>
-                  </th>
-                  <th class="text-center" (click)="sortTableBy('score')">
-                    score
-                    <span class="sort-icon">
-                      <ng-container *ngIf="currentSortColumn === 'score'">
-                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                      </ng-container>
-                      <ng-container *ngIf="currentSortColumn !== 'score'">↕</ng-container>
-                    </span>
-                  </th>
-                  <th class="text-center" (click)="sortTableBy('log_lift')">
-                    log_lift
-                    <span class="sort-icon">
-                      <ng-container *ngIf="currentSortColumn === 'log_lift'">
-                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                      </ng-container>
-                      <ng-container *ngIf="currentSortColumn !== 'log_lift'">↕</ng-container>
-                    </span>
-                  </th>
-                  <th class="text-center" (click)="sortTableBy('RR')">
-                    RR
-                    <span class="sort-icon">
-                      <ng-container *ngIf="currentSortColumn === 'RR'">
-                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                      </ng-container>
-                      <ng-container *ngIf="currentSortColumn !== 'RR'">↕</ng-container>
-                    </span>
-                  </th>
-                  <th class="text-center" (click)="sortTableBy('SE_loglist')">
-                    SE_loglist
-                    <span class="sort-icon">
-                      <ng-container *ngIf="currentSortColumn === 'SE_loglist'">
-                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                      </ng-container>
-                      <ng-container *ngIf="currentSortColumn !== 'SE_loglist'">↕</ng-container>
-                    </span>
-                  </th>
-                  <th class="text-center" (click)="sortTableBy('ICinf')">
-                    ICinf
-                    <span class="sort-icon">
-                      <ng-container *ngIf="currentSortColumn === 'ICinf'">
-                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                      </ng-container>
-                      <ng-container *ngIf="currentSortColumn !== 'ICinf'">↕</ng-container>
-                    </span>
-                  </th>
-                  <th class="text-center" (click)="sortTableBy('ICsup')">
-                    ICsup
-                    <span class="sort-icon">
-                      <ng-container *ngIf="currentSortColumn === 'ICsup'">
-                        {{ currentSortOrder === 'desc' ? '↑' : '↓' }}
-                      </ng-container>
-                      <ng-container *ngIf="currentSortColumn !== 'ICsup'">↕</ng-container>
-                    </span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="table-body">
-                <tr *ngFor="let variable of calculatedVariables">
-                      <td>{{variable["category"]}}</td>
-                      <ng-container *ngIf="seeExtraColumnsInCategory">
-                        <td>{{variable["ncx"] | number:'1.0-0'}}</td>
-                        <td>{{variable["nc"] | number:'1.0-0'}}</td>
-                        <td>{{variable["nx"] | number:'1.0-0'}}</td>
-                        <td>{{variable["n"] | number:'1.0-0'}}</td>
-                      </ng-container>
-                      <td class="text-center">{{variable["epsilon"] }}</td>
-                      <td class="text-center">{{variable["score"] }}</td>
-                      <td class="text-center">{{variable["log_lift"] }}</td>
-                      <td class="text-center">{{variable["RR"] }}</td>
-                      <td class="text-center">{{variable["SE_loglist"] }}</td>
-                      <td class="text-center">{{variable["ICinf"] }}</td>
-                      <td class="text-center">{{variable["ICsup"] }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </ng-template>
-      </div>
-    </div><br>
-    <div class="row justify-content-between">
-      <div class="col-md-2">
-        <div class="mb-3">
-          <button class="btn btn-primary" (click)="downloadCSV()">
-            <i class="bi bi-download"></i> Descargar CSV
+        </div>
+        <div class="col-md-3 text-end">
+          <button type="button" class="btn btn-link p-0" (click)="toggleExtraColumns()">
+            {{ seeExtraColumnsInCategory ? 'Ocultar' : 'Ver' }} información detallada de la tabla
           </button>
         </div>
       </div>
-      <div class="col-md-3 text-end">
-        <button type="button" class="btn btn-link p-0" (click)="toggleExtraColumns()">
-          {{ seeExtraColumnsInCategory ? 'Ocultar' : 'Ver' }} información detallada de la tabla
-        </button>
-      </div>
-    </div>
-  </div><br>
-  <div class="container">
-    <div class="row">
-      <div class="section-title">
-        <h2>Riesgo Relativo (RR) de {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}} por Categorías de Temperatura</h2>
-      </div>
-    </div><br><br>
-    <div class="row">
-      <ng-container *ngFor="let data of calculatedVariablesByPrefix; let i = index">
-        <div [ngClass]="{
-            'col-12': calculatedVariablesByPrefix.length === 1 ||
-              (calculatedVariablesByPrefix.length === 3 && i === 2),
-            'col-12 col-lg-6': calculatedVariablesByPrefix.length === 2 ||
-              (calculatedVariablesByPrefix.length === 3 && i < 2) ||
-              calculatedVariablesByPrefix.length >= 4 }" class="mb-3">
-          <app-lower-upper-chart [data]="data"
-            [selectedFirstClassName]="getDescriptionByIdInAList(selectedFirstClassId, firstClassList)"
-            [selectedSecondClassName]="getDescriptionByIdInAList(selectedSecondClassId, secondClassList)"
-            [selectedThirdClassName]="getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)"
-            [selectedAgeHelper]="selectedAgeHelper"
-            [selectedGender]="selectedGender"
-            [selectedRegion]="selectedRegion"
-            [selectedYear]="selectedYear">
-          </app-lower-upper-chart><br>
+    </div><br>
+
+  </div>
+  <section class="chart-section">
+  <div class="chart-container">
+    <!-- Header / Title -->
+    <header class="chart-header">
+      <h2 class="chart-title">
+        Riesgo Relativo (RR) de {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}} por Categorías de Temperatura
+      </h2>
+      <p class="chart-subtitle" *ngIf="selectedYear || selectedAgeHelper || selectedGender">
+        {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}
+        <span *ngIf="selectedAgeHelper">· {{selectedAgeHelper}}</span>
+        <span *ngIf="selectedGender">· {{selectedGender}}</span>
+        <span *ngIf="selectedYear">· Año: {{selectedYear}}</span>
+      </p>
+    </header>
+
+    <!-- Charts Grid -->
+   <div class="card-body p-4 p-lg-5">
+      <div class="container-fluid px-0">
+        <div class="row">
+          <ng-container *ngFor="let data of calculatedVariablesByPrefix; let i = index">
+            <div [ngClass]="{
+                'col-12': calculatedVariablesByPrefix.length === 1 ||
+                  (calculatedVariablesByPrefix.length === 3 && i === 2),
+                'col-12 col-lg-6': calculatedVariablesByPrefix.length === 2 ||
+                  (calculatedVariablesByPrefix.length === 3 && i < 2) ||
+                  calculatedVariablesByPrefix.length >= 4
+              }" class="mb-4">
+              <div class="chart-card h-100 bg-light rounded-4 shadow-sm p-4 transition-hover">
+                <app-lower-upper-chart
+                  [data]="data"
+                  [selectedFirstClassName]="getDescriptionByIdInAList(selectedFirstClassId, firstClassList)"
+                  [selectedSecondClassName]="getDescriptionByIdInAList(selectedSecondClassId, secondClassList)"
+                  [selectedThirdClassName]="getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)"
+                  [selectedAgeHelper]="selectedAgeHelper"
+                  [selectedGender]="selectedGender"
+                  [selectedRegion]="selectedRegion"
+                  [selectedYear]="selectedYear">
+                </app-lower-upper-chart>
+              </div>
+            </div>
+          </ng-container>
         </div>
-      </ng-container>
+      </div>
     </div>
-  </div><br><br><br>
+  </div>
+</section>
 </body>
 
 

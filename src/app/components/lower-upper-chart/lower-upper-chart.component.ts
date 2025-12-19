@@ -85,6 +85,7 @@ export class LowerUpperChartComponent implements OnInit{
       chart: {
         type: 'scatter',
         height: 400,
+        backgroundColor: '#f8fbff'
       },
       title: {
         text: 'Riesgo Relativo (RR) para TXX',
