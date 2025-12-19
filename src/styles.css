@@ -224,8 +224,12 @@ header {
 .banner {
   position: relative;
   height: 220px; /* Adjust as needed */
-  /* background: linear-gradient(135deg, #ff9ac1 0%, #d29aff 50%, #a68eff 100%); */
-  background-image: url(https://i0.wp.com/www.atmosfera.unam.mx/wp-content/uploads/2023/04/epispecies-2048x1152-1.jpg?w=2048&ssl=1);
+  background: linear-gradient(90deg,
+    #ff4da6 0%,    /* Bright magenta-pink left side */
+    #e6007e 30%,   /* Deep fuchsia middle-left */
+    #b300b3 60%,   /* Rich magenta-purple center */
+    #8a2be2 100%   /* Blue-violet purple right side */
+  );
   overflow: hidden;
   color: white;
   display: flex;
@@ -234,20 +238,21 @@ header {
   text-align: center;
 }
 
-/* Subtle scientific overlay using CSS only */
+/* Enhanced subtle scientific overlay using multiple radial gradients (pure CSS) */
 .banner::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  /* background: */
-  /* radial-gradient(circle at 20% 80%, rgba(255,255,255,0.15) 0%, transparent 20%), */
-  /* radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 15%), */
-  /* radial-gradient(circle at 50% 50%, rgba(200,200,255,0.08) 0%, transparent 25%); */
-  /* https://i0.wp.com/www.atmosfera.unam.mx/wp-content/uploads/2023/04/epispecies-2048x1152-1.jpg?w=2048&ssl=1 */
-
-  background-image: url(https://i0.wp.com/www.atmosfera.unam.mx/wp-content/uploads/2023/04/epispecies-2048x1152-1.jpg?w=2048&ssl=1);
+  background:
+    radial-gradient(circle at 15% 70%, rgba(255, 100, 200, 0.3) 0%, transparent 25%),
+    radial-gradient(circle at 35% 40%, rgba(255, 150, 255, 0.25) 0%, transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(200, 100, 255, 0.2) 0%, transparent 35%),
+    radial-gradient(circle at 75% 30%, rgba(150, 100, 255, 0.25) 0%, transparent 30%),
+    radial-gradient(circle at 85% 60%, rgba(255, 200, 255, 0.15) 0%, transparent 20%),
+    radial-gradient(circle at 60% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 40%);
   pointer-events: none;
   z-index: 1;
+  mix-blend-mode: screen; /* Adds a soft glow effect for more "data visualization" feel */
 }
 
 /* Floating particles / nodes */
