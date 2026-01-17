@@ -7,7 +7,7 @@ import { DiseaseDbService } from '../../services/disease-db.service';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { environment, ageMap, nameCategories, categoriesFilterList, AgeRange, monthsList } from '../../../environments/environment'
+import { environment, ageMap, nameCategories, categoriesFilterList, gendersDict, monthsList } from '../../../environments/environment'
 import { firstValueFrom } from 'rxjs';
 import { Record } from '../../models/cve_list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -867,6 +867,10 @@ export class MainComponent implements OnInit {
   // ---GET DESCRIPTIONS--
   getAgeDescription(key: string): string {
     return ageMap[key as keyof typeof ageMap] || 'Todas las edades';
+  }
+
+  getGenderDescription(key: string): string {
+    return gendersDict[Number(key)] || 'Todos los géneros';
   }
 
   getDescriptionByIdInAList(id: string, dataList: [string, string][]): string | null {

@@ -59,7 +59,7 @@ export class LowerUpperChartComponent implements OnInit{
     subTitle += (this.selectedAgeHelper == environment.placeholderAge) ? `, ${this.selectedAgeHelper}` :  `, Grupo de edad: ${this.selectedAgeHelper}`;
     subTitle += (this.selectedGender == environment.placeholderGender) ?
       `, ${this.selectedGender}` :
-      `, Género: ${gendersDict[this.selectedGender]}`;
+      `, Género: ${this.selectedGender}`;
     subTitle += (this.selectedYear) ? `, Año: ${this.selectedYear[0]}` : ""
     const padding = 0.01;
     const lowerBound = minICinf - padding;
