@@ -363,7 +363,7 @@ export class MapComponent implements OnInit {
   }
 
   getMunicipalityName(code: any): string {
-    code = code.toString()
+    code = Number(code).toString()
     return this.municipalityNames[code] || environment.unknownMunicipality;
   }
 
