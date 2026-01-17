@@ -302,7 +302,6 @@ export class MainComponent implements OnInit {
     this.selectedCVEMun = idSelectedMun;
     this.saveNewSelectsValues();
     this.seeInformationAfterSelected = true;
-    showNotification.success(NOTIFICATION_MESSAGES.DATA_LOADED);
   }
 
   getCategories(year:string, metropoli: string, state: string){
