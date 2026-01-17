@@ -7,7 +7,7 @@ import { DiseaseDbService } from '../../services/disease-db.service';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { environment, ageMap, nameCategories, categoriesFilterList, AgeRange } from '../../../environments/environment'
+import { environment, ageMap, nameCategories, categoriesFilterList, AgeRange, monthsList } from '../../../environments/environment'
 import { firstValueFrom } from 'rxjs';
 import { Record } from '../../models/cve_list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select'; // If you use mat-se
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { LowerUpperChartComponent } from '../../components/lower-upper-chart/lower-upper-chart.component';
-import { showNotification, sideNotification, NOTIFICATION_MESSAGES } from '../constants/notifications';
+import { showNotification, NOTIFICATION_MESSAGES, showToast } from '../constants/notifications';
 
 @Component({
   selector: 'app-main',
@@ -119,49 +119,9 @@ export class MainComponent implements OnInit {
   selectedNodesFiltered: any = null; // Will hold selected node keys (e.g., { '0-0': true })
   seeInformationAfterSelected = false;
   seeCategoriesAfterSelected = false;
+  climateNodes: TreeNode[] = [];
 
-  climateNodes: TreeNode[] = [
-    {
-      label: 'Mean Diurnal Range (Mean of monthly (max temp - min temp))',
-      key: 'diurnal',
-      children: [] // Add leaves if needed
-    },
-    {
-      label: 'Isothermality (BIO2/BIO7) (x100)',
-      key: 'isothermality',
-      children: []
-    },
-    {
-      label: 'Annual Mean Temperature',
-      key: 'annual',
-      children: [
-        { label: '2.050-13.525 1', key: 'annual-1', leaf: true },
-        { label: '13.525-15.225 2', key: 'annual-2', leaf: true },
-        { label: '15.225-16.146 3', key: 'annual-3', leaf: true },
-        { label: '16.146-16.737 4', key: 'annual-4', leaf: true },
-        { label: '16.737-17.225 5', key: 'annual-5', leaf: true },
-        { label: '17.225-17.846 6', key: 'annual-6', leaf: true },
-        { label: '17.846-18.517 7', key: 'annual-7', leaf: true },
-        { label: '18.517-19.183 8', key: 'annual-8', leaf: true },
-        { label: '19.183-19.867 9', key: 'annual-9', leaf: true }
-      ]
-    }
-  ];
-
-  monthsList = [
-    { value: 1, name: 'Enero' },
-    { value: 2, name: 'Febrero' },
-    { value: 3, name: 'Marzo' },
-    { value: 4, name: 'Abril' },
-    { value: 5, name: 'Mayo' },
-    { value: 6, name: 'Junio' },
-    { value: 7, name: 'Julio' },
-    { value: 8, name: 'Agosto' },
-    { value: 9, name: 'Septiembre' },
-    { value: 10, name: 'Octubre' },
-    { value: 11, name: 'Noviembre' },
-    { value: 12, name: 'Diciembre' }
-  ];
+  monthsList = monthsList
 
   ngOnInit() {
     showNotification.loading(NOTIFICATION_MESSAGES.LOADING_DATA);
@@ -237,16 +197,13 @@ export class MainComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.secondClassList = response
-          this.updateNotificationSuccess("Datos actualizados correctamente")
+          showToast.success("Datos actualizados correctamente")
         },
         error: (error) => {
           console.error('Error fetching data:', error);
-          this.updateNotificationError("Error al actualizar los datos")
+          showToast.error("Error al actualizar los datos")
         }
       });
-  }
-  logSelected() {
-    console.log('Selected node keys:', this.selectedNodes);
   }
 
   onSecondClassChange(secondClassId: string) {
@@ -259,11 +216,11 @@ export class MainComponent implements OnInit {
         .subscribe({
           next: (response) => {
             this.thirdClassList = response
-            this.updateNotificationSuccess("Datos actualizados correctamente")
+            showToast.success("Datos actualizados correctamente")
           },
           error: (error) => {
             console.error('Error fetching data:', error);
-            this.updateNotificationError("Error al actualizar los datos")
+            showToast.error("Error al actualizar los datos")
           }
         });
     }
@@ -452,30 +409,12 @@ export class MainComponent implements OnInit {
     return dataList.filter((array) => array[position] == value);
   }
 
-  getDescriptionByIdInAList(id: string, dataList: [string, string][]): string | null {
-    const item = dataList.find((listId) => listId[0] == id);
-    return item ? item[1] : null;
-  }
-
-  updateNotificationSuccess(title: string) {
-    sideNotification.fire({
-      icon: "success",
-      title: title
-    });
-  }
-
-  updateNotificationError(title: string) {
-    sideNotification.fire({
-      icon: "error",
-      title: title
-    });
-  }
 
   async top10() {
     let dataToDisplay = this.dataByMunToDisplayInMap;
     if( this.selectedRegion !== environment.placeholderMetropoli &&  this.selectedRegion !== environment.placeholderCountry &&
       this.selectedResolution == environment.placeholderMunResolution){
-      if(this.selectedState === "") { this.updateNotificationError("No se pudieron cargar los datos para el top 10"); return;}
+      if(this.selectedState === "") { showToast.error("No se pudieron cargar los datos para el top 10"); return;}
       const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
       if(idState){
         dataToDisplay = this.filterBy(0, idState[0], dataToDisplay)
@@ -626,12 +565,12 @@ export class MainComponent implements OnInit {
     this.selectedMuncipality = "";
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
     if (isAState) {
-      this.updateNotificationSuccess("Datos actualizados correctamente.");
+      showToast.success("Datos actualizados correctamente.");
       this.munNameList = this.filterBy(1, this.selectedState, this.statesAndMunList)
         .sort((a, b) => a[3].localeCompare(b[3]));
       this.modalStateRef.nativeElement.click();
     } else {
-      this.updateNotificationError("Datos actualizados incorrectamente.");
+      showToast.error("Datos actualizados incorrectamente.");
       this.selectedState = "";
     }
   }
@@ -640,12 +579,7 @@ export class MainComponent implements OnInit {
     return list.includes(value)
   }
 
-  closingModal() {
-    this.selectedState = "";
-    this.selectedMuncipality = "";
-    this.selectedMetropoly = environment.selectedMetropoli;
-    this.selectedRegion = environment.placeholderCountry;
-  }
+
 
   selectStateInModal() {
     this.selectedMuncipality = "";
@@ -741,16 +675,7 @@ export class MainComponent implements OnInit {
           return [label, count];
         });
   }
-  closingPeriodModal(){
-    this.periodCloseRef.nativeElement.click();
-  }
 
-  verifyPeriodSelectedcModal(){
-    this.periodCloseRef.nativeElement.click();
-  }
-
-  selectedPeriod(season: string){
-  }
 
   sortTableBy(attribute: string) {
     if (this.currentSortColumn === attribute) {
@@ -830,14 +755,13 @@ export class MainComponent implements OnInit {
           this.calculatedVariables = response.flat()
           this.sortTableBy('category')
           this.seeCategoriesAfterSelected = true;
-          this.updateNotificationSuccess("Datos actualizados correctamente");
+          showToast.success("Datos actualizados correctamente");
         },
         error: (error) => {
-          this.updateNotificationError("No se encontraron datos para las categorias seleccionadas")
+          showToast.error("No se encontraron datos para las categorias seleccionadas")
         }
       });
     } else {
-      console.log('MIMI')
       showNotification.error(NOTIFICATION_MESSAGES.SELECT_CATEGORY);
       return;
     }
@@ -919,7 +843,36 @@ export class MainComponent implements OnInit {
     this.updateSelectedNodesFiltered();
   }
 
+
+  // ---MODALS---
+
+  closingModal() {
+    this.selectedState = "";
+    this.selectedMuncipality = "";
+    this.selectedMetropoly = environment.selectedMetropoli;
+    this.selectedRegion = environment.placeholderCountry;
+  }
+
+  closingPeriodModal(){
+    this.periodCloseRef.nativeElement.click();
+  }
+
+  verifyPeriodSelectedcModal(){
+    this.periodCloseRef.nativeElement.click();
+  }
+
+  selectedPeriod(season: string){
+  }
+
+
+  // ---GET DESCRIPTIONS--
   getAgeDescription(key: string): string {
     return ageMap[key as keyof typeof ageMap] || 'Todas las edades';
   }
+
+  getDescriptionByIdInAList(id: string, dataList: [string, string][]): string | null {
+    const item = dataList.find((listId) => listId[0] == id);
+    return item ? item[1] : null;
+  }
+
 }

@@ -20,19 +20,6 @@ export const NOTIFICATION_MESSAGES = {
   SELECT_CATEGORY: 'Por favor seleccione una categoría'
 };
 
-export const sideNotification = Swal.mixin({
-    toast: true,
-    position: "bottom-end",
-    showConfirmButton: false,
-    timer: 2000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    }
-  });
-
-
 export const showNotification = {
   success: (message: string, timer: number = 1500) => {
     Swal.fire({
@@ -96,3 +83,49 @@ export const showNotification = {
   }
 };
 
+
+export const sideNotification = Swal.mixin({
+  toast: true,
+  position: "bottom-end",
+  showConfirmButton: false,
+  timer: 2000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  }
+});
+
+export const showToast = {
+  success: (message: string, timer: number = 2000) => {
+    sideNotification.fire({
+      icon: "success",
+      title: message,
+      timer
+    });
+  },
+
+  error: (message: string, timer: number = 2000) => {
+    sideNotification.fire({
+      icon: "error",
+      title: message,
+      timer
+    });
+  },
+
+  warning: (message: string, timer: number = 2000) => {
+    sideNotification.fire({
+      icon: "warning",
+      title: message,
+      timer
+    });
+  },
+
+  info: (message: string, timer: number = 2000) => {
+    sideNotification.fire({
+      icon: "info",
+      title: message,
+      timer
+    });
+  }
+};
