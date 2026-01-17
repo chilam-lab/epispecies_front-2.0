@@ -5,7 +5,6 @@ import { Component, ViewChild, ElementRef, OnInit, HostListener } from '@angular
 import { MapComponent } from '../../components/map/map.component';
 import { DiseaseDbService } from '../../services/disease-db.service';
 import { CommonModule } from '@angular/common';
-import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { environment, ageMap, nameCategories, categoriesFilterList, AgeRange } from '../../../environments/environment'
@@ -17,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select'; // If you use mat-se
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { LowerUpperChartComponent } from '../../components/lower-upper-chart/lower-upper-chart.component';
+import { showNotification, sideNotification, NOTIFICATION_MESSAGES } from '../constants/notifications';
 
 @Component({
   selector: 'app-main',
@@ -162,25 +162,9 @@ export class MainComponent implements OnInit {
     { value: 11, name: 'Noviembre' },
     { value: 12, name: 'Diciembre' }
   ];
-  notification = Swal.mixin({
-    toast: true,
-    position: "bottom-end",
-    showConfirmButton: false,
-    timer: 2000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    }
-  });
 
   ngOnInit() {
-    Swal.fire({
-      title: 'Cargando datos...',
-      allowOutsideClick: false,
-      showConfirmButton: true,
-    })
-    Swal.showLoading();
+    showNotification.loading(NOTIFICATION_MESSAGES.LOADING_DATA);
     this.dbService.uniquePairColumns(environment.firstClassIdColumn, environment.firstClassDescripColumn, environment.modelsDictionaryTable)
       .subscribe({
         next: (response) => {
@@ -188,11 +172,7 @@ export class MainComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error fetching data:', error);
-          Swal.fire({
-            timer: 1000,
-            title: 'Ocurrio un error al cargar los datos.',
-            icon: 'error'
-          })
+          showNotification.error(NOTIFICATION_MESSAGES.ERROR_LOADING);
         }
       });
     this.dbService.getUniqueValues([environment.ageGrupoColumn, environment.genderColumn, environment.yearColumn])
@@ -240,11 +220,7 @@ export class MainComponent implements OnInit {
             .map(([name, id]) => [id, name] as [string, string])
             .sort((a, b) => a[1].localeCompare(b[1]));
           this.metropolyList = uniqueMetropoly
-          Swal.fire({
-            timer: 1100,
-            title: 'Datos cargados correctamente.',
-            icon: 'success'
-          })
+          showNotification.success(NOTIFICATION_MESSAGES.DATA_LOADED);
         },
         error: (error) => {
           console.error('Error fetching data:', error);
@@ -308,20 +284,11 @@ export class MainComponent implements OnInit {
 
   async updateTheDataForTheMap() {
     if (this.selectedFirstClassId == environment.placeholderFirstClass) {
-      Swal.fire({
-        timer: 1100,
-        title: 'Por favor seleccione una enfermedad',
-        icon: 'error'
-      })
+      showNotification.error(NOTIFICATION_MESSAGES.SELECT_FIRST_CLASS);
       return;
     }
 
-    Swal.fire({
-      title: 'Cargando datos...',
-      allowOutsideClick: false,
-      showConfirmButton: true,
-    })
-    Swal.showLoading();
+    showNotification.loading(NOTIFICATION_MESSAGES.LOADING_DATA);
     //add verification for the models
     try {
       if (this.selectedYear != this.hasChanges.selectedYear ||
@@ -378,11 +345,7 @@ export class MainComponent implements OnInit {
     this.selectedCVEMun = idSelectedMun;
     this.saveNewSelectsValues();
     this.seeInformationAfterSelected = true;
-    Swal.fire({
-      timer: 1100,
-      title: 'Datos cargados correctamente.',
-      icon: 'success'
-    })
+    showNotification.success(NOTIFICATION_MESSAGES.DATA_LOADED);
   }
 
   getCategories(year:string, metropoli: string, state: string){
@@ -495,14 +458,14 @@ export class MainComponent implements OnInit {
   }
 
   updateNotificationSuccess(title: string) {
-    this.notification.fire({
+    sideNotification.fire({
       icon: "success",
       title: title
     });
   }
 
   updateNotificationError(title: string) {
-    this.notification.fire({
+    sideNotification.fire({
       icon: "error",
       title: title
     });
@@ -608,11 +571,7 @@ export class MainComponent implements OnInit {
 
     } catch (error) {
       console.error('Error fetching data:', error);
-      Swal.fire({
-        timer: 1000,
-        title: 'Ocurrio un error al cargar los datos.',
-        icon: 'error'
-      });
+      showNotification.error(NOTIFICATION_MESSAGES.ERROR_LOADING);
       return 0;
     }
   }
@@ -667,12 +626,12 @@ export class MainComponent implements OnInit {
     this.selectedMuncipality = "";
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
     if (isAState) {
-      this.updateNotificationSuccess("Datos actualizados correctamente")
+      this.updateNotificationSuccess("Datos actualizados correctamente.");
       this.munNameList = this.filterBy(1, this.selectedState, this.statesAndMunList)
         .sort((a, b) => a[3].localeCompare(b[3]));
       this.modalStateRef.nativeElement.click();
     } else {
-      this.updateNotificationError("Datos actualizados erroneamente")
+      this.updateNotificationError("Datos actualizados incorrectamente.");
       this.selectedState = "";
     }
   }
@@ -692,39 +651,23 @@ export class MainComponent implements OnInit {
     this.selectedMuncipality = "";
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
     if (isAState) {
-      Swal.fire({
-        timer: 1100,
-        title: 'Estado seleccionado correctamente.',
-        icon: 'success'
-      })
+      showNotification.success(NOTIFICATION_MESSAGES.STATE_SELECTED);
       this.modalStateRef.nativeElement.click();
     } else {
       this.selectedState = "";
-      Swal.fire({
-        timer: 1100,
-        title: 'Por favor seleccione un estado valido',
-        icon: 'error'
-      })
+      showNotification.error(NOTIFICATION_MESSAGES.WRONG_STATE);
     }
   }
 
   verifyDataInMunModal() {
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
     if (isAState) {
-      Swal.fire({
-        timer: 1100,
-        title: 'Municipio seleccionado correctamente.',
-        icon: 'success'
-      })
+      showNotification.success(NOTIFICATION_MESSAGES.MUNICIPAL_SELECTED);
       this.modalMunRef.nativeElement.click();
     } else {
       this.selectedState = "";
       this.selectedMuncipality = "";
-      Swal.fire({
-        timer: 1100,
-        title: 'Por favor seleccione un estado valido',
-        icon: 'error'
-      })
+      showNotification.error(NOTIFICATION_MESSAGES.WRONG_STATE);
     }
   }
 
@@ -857,10 +800,10 @@ export class MainComponent implements OnInit {
   }
 
   selectACategory(){
-    const matches = this.getOneOfEachPrefix();
-    const matchesArray = Object.values(matches);
-
     if(this.selectedNodes){
+      const matches = this.getOneOfEachPrefix();
+      const matchesArray = Object.values(matches);
+
       let metropoli = "";
       let cve_state = "";
       (this.selectedRegion == environment.placeholderMetropoli) ?
@@ -894,11 +837,8 @@ export class MainComponent implements OnInit {
         }
       });
     } else {
-      Swal.fire({
-        timer: 1100,
-        title: 'Por favor seleccione un modelo antes',
-        icon: 'error'
-      })
+      console.log('MIMI')
+      showNotification.error(NOTIFICATION_MESSAGES.SELECT_CATEGORY);
       return;
     }
   }
@@ -980,8 +920,6 @@ export class MainComponent implements OnInit {
   }
 
   getAgeDescription(key: string): string {
-    console.log(key)
-    console.log("🌸")
     return ageMap[key as keyof typeof ageMap] || 'Todas las edades';
   }
 }
