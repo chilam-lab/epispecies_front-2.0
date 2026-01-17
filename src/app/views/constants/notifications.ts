@@ -4,9 +4,10 @@ import Swal from 'sweetalert2';
 
 export const NOTIFICATION_MESSAGES = {
   DATA_LOADED: 'Datos cargados correctamente.',
-  DATA_SAVED: 'Datos guardados correctamente.',
+  DATA_UPDATED: 'Datos actualizados correctamente',
   DATA_DELETED: 'Datos eliminados correctamente.',
   ERROR_LOADING: 'Error al cargar los datos.',
+  ERROR_UPDATING: 'Error al actualizar los datos.',
   LOADING_DATA: 'Cargando datos...',
 
   SELECT_FIRST_CLASS: 'Por favor seleccione una enfermedad',
@@ -16,8 +17,11 @@ export const NOTIFICATION_MESSAGES = {
   MUNICIPAL_SELECTED: 'Municipio seleccionado correctamente.',
   WRONG_MUNICIPAL: 'Por favor seleccione un municipio valido',
 
+  SELECT_CATEGORY: 'Por favor seleccione una categoría',
+  ERROR_CATEGORY: 'No se encontraron datos para las categorias seleccionadas',
 
-  SELECT_CATEGORY: 'Por favor seleccione una categoría'
+  ERROR_TOP10: 'No se pudieron cargar los datos para el top 10'
+
 };
 
 export const showNotification = {

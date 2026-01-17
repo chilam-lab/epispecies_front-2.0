@@ -197,11 +197,11 @@ export class MainComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.secondClassList = response
-          showToast.success("Datos actualizados correctamente")
+          showToast.success(NOTIFICATION_MESSAGES.DATA_UPDATED);
         },
         error: (error) => {
           console.error('Error fetching data:', error);
-          showToast.error("Error al actualizar los datos")
+          showToast.error(NOTIFICATION_MESSAGES.ERROR_UPDATING);
         }
       });
   }
@@ -216,11 +216,11 @@ export class MainComponent implements OnInit {
         .subscribe({
           next: (response) => {
             this.thirdClassList = response
-            showToast.success("Datos actualizados correctamente")
+            showToast.success(NOTIFICATION_MESSAGES.DATA_UPDATED);
           },
           error: (error) => {
             console.error('Error fetching data:', error);
-            showToast.error("Error al actualizar los datos")
+            showToast.error(NOTIFICATION_MESSAGES.ERROR_UPDATING);
           }
         });
     }
@@ -414,7 +414,7 @@ export class MainComponent implements OnInit {
     let dataToDisplay = this.dataByMunToDisplayInMap;
     if( this.selectedRegion !== environment.placeholderMetropoli &&  this.selectedRegion !== environment.placeholderCountry &&
       this.selectedResolution == environment.placeholderMunResolution){
-      if(this.selectedState === "") { showToast.error("No se pudieron cargar los datos para el top 10"); return;}
+      if(this.selectedState === "") { showToast.error(NOTIFICATION_MESSAGES.ERROR_TOP10); return;}
       const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
       if(idState){
         dataToDisplay = this.filterBy(0, idState[0], dataToDisplay)
@@ -565,12 +565,12 @@ export class MainComponent implements OnInit {
     this.selectedMuncipality = "";
     let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
     if (isAState) {
-      showToast.success("Datos actualizados correctamente.");
+      showToast.success(NOTIFICATION_MESSAGES.DATA_UPDATED);
       this.munNameList = this.filterBy(1, this.selectedState, this.statesAndMunList)
         .sort((a, b) => a[3].localeCompare(b[3]));
       this.modalStateRef.nativeElement.click();
     } else {
-      showToast.error("Datos actualizados incorrectamente.");
+      showToast.error(NOTIFICATION_MESSAGES.ERROR_UPDATING);
       this.selectedState = "";
     }
   }
@@ -755,10 +755,10 @@ export class MainComponent implements OnInit {
           this.calculatedVariables = response.flat()
           this.sortTableBy('category')
           this.seeCategoriesAfterSelected = true;
-          showToast.success("Datos actualizados correctamente");
+          showToast.success(NOTIFICATION_MESSAGES.DATA_UPDATED);
         },
         error: (error) => {
-          showToast.error("No se encontraron datos para las categorias seleccionadas")
+          showToast.error(NOTIFICATION_MESSAGES.ERROR_CATEGORY);
         }
       });
     } else {
