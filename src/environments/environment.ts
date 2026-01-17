@@ -78,4 +78,6 @@ export const ageMap = {
   "null": 'Sin especificar',
 }
 
+export type AgeRange = keyof typeof ageMap;
+
 export const gendersDict:{ [key: number]: string } = { 1: "Hombres", 2: "Mujeres", 9: "No registrado" }

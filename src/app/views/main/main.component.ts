@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { environment, ageMap, nameCategories, categoriesFilterList } from '../../../environments/environment'
+import { environment, ageMap, nameCategories, categoriesFilterList, AgeRange } from '../../../environments/environment'
 import { firstValueFrom } from 'rxjs';
 import { Record } from '../../models/cve_list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -49,6 +49,7 @@ export class MainComponent implements OnInit {
   @ViewChild('showMetroModal') showModalMetro!: ElementRef;
   @ViewChild(MapComponent) mapComponent!: MapComponent;
   env = environment;
+  ageDescription = ageMap;
   nameCat: { [key: string]: string } = nameCategories;
   selectedFirstClassId: string = environment.placeholderFirstClass;
   selectedSecondClassId: string = environment.placeholderSecondClass;
@@ -976,5 +977,11 @@ export class MainComponent implements OnInit {
     });
 
     this.updateSelectedNodesFiltered();
+  }
+
+  getAgeDescription(key: string): string {
+    console.log(key)
+    console.log("🌸")
+    return ageMap[key as keyof typeof ageMap] || 'Todas las edades';
   }
 }

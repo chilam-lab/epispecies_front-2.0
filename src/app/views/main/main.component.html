@@ -508,7 +508,7 @@
       </h2>
       <p class="chart-subtitle" *ngIf="selectedYear || selectedAgeHelper || selectedGender">
         {{getDescriptionByIdInAList(selectedFirstClassId, firstClassList)}}
-        <span *ngIf="selectedAgeHelper">· {{selectedAgeHelper}}</span>
+        <span *ngIf="selectedAgeHelper">· {{getAgeDescription(selectedAgeHelper)}}</span>
         <span *ngIf="selectedGender">· {{selectedGender}}</span>
         <span *ngIf="selectedYear">· Año: {{selectedYear}}</span>
       </p>
@@ -532,7 +532,7 @@
                   [selectedFirstClassName]="getDescriptionByIdInAList(selectedFirstClassId, firstClassList)"
                   [selectedSecondClassName]="getDescriptionByIdInAList(selectedSecondClassId, secondClassList)"
                   [selectedThirdClassName]="getDescriptionByIdInAList(selectedThirdClassId, thirdClassList)"
-                  [selectedAgeHelper]="selectedAgeHelper"
+                  [selectedAgeHelper]="getAgeDescription(selectedAgeHelper)"
                   [selectedGender]="selectedGender"
                   [selectedRegion]="selectedRegion"
                   [selectedYear]="selectedYear">
