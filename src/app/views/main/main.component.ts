@@ -16,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select'; // If you use mat-se
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TreeNode } from 'primeng/api';
 import { LowerUpperChartComponent } from '../../components/lower-upper-chart/lower-upper-chart.component';
-import { showNotification, NOTIFICATION_MESSAGES, showToast } from '../constants/notifications';
+import { showNotification, NOTIFICATION_MESSAGES, showToast } from '../../constants/notifications';
 
 @Component({
   selector: 'app-main',

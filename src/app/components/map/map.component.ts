@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { DiseaseDbService } from '../../services/disease-db.service';
 import { getMatInputUnsupportedTypeError } from '@angular/material/input';
-import { showNotification, NOTIFICATION_MESSAGES } from '../../views/constants/notifications';
+import { showNotification, NOTIFICATION_MESSAGES } from '../../constants/notifications';
 
 @Component({
   selector: 'app-map',
