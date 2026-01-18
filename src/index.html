@@ -54,7 +54,6 @@
         });
       </script>
       <script>
-        // Esperar a que particles.js se cargue
         window.addEventListener('load', function() {
           if (window.particlesJS) {
             particlesJS('particles-js', {
@@ -104,18 +103,25 @@
                     enable: true,
                     mode: 'grab'
                   },
+                  onclick: {
+                    enable: false
+                  },
                   resize: true
                 },
                 modes: {
                   grab: {
-                    distance: 140,
+                    distance: 200,
                     line_linked: {
-                      opacity: 0.5
+                      opacity: 0.8
                     }
+                  },
+                  repulse: {
+                    distance: 150,
+                    duration: 0.4
                   }
                 }
               },
-              retina_detect: true
+              retina_detect: false
             });
           }
         });

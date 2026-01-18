@@ -489,16 +489,12 @@ export class MainComponent implements OnInit {
       cve_state = this.getStateIdByMunId(this.selectedCVEMun);}
     if(this.selectedRegion === environment.placeholderMetropoli){
       metropoli = this.selectedMetropoly}
-      console.log(cve_state)
-      console.log("🥞")
 
     this.totalPopulationWithFilters = await this.getPopulationData(year, cve_state, metropoli, age, verifyGender, cvegeo) | 0;
   }
 
   async getPopulationData(year: string, cve_state: string="", metropoli: string="",
                   age: string="", gender: string="", cvegeo: string= ""): Promise<number> {
-    console.log(cvegeo)
-      console.log("🪅")
 
     try {
       const response = await firstValueFrom(
