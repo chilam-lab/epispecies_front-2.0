@@ -282,6 +282,8 @@ export class MainComponent implements OnInit {
     idSelectedMun = (idSelectedMun.length > 0) ? Number(idSelectedMun) > 10000 ? idSelectedMun : "0" + idSelectedMun : "";
     const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
 
+    this.selectedCVEState = Number(idSelectedState);
+    this.selectedCVEMun = idSelectedMun;
     await this.getPopulationWithAllFilters()
     let stateMunList:any[];
     if(this.selectedRegion == environment.placeholderMetropoli){
@@ -298,8 +300,6 @@ export class MainComponent implements OnInit {
     this.getCategories(this.selectedYear.toString(), this.selectedMetropoly, this.selectedState)
     this.updatedResolution = this.selectedResolution;
     this.updatedRegion = this.selectedRegion;
-    this.selectedCVEState = Number(idSelectedState);
-    this.selectedCVEMun = idSelectedMun;
     this.saveNewSelectsValues();
     this.seeInformationAfterSelected = true;
   }
@@ -484,15 +484,21 @@ export class MainComponent implements OnInit {
 
     if(this.selectedRegion === environment.placeholderCountry){}
     if(this.selectedRegion === environment.placeholderState){
-      cve_state = this.selectedCVEState.toString()}
+      cve_state = this.selectedCVEState.toString(); }
+    if(this.selectedRegion === environment.placeholderMunicipal){
+      cve_state = this.getStateIdByMunId(this.selectedCVEMun);}
     if(this.selectedRegion === environment.placeholderMetropoli){
       metropoli = this.selectedMetropoly}
+      console.log(cve_state)
+      console.log("🥞")
 
     this.totalPopulationWithFilters = await this.getPopulationData(year, cve_state, metropoli, age, verifyGender, cvegeo) | 0;
   }
 
   async getPopulationData(year: string, cve_state: string="", metropoli: string="",
                   age: string="", gender: string="", cvegeo: string= ""): Promise<number> {
+    console.log(cvegeo)
+      console.log("🪅")
 
     try {
       const response = await firstValueFrom(
@@ -864,7 +870,7 @@ export class MainComponent implements OnInit {
   }
 
 
-  // ---GET DESCRIPTIONS--
+  // ---GET METHODS--
   getAgeDescription(key: string): string {
     return ageMap[key as keyof typeof ageMap] || 'Todas las edades';
   }
@@ -876,6 +882,12 @@ export class MainComponent implements OnInit {
   getDescriptionByIdInAList(id: string, dataList: [string, string][]): string | null {
     const item = dataList.find((listId) => listId[0] == id);
     return item ? item[1] : null;
+  }
+
+  getStateIdByMunId(cve_geo: string){
+    const item = this.statesAndMunList.filter(item => item[2] == Number(cve_geo));
+    const stateCode = item ? item[0][0] : "";
+    return stateCode;
   }
 
 }

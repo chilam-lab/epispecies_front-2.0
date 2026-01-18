@@ -592,8 +592,4 @@ export class MapComponent implements OnInit {
     }
     return populationMap
   }
-  getLevelDescription(selectedRegion: string){
-    if(selectedRegion === 'Municipio') return "Estado";
-    else return selectedRegion
-  }
 }
