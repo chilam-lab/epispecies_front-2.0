@@ -42,6 +42,8 @@ export class MapComponent implements OnInit {
   rawDataTodisplayByMun: [number, string, string][] = [];
   highestValueInData = 0;
   highestRateInData = 0;
+  lowestValueInData = 0;
+  lowestRateInData = 0;
   populationByYearList: [number, string, number][] = [];
   coloringMode: 'cases' | 'rate' = 'rate';
   currentLayerGroup: L.FeatureGroup | undefined;
@@ -173,16 +175,13 @@ export class MapComponent implements OnInit {
         }
       });
 
-      let maxCases = 0;
-      let maxRate = 0;
+      const cases = Array.from(dataCache.values()).map(d => d.cases);
+      const rates = Array.from(dataCache.values()).map(d => d.rate);
 
-      for (const data of dataCache.values()) {
-        if (data.cases > maxCases) maxCases = data.cases;
-        if (data.rate > maxRate) maxRate = data.rate;
-      }
-
-      this.highestValueInData = maxCases;
-      this.highestRateInData = maxRate;
+      this.highestValueInData = Math.max(...cases);
+      this.highestRateInData = Math.max(...rates);
+      this.lowestValueInData = Math.min(...cases);
+      this.lowestRateInData = Math.min(...rates);
 
       // Create the cases layer (now synchronous with cached data)
       this.casesGeoJsonLayer = L.geoJSON(geoJson, {
@@ -433,23 +432,28 @@ export class MapComponent implements OnInit {
 
   getColorForValue(value: number, isRate: boolean = false): string {
     const maxValue = isRate ? this.highestRateInData : this.highestValueInData;
-
+    const minValue = isRate ? this.lowestRateInData : this.lowestValueInData;
     if (maxValue === 0) return '#DDDDDD';
     if (value === 0) return '#DDDDDD';
 
+    // Single value case - return single color
+    if (maxValue === minValue && value === maxValue) {
+      return '#FC4E2A'; // Middle color for single values
+    }
+
+    // Calculate the range
+    const range = maxValue - minValue;
     // Define small ranges (5 equal parts)
-    if (maxValue <= 5) {
+    if (maxValue <= 5 && !isRate) {
       const colors = ['#FFEDA0', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
       const colorIndex = Math.min(Math.floor(value) - 1, colors.length - 1);
       return colors[Math.max(0, colorIndex)];
     }
-
-    // Handle larger datasets with quintiles
-    const q_1 = maxValue * (1.0 / 5.0);
-    const q_2 = maxValue * (2.0 / 5.0);
-    const q_3 = maxValue * (3.0 / 5.0);
-    const q_4 = maxValue * (4.0 / 5.0);
-
+    // Handle larger datasets with quintiles based on min-max range
+    const q_1 = minValue + range * (1.0 / 5.0);
+    const q_2 = minValue + range * (2.0 / 5.0);
+    const q_3 = minValue + range * (3.0 / 5.0);
+    const q_4 = minValue + range * (4.0 / 5.0);
     if (value > q_4) return '#800026';
     if (value > q_3) return '#BD0026';
     if (value > q_2) return '#E31A1C';
@@ -459,11 +463,10 @@ export class MapComponent implements OnInit {
 
   createLegend(): L.Control {
     const legend = new L.Control({ position: 'bottomleft' });
-
     legend.onAdd = (map) => {
       const div = L.DomUtil.create('div', 'info legend');
-
       const maxValue = this.coloringMode === 'rate' ? this.highestRateInData : this.highestValueInData;
+      const minValue = this.coloringMode === 'rate' ? this.lowestRateInData : this.lowestValueInData;
       const title = this.coloringMode === 'rate' ? 'Tasa por 100,000 hab.' : 'Número de casos';
 
       if (!maxValue || maxValue === 0) {
@@ -471,37 +474,69 @@ export class MapComponent implements OnInit {
         return div;
       }
 
+      // Single value case - show only one color
+      if (maxValue === minValue) {
+        const formatValue = (val: number) => {
+          if (this.coloringMode === 'rate') {
+            if (val >= 10) return val.toFixed(2);
+            if (val >= 1) return val.toFixed(3);
+            return val.toFixed(4);
+          } else {
+            return Math.ceil(val).toString();
+          }
+        };
+
+        div.innerHTML = `<h5>${title}</h5>`;
+        div.innerHTML += `<i style="background:#DDDDDD; width: 18px; height: 18px; display: inline-block; margin-right: 8px;"></i> 0<br>`;
+        div.innerHTML += `<i style="background:#FC4E2A; width: 18px; height: 18px; display: inline-block; margin-right: 8px;"></i> ${formatValue(maxValue)}<br>`;
+        return div;
+      }
+
+      const range = maxValue - minValue;
       let ranges: any[] = [];
 
-      if (maxValue <= 5) {
+      if (maxValue <= 5 && this.coloringMode !== 'rate') {
         ranges.push({ color: '#DDDDDD', label: '0' });
         for (let i = 1; i <= maxValue; i++) {
           const colors = ['#FFEDA0', '#FD8D3C', '#FC4E2A', '#E31A1C', '#800026'];
           const colorIndex = Math.min(i - 1, colors.length - 1);
           ranges.push({
             color: colors[colorIndex],
-            label: this.coloringMode === 'rate' ? i.toFixed(2) : i.toString()
+            label: i.toString()
           });
         }
       } else {
-        const minimunNumber = this.coloringMode === 'rate' ? 0.01 : 1
-        const q_1 = maxValue * (1.0 / 5.0);
-        const q_2 = maxValue * (2.0 / 5.0);
-        const q_3 = maxValue * (3.0 / 5.0);
-        const q_4 = maxValue * (4.0 / 5.0);
+        const q_1 = minValue + range * (1.0 / 5.0);
+        const q_2 = minValue + range * (2.0 / 5.0);
+        const q_3 = minValue + range * (3.0 / 5.0);
+        const q_4 = minValue + range * (4.0 / 5.0);
         const q_5 = maxValue;
 
-        const formatValue = (val: number) =>
-        this.coloringMode === 'rate' ? val.toFixed(2) : Math.ceil(val).toString();
+        // Smart formatting function that reduces decimal places as needed
+        const formatValue = (val: number) => {
+          if (this.coloringMode === 'rate') {
+            // For rates, use appropriate precision based on value size
+            if (val >= 10) return val.toFixed(2);
+            if (val >= 1) return val.toFixed(3);
+            return val.toFixed(4);
+          } else {
+            return Math.ceil(val).toString();
+          }
+        };
 
-        ranges = [
-          { color: '#DDDDDD', label: '0' },
-          { color: '#FFEDA0', label: `${minimunNumber} - ${formatValue(q_1)}` },
-          { color: '#FD8D3C', label: `${formatValue(q_1 + 0.01)} - ${formatValue(q_2)}` },
-          { color: '#FC4E2A', label: `${formatValue(q_2 + 0.01)} - ${formatValue(q_3)}` },
-          { color: '#E31A1C', label: `${formatValue(q_3 + 0.01)} - ${formatValue(q_4)}` },
-          { color: '#800026', label: `${formatValue(q_4 + 0.01)} - ${formatValue(q_5)}` }
-        ];
+        const increment = this.coloringMode === 'rate'
+          ? (q_1 >= 10 ? 0.01 : q_1 >= 1 ? 0.001 : 0.0001)
+          : 1;
+
+          const minFormatted = formatValue(minValue > 0 ? minValue : increment);
+          ranges = [
+            { color: '#DDDDDD', label: '0' },
+            { color: '#FFEDA0', label: `${minFormatted} - ${formatValue(q_1)}` },
+            { color: '#FD8D3C', label: `${formatValue(q_1 + increment)} - ${formatValue(q_2)}` },
+            { color: '#FC4E2A', label: `${formatValue(q_2 + increment)} - ${formatValue(q_3)}` },
+            { color: '#E31A1C', label: `${formatValue(q_3 + increment)} - ${formatValue(q_4)}` },
+            { color: '#800026', label: `${formatValue(q_4 + increment)} - ${formatValue(q_5)}` }
+          ];
       }
 
       div.innerHTML = `<h5>${title}</h5>`;
@@ -513,7 +548,6 @@ export class MapComponent implements OnInit {
 
       return div;
     };
-
     return legend;
   }
 
