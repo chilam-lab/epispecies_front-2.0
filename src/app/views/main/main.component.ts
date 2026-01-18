@@ -595,10 +595,24 @@ export class MainComponent implements OnInit {
   }
 
   verifyDataInMunModal() {
-    let isAState = this.isValueInsideList(this.statesNameList, this.selectedState)
+    let isAState = this.isValueInsideList(this.statesNameList, this.selectedState);
+
     if (isAState) {
-      showNotification.success(NOTIFICATION_MESSAGES.MUNICIPAL_SELECTED);
-      this.modalMunRef.nativeElement.click();
+      const stateItem = this.statesAndMunList.find(item => item[1] === this.selectedState);
+      const stateCode = stateItem ? stateItem[0] : null;
+
+      if (stateCode) {
+        const isMunicipalityValid = this.statesAndMunList.some(item =>
+          item[0] === stateCode && item[3] === this.selectedMuncipality);
+
+        if (isMunicipalityValid) {
+          showNotification.success(NOTIFICATION_MESSAGES.MUNICIPAL_SELECTED);
+          this.modalMunRef.nativeElement.click();
+        } else {
+          this.selectedMuncipality = "";
+          showNotification.error(NOTIFICATION_MESSAGES.WRONG_MUNICIPAL);
+        }
+      }
     } else {
       this.selectedState = "";
       this.selectedMuncipality = "";
