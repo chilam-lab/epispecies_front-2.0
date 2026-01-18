@@ -282,6 +282,7 @@ export class MainComponent implements OnInit {
     idSelectedMun = (idSelectedMun.length > 0) ? Number(idSelectedMun) > 10000 ? idSelectedMun : "0" + idSelectedMun : "";
     const idState = this.statesAndMunList.find(item => item[1] === this.selectedState);
 
+    await this.getPopulationWithAllFilters()
     let stateMunList:any[];
     if(this.selectedRegion == environment.placeholderMetropoli){
       this.dataByMunToDisplayInMap = this.filterByMetropoli(municipalityDataList);
@@ -298,7 +299,6 @@ export class MainComponent implements OnInit {
     this.updatedResolution = this.selectedResolution;
     this.updatedRegion = this.selectedRegion;
     this.selectedCVEState = Number(idSelectedState);
-    this.getPopulationWithAllFilters()
     this.selectedCVEMun = idSelectedMun;
     this.saveNewSelectsValues();
     this.seeInformationAfterSelected = true;

@@ -230,7 +230,7 @@ export class MapComponent implements OnInit {
                        <td>${data.population.toLocaleString('en-US')}</td>
                      </tr>
                      <tr>
-                       <th>Población nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion : "Estado"}</th>
+                       <th>Población nivel ${this.selectedRegion == "Municipio" ? "Estado" : this.selectedRegion}</th>
                        <td>${this.totalPopulationWithFilters.toLocaleString('en-US')}</td>
                      </tr>
                      <tr>
@@ -296,7 +296,7 @@ export class MapComponent implements OnInit {
                        <td>${data.population.toLocaleString('en-US')}</td>
                      </tr>
                      <tr>
-                       <th>Población nivel ${this.selectedRegion != "Municipio" ? this.selectedRegion : "Estado"}</th>
+                       <th>Población nivel ${this.selectedRegion == "Municipio" ? "Estado" : this.selectedRegion}</th>
                        <td>${this.totalPopulationWithFilters.toLocaleString('en-US')}</td>
                      </tr>
                      <tr>
@@ -377,6 +377,11 @@ export class MapComponent implements OnInit {
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
     console.log("Change detected")
     try {
+      let newRegion = changes['updatedRegion']['currentValue'];
+      if (newRegion && newRegion != this.selectedRegion) { this.selectedRegion = newRegion; }
+    } catch (err) { console.log("no region updates");}
+
+    try {
       let newResolution = changes['updatedResolution']['currentValue'];
       if (newResolution && newResolution != this.selectedResolution)  this.selectedResolution = newResolution;
     } catch (err) { console.log("no resolution updates"); }
@@ -422,10 +427,7 @@ export class MapComponent implements OnInit {
       console.log("no updates in the data")
     }
 
-    try {
-      let newRegion = changes['updatedRegion']['currentValue'];
-      if (newRegion && newRegion != this.selectedRegion) { this.selectedRegion = newRegion; }
-    } catch (err) { console.log("no region updates");}
+
   }
 
 
@@ -589,5 +591,9 @@ export class MapComponent implements OnInit {
       }
     }
     return populationMap
+  }
+  getLevelDescription(selectedRegion: string){
+    if(selectedRegion === 'Municipio') return "Estado";
+    else return selectedRegion
   }
 }
