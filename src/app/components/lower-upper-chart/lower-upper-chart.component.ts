@@ -45,14 +45,24 @@ export class LowerUpperChartComponent implements OnInit{
 
     const chartData = this.data.length > 0 ? this.data : this.womenData;
     const prefix = chartData[0].category.split('_')[0];
-    const title = `Riesgo Relativo (RR) para ${prefix.toUpperCase()}`;
 
     const categoryName = nameCategories[prefix as keyof typeof nameCategories] || 'Categoría desconocida'
 
-    const round2 = (num: number) => Math.round(num * 100) / 100;
     const categories = chartData.map((d: any) => d.category);
     const maxICsup = Math.max(...chartData.map((d:any) => d.ICsup));
     const minICinf = Math.min(...chartData.map((d:any) => d.ICinf));
+
+    // Validate data for logarithmic scale - all values must be > 0
+    const hasInvalidValues = chartData.some((d: any) =>
+      d.RR <= 0 || d.ICinf <= 0 || d.ICsup <= 0
+    );
+
+    // Use logarithmic scale only if all values are positive
+    const useLogScale = !hasInvalidValues && minICinf > 0;
+
+    const scaleType = useLogScale ? 'Escala Logarítmica' : 'Escala Lineal';
+    const title = `Riesgo Relativo (RR) para ${prefix.toUpperCase()} - ${scaleType}`;
+
     let subTitle = (this.selectedFirstClassName != environment.placeholderFirstClass) ? this.selectedFirstClassName : ""
     subTitle += (this.selectedSecondClassName) ? `, ${this.selectedSecondClassName}` : "";
     subTitle += (this.selectedThirdClassName) ? `, ${this.selectedThirdClassName}` : "";
@@ -61,27 +71,6 @@ export class LowerUpperChartComponent implements OnInit{
       `, ${this.selectedGender}` :
       `, Género: ${this.selectedGender}`;
     subTitle += (this.selectedYear) ? `, Año: ${this.selectedYear[0]}` : ""
-    const padding = 0.01;
-    const lowerBound = minICinf - padding;
-    const upperBound = maxICsup + padding;
-
-    const lowerInterval = (1 - lowerBound) / 4;
-    const lowerTicks = [
-      round2(lowerBound),
-      round2(lowerBound + lowerInterval),
-      round2(lowerBound + lowerInterval * 2),
-      round2(lowerBound + lowerInterval * 3)
-    ];
-
-    const upperInterval = (upperBound - 1) / 4;
-    const upperTicks = [
-      round2(1 + upperInterval),
-      round2(1 + upperInterval * 2),
-      round2(1 + upperInterval * 3),
-      round2(upperBound)
-    ];
-
-    const uniqueTicks = [...lowerTicks, 1, ...upperTicks];
 
     this.chartOptions = {
       chart: {
@@ -109,20 +98,28 @@ export class LowerUpperChartComponent implements OnInit{
         categories: categories
       },
       yAxis: {
+        type: useLogScale ? 'logarithmic' : 'linear',
         title: {
-          text: 'Riesgo Relativo (RR)'
+          text: useLogScale ? 'Riesgo Relativo (RR) - Escala Logarítmica' : 'Riesgo Relativo (RR)'
         },
-        min: lowerBound,
-        max: upperBound,
+        min: useLogScale ? minICinf * 0.95 : minICinf - 0.01,
+        max: useLogScale ? maxICsup * 1.05 : maxICsup + 0.01,
         gridLineWidth: 1,
         gridLineColor: '#e0e0e0',
-        tickPositions: uniqueTicks,
+        minorGridLineWidth: 0,
         plotLines: [{
           value: 1.0,
           color: '#999999',
           dashStyle: 'Dash',
           width: 2,
-          zIndex: 5
+          zIndex: 5,
+          label: {
+            text: 'RR = 1.0 (Sin efecto)',
+            align: 'right',
+            style: {
+              color: '#999999'
+            }
+          }
         }]
       },
       legend: {
@@ -173,7 +170,7 @@ export class LowerUpperChartComponent implements OnInit{
           type: 'errorbar',
           yAxis: 0,
           data: chartData.map((d:any, index:any) => [index, d.ICinf, d.ICsup]),
-            color: '#2f4f4f',
+          color: '#2f4f4f',
           linkedTo: ':previous',
           showInLegend: false,
           enableMouseTracking: false
