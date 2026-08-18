@@ -1,35 +1,35 @@
 # ==========================================
-# Etapa 1: Build de la aplicación
+# Stage 1: Build the Angular Application
 # ==========================================
 FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copiar archivos de dependencias e instalar
+# Copy dependency definition files and install dependencies
 COPY package*.json ./
 RUN npm ci --legacy-peer-deps
 
-# Copiar todo el código fuente
+# Copy the entire source code
 COPY . .
 
-# Desactivar analíticas de Angular
+# Disable Angular CLI telemetry prompts
 RUN npx ng analytics disable
 
-# Compilar para producción (utiliza el target configurado en angular.json)
+# Build the Angular application for production
 RUN npx ng build --configuration production
 
 # ==========================================
-# Etapa 2: Servidor de producción (Nginx)
+# Stage 2: Production Server (Nginx)
 # ==========================================
 FROM nginx:alpine
 
-# Copiar la configuración personalizada de Nginx para el puerto 4200
+# Copy custom Nginx configuration to listen on port 4200
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copiar la salida compilada de 'front-epi' al directorio público de Nginx
+# Copy compiled build artifacts from the build stage to Nginx public web directory
 COPY --from=build /app/dist/front-epi/browser /usr/share/nginx/html
 
-# Exponer el puerto 4200
+# Expose port 4200
 EXPOSE 4200
 
 CMD ["nginx", "-g", "daemon off;"]
