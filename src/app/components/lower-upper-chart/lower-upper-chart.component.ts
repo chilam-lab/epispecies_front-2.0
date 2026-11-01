@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, SimpleChanges} from '@angular/core';
-import { HighchartsChartComponent, ChartConstructorType } from 'highcharts-angular';
-import * as Highcharts from 'highcharts';
-import { environment, gendersDict, nameCategories } from '../../../environments/environment';
+import { Component, Input, OnInit} from '@angular/core';
+import { HighchartsChartComponent } from 'highcharts-angular';
+import type * as Highcharts from 'highcharts';
+import { environment, nameCategories } from '../../../environments/environment';
 
 @Component({
   selector: 'app-lower-upper-chart',
@@ -19,7 +19,6 @@ export class LowerUpperChartComponent implements OnInit{
   @Input() selectedRegion: string ="";
   @Input() selectedYear: string ="";
 
-  Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options = {};
   womenData = [
     { category: "Rango_25", RR: 0.93, ICinf: 0.87, ICsup: 0.99 },
