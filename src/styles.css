@@ -47,7 +47,7 @@ header {
 
 #logoC3 {
   background-color: rgba(195,195,195,.25);
-  background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/c3-g.svg);
+  background-image: url("assets/logoC3.svg");
   background-size: 3.5em;
   width: 5em;
 }
@@ -66,14 +66,14 @@ header {
 
 #logoCIC {
   background-color: rgba(195,195,195,.5);
-  background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/cic-g.svg);
+  background-image: url("assets/logoCIC.svg");
   background-size: 4.5em;
   width: 6em;
 }
 
 #logoUNAM {
   background-color: rgba(195,195,195,.75);
-  background-image: url(https://chilam.c3.unam.mx/wp-content/themes/chilam/images/logos/unam-g.svg);
+  background-image: url("assets/logoUNAM.svg");
   background-size: 3em;
   width: 5em;
 }
